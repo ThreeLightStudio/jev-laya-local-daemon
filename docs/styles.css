@@ -297,6 +297,12 @@ h3 {
   box-shadow: 0 32px 90px rgba(0, 0, 0, 0.35);
 }
 
+.api-demo {
+  height: 610px;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1.55fr) minmax(0, 1fr);
+}
+
 .hero-console::before {
   content: "";
   position: absolute;
@@ -410,6 +416,8 @@ h3 {
 .demo-payload,
 .demo-response {
   position: relative;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .demo-code-label {
@@ -425,8 +433,10 @@ h3 {
 
 .demo-payload pre,
 .demo-response pre {
-  min-height: 184px;
+  height: 100%;
+  min-height: 0;
   padding-top: 32px;
+  overflow: auto;
 }
 
 .console-result {
@@ -1585,8 +1595,13 @@ h3 {
 
   .demo-payload pre,
   .demo-response pre {
-    min-height: auto;
-    max-height: 310px;
+    min-height: 0;
+    max-height: none;
+  }
+
+  .api-demo {
+    height: 560px;
+    grid-template-rows: auto auto minmax(0, 1.35fr) minmax(0, 1fr);
   }
 
   .batch-metric-grid {
