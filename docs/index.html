@@ -261,10 +261,10 @@ critical  0.3672</code></pre>
         <section id="comparison" class="section model-comparison" aria-labelledby="comparison-title">
           <div class="section-heading">
             <p class="eyebrow">Laya vs Jev</p>
-            <h2 id="comparison-title">Same 16 routing cases. Two very different result profiles.</h2>
+            <h2 id="comparison-title">Four rounds. 64 typed decisions.</h2>
             <p>
-              I replayed the same developer-tool routing cases against Laya and Jev. The expected actions were
-              <code>resume</code>, <code>inspect</code>, <code>reanalyze</code>, or <code>test</code>.
+              I compared the models on next-action routing, binary escalation, ordinal urgency, paraphrase/order
+              robustness, and deliberately ambiguous cases. The same fixture definitions are checked into this repository.
             </p>
           </div>
 
@@ -277,7 +277,7 @@ critical  0.3672</code></pre>
           <div class="model-compare-grid">
             <article class="model-card">
               <div class="model-card-head">
-                <span class="comparison-label">Local</span>
+                <span class="comparison-label">Initial routing round · local</span>
                 <h3>Laya</h3>
               </div>
               <strong class="model-score">14 / 16</strong>
@@ -292,7 +292,7 @@ critical  0.3672</code></pre>
 
             <article class="model-card model-card-accent">
               <div class="model-card-head">
-                <span class="comparison-label">Hosted</span>
+                <span class="comparison-label">Initial routing round · hosted</span>
                 <h3>Jev</h3>
               </div>
               <strong class="model-score">16 / 16</strong>
@@ -304,6 +304,45 @@ critical  0.3672</code></pre>
                 <div><dt>Output profile</dt><dd>mostly 0.99–1.00 top probability</dd></div>
               </dl>
             </article>
+          </div>
+
+          <div class="result-table-wrap">
+            <table class="result-table">
+              <thead>
+                <tr>
+                  <th>Round</th>
+                  <th>Laya 0.3.5</th>
+                  <th>Jev 1.13.0</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Choice routing</strong><span>16 strict cases</span></td>
+                  <td>14/16 · 87.5%</td>
+                  <td>16/16 · 100%</td>
+                </tr>
+                <tr>
+                  <td><strong>Noul escalation</strong><span>8 true · 8 false</span></td>
+                  <td>10/16 @ 0.5 · Brier 0.1905<br /><small>best in-sample cutoff 0.463 → 14/16</small></td>
+                  <td>16/16 @ 0.5 · Brier 0.00695<br /><small>positive mean 0.945 · negative 0.100</small></td>
+                </tr>
+                <tr>
+                  <td><strong>Score urgency</strong><span>4 levels · 16 cases</span></td>
+                  <td>8/16 top level · MAE 0.5404</td>
+                  <td>14/16 top level · MAE 0.1356</td>
+                </tr>
+                <tr>
+                  <td><strong>Choice robustness</strong><span>12 strict paraphrases · rotated option order</span></td>
+                  <td>10/12 · 2/4 groups fully consistent</td>
+                  <td>12/12 · 4/4 groups fully consistent</td>
+                </tr>
+                <tr>
+                  <td><strong>Ambiguity diagnostic</strong><span>4 intentionally debatable cases · not accuracy</span></td>
+                  <td>preferred top-1 0/4<br /><small>top probabilities stayed around 0.31–0.35</small></td>
+                  <td>preferred top-1 4/4<br /><small>confidence 0.66–0.99; 3/4 still ≥ 0.97</small></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
           <div class="batch-finding">
@@ -321,8 +360,14 @@ critical  0.3672</code></pre>
 
           <p class="evidence-note">
             Speed numbers are not an apples-to-apples benchmark: Laya ran locally on Apple Silicon while Jev ran on
-            TypeSafe infrastructure, and the request shapes differ. The accuracy result is the more useful observation here.
-            Jev's very sharp 0.99–1.00 probabilities were correct on these 16 cases, but this sample is too small to judge calibration.
+            TypeSafe infrastructure, and the request shapes differ. The accuracy and robustness results are more useful
+            observations here than raw latency.
+          </p>
+          <p class="evidence-note">
+            Jev's probabilities separated the clear Noul cases extremely well, but the ambiguity round also exposed a
+            caution: it still returned 0.97–0.99 confidence on three of four deliberately debatable cases. Laya was much
+            less certain there, although its top choices also failed to match the preferred action. Probability sharpness
+            and calibration should therefore be evaluated separately from top-1 accuracy.
           </p>
           <p class="evidence-note">
             Upstream Laya reports a different ordering on its own typed-decisions benchmark: Laya typed-decisions 0.766
@@ -430,9 +475,11 @@ critical  0.3672</code></pre>
           </div>
           <div class="callout maker-callout">
             <p class="callout-quote">
-              For hosted typed decisions where batching and zero-shot accuracy matter, I would currently reach for Jev.
-              For decisions that must stay local, avoid a network dependency, and run repeatedly over small controlled
-              states, Laya is still compelling — but I would preprocess the state aggressively and keep each decision narrow.
+              Across these product-shaped tests, Jev is currently the stronger default for hosted typed decisions: it was
+              more accurate on Choice, much cleaner on Noul, substantially better on Score, and more robust to paraphrasing
+              and option order. Laya is still interesting when decisions must stay local, avoid a network dependency, and
+              run repeatedly over small controlled states — but I would preprocess the state aggressively, tune thresholds,
+              and keep each decision narrow.
             </p>
             <p class="maker-note">
               That is my conclusion from this small experiment, not a general benchmark claim. The result may change with

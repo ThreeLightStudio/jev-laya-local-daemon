@@ -660,7 +660,7 @@ Because the daemon owns those concerns, TypeScript, Electron, Node, and Python a
 
 ## 15. Jev comparison snapshot
 
-On September 23, 2026, I replayed the same 16 next-action cases against Jev in the TypeSafe Playground.
+On September 23, 2026, I compared Laya and Jev across four product-shaped rounds: the original 16-case next-action router plus three additional 16-case fixtures for `noul`, `score`, and robustness/ambiguity.
 
 Versions used:
 
@@ -687,6 +687,19 @@ Results:
 | Jev 1.13.0, 16 questions in one Playground batch | 16/16 | 100% | 162.6 ms server evaluation; 449 ms network roundtrip to us-west |
 | Laya, Jev-style multiplexed shared state | 4/16 | 25% | 3771.5 ms for the single 16-question request |
 
+### Additional primitive and robustness rounds
+
+| Round | Laya 0.3.5 | Jev 1.13.0 |
+| --- | --- | --- |
+| `noul` human escalation, 16 clear balanced cases | 10/16 at a 0.5 cutoff; Brier 0.1905; positive mean 0.4826 vs negative 0.3075 | 16/16 at a 0.5 cutoff; Brier 0.00695; positive mean 0.945 vs negative 0.100 |
+| `score` urgency, 16 cases across four ordered levels | 8/16 expected level on top; score MAE 0.5404 | 14/16 expected level on top; score MAE 0.1356 |
+| `choice` robustness, 12 strict paraphrase/order cases | 10/12; 2/4 paraphrase groups fully consistent | 12/12; 4/4 groups fully consistent |
+| ambiguity diagnostic, four deliberately debatable cases | preferred action was not top-1 in 4/4; top probabilities were about 0.31–0.35 | preferred action was top-1 in 4/4, but confidence stayed 0.66–0.99 and was at least 0.97 in three cases |
+
+The ambiguity labels are deliberately subjective and are not counted as accuracy. They exist to inspect whether the probability distribution becomes less decisive when more than one action is plausible.
+
+For Laya `noul`, a fixed 0.5 threshold is also not the whole story. Fitting the threshold on this same 16-case fixture yields a best in-sample cutoff of about 0.463 and 14/16 accuracy. That fitted number is optimistic and should not be compared directly with a zero-shot cutoff, but it reinforces the practical requirement that Laya binary signals need product-specific calibration.
+
 The speed numbers are not directly comparable. Laya ran locally on Apple Silicon with MPS, while Jev ran on TypeSafe infrastructure, and the successful Laya accuracy test used one compact state per request rather than one multiplexed batch.
 
 The more useful behavioral result is the input-shape difference. Jev correctly followed instructions such as `Consider only state.case_07` across one large state object. Laya did not reliably isolate those independent nested states. This matches Laya's intended multi-question pattern more closely when multiple questions refer to the same state, rather than when one state object is being used as a container for many unrelated scenarios.
@@ -699,7 +712,9 @@ There is useful counter-evidence in Laya's own published typed-decisions benchma
 
 My current subjective conclusion is:
 
-> For hosted typed decisions where batching and zero-shot accuracy matter, I would currently reach for Jev. For decisions that must stay local, avoid a network dependency, and run repeatedly over small controlled states, Laya remains interesting — but I would preprocess the state aggressively and keep each decision narrow.
+> Across these product-shaped tests, Jev is currently the stronger default for hosted typed decisions: it was more accurate on `choice`, much cleaner on `noul`, substantially better on `score`, and more robust to paraphrasing and option order. Laya remains interesting when decisions must stay local, avoid a network dependency, and run repeatedly over small controlled states — but I would preprocess the state aggressively, tune thresholds, and keep each decision narrow.
+
+Jev's probability outputs still deserve separate calibration testing. In three of the four deliberately ambiguous cases it reported confidence of at least 0.97 even though the fixture was intentionally written so that another action remained plausible. High top-1 accuracy in this small sample should not be treated as evidence that those confidence values are calibrated probabilities.
 
 This is a small product-oriented experiment, not a general model benchmark. Different domains, prompts, hardware, and future model versions can change the result.
 

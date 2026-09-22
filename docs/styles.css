@@ -679,6 +679,58 @@ h3 {
   font-size: 0.86rem;
 }
 
+.result-table-wrap {
+  margin-top: 18px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+}
+
+.result-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.result-table th,
+.result-table td {
+  padding: 18px 20px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+
+.result-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.result-table th {
+  color: var(--muted);
+  background: #0c0e12;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.result-table td:first-child {
+  width: 32%;
+}
+
+.result-table td > strong,
+.result-table td > span {
+  display: block;
+}
+
+.result-table td > span,
+.result-table small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
 .batch-finding {
   margin-top: 16px;
   padding: 26px 28px;

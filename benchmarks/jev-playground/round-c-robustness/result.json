@@ -1,0 +1,203 @@
+{
+  "model": "jev-1.13.0",
+  "answers": {
+    "case_01_decision": {
+      "type": "choice",
+      "choice": "test",
+      "confidence": 1,
+      "probabilities": {
+        "resume": 0,
+        "inspect": 0,
+        "reanalyze": 0,
+        "test": 1
+      },
+      "stats": {}
+    },
+    "case_02_decision": {
+      "type": "choice",
+      "choice": "test",
+      "confidence": 1,
+      "probabilities": {
+        "resume": 0,
+        "inspect": 0,
+        "reanalyze": 0,
+        "test": 1
+      },
+      "stats": {}
+    },
+    "case_03_decision": {
+      "type": "choice",
+      "choice": "test",
+      "confidence": 0.99,
+      "probabilities": {
+        "resume": 0.01,
+        "inspect": 0,
+        "reanalyze": 0,
+        "test": 0.99
+      },
+      "stats": {}
+    },
+    "case_04_decision": {
+      "type": "choice",
+      "choice": "inspect",
+      "confidence": 1,
+      "probabilities": {
+        "resume": 0,
+        "inspect": 1,
+        "reanalyze": 0,
+        "test": 0
+      },
+      "stats": {}
+    },
+    "case_05_decision": {
+      "type": "choice",
+      "choice": "inspect",
+      "confidence": 1,
+      "probabilities": {
+        "resume": 0,
+        "inspect": 1,
+        "reanalyze": 0,
+        "test": 0
+      },
+      "stats": {}
+    },
+    "case_06_decision": {
+      "type": "choice",
+      "choice": "inspect",
+      "confidence": 1,
+      "probabilities": {
+        "resume": 0,
+        "inspect": 1,
+        "reanalyze": 0,
+        "test": 0
+      },
+      "stats": {}
+    },
+    "case_07_decision": {
+      "type": "choice",
+      "choice": "reanalyze",
+      "confidence": 1,
+      "probabilities": {
+        "resume": 0,
+        "inspect": 0,
+        "reanalyze": 1,
+        "test": 0
+      },
+      "stats": {}
+    },
+    "case_08_decision": {
+      "type": "choice",
+      "choice": "reanalyze",
+      "confidence": 1,
+      "probabilities": {
+        "resume": 0,
+        "inspect": 0,
+        "reanalyze": 1,
+        "test": 0
+      },
+      "stats": {}
+    },
+    "case_09_decision": {
+      "type": "choice",
+      "choice": "reanalyze",
+      "confidence": 1,
+      "probabilities": {
+        "resume": 0,
+        "inspect": 0,
+        "reanalyze": 1,
+        "test": 0
+      },
+      "stats": {}
+    },
+    "case_10_decision": {
+      "type": "choice",
+      "choice": "resume",
+      "confidence": 1,
+      "probabilities": {
+        "resume": 1,
+        "inspect": 0,
+        "reanalyze": 0,
+        "test": 0
+      },
+      "stats": {}
+    },
+    "case_11_decision": {
+      "type": "choice",
+      "choice": "resume",
+      "confidence": 1,
+      "probabilities": {
+        "resume": 1,
+        "inspect": 0,
+        "reanalyze": 0,
+        "test": 0
+      },
+      "stats": {}
+    },
+    "case_12_decision": {
+      "type": "choice",
+      "choice": "resume",
+      "confidence": 1,
+      "probabilities": {
+        "resume": 1,
+        "inspect": 0,
+        "reanalyze": 0,
+        "test": 0
+      },
+      "stats": {}
+    },
+    "case_13_decision": {
+      "type": "choice",
+      "choice": "resume",
+      "confidence": 0.98,
+      "probabilities": {
+        "resume": 0.98,
+        "inspect": 0,
+        "reanalyze": 0,
+        "test": 0.02
+      },
+      "stats": {}
+    },
+    "case_14_decision": {
+      "type": "choice",
+      "choice": "inspect",
+      "confidence": 0.99,
+      "probabilities": {
+        "resume": 0,
+        "inspect": 1,
+        "reanalyze": 0,
+        "test": 0
+      },
+      "stats": {}
+    },
+    "case_15_decision": {
+      "type": "choice",
+      "choice": "reanalyze",
+      "confidence": 0.66,
+      "probabilities": {
+        "resume": 0.02,
+        "inspect": 0,
+        "reanalyze": 0.74,
+        "test": 0.24
+      },
+      "stats": {}
+    },
+    "case_16_decision": {
+      "type": "choice",
+      "choice": "test",
+      "confidence": 0.97,
+      "probabilities": {
+        "resume": 0.01,
+        "inspect": 0.01,
+        "reanalyze": 0.01,
+        "test": 0.97
+      },
+      "stats": {}
+    }
+  },
+  "usage": {
+    "input_tokens": 3076,
+    "output_tokens": 811
+  },
+  "request_id": "playground_163420108055a204282ba6bd37d230d0aa1",
+  "evaluation_time_ms": 119.70789099996182
+}

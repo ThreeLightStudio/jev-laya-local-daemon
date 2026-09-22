@@ -1,0 +1,91 @@
+{
+  "model": "jev-1.13.0",
+  "answers": {
+    "case_01_decision": {
+      "type": "noul",
+      "noul": 0.97,
+      "stats": {}
+    },
+    "case_02_decision": {
+      "type": "noul",
+      "noul": 0.91,
+      "stats": {}
+    },
+    "case_03_decision": {
+      "type": "noul",
+      "noul": 0.13,
+      "stats": {}
+    },
+    "case_04_decision": {
+      "type": "noul",
+      "noul": 0.1,
+      "stats": {}
+    },
+    "case_05_decision": {
+      "type": "noul",
+      "noul": 0.96,
+      "stats": {}
+    },
+    "case_06_decision": {
+      "type": "noul",
+      "noul": 0.08,
+      "stats": {}
+    },
+    "case_07_decision": {
+      "type": "noul",
+      "noul": 0.94,
+      "stats": {}
+    },
+    "case_08_decision": {
+      "type": "noul",
+      "noul": 0.09,
+      "stats": {}
+    },
+    "case_09_decision": {
+      "type": "noul",
+      "noul": 0.97,
+      "stats": {}
+    },
+    "case_10_decision": {
+      "type": "noul",
+      "noul": 0.11,
+      "stats": {}
+    },
+    "case_11_decision": {
+      "type": "noul",
+      "noul": 0.94,
+      "stats": {}
+    },
+    "case_12_decision": {
+      "type": "noul",
+      "noul": 0.13,
+      "stats": {}
+    },
+    "case_13_decision": {
+      "type": "noul",
+      "noul": 0.94,
+      "stats": {}
+    },
+    "case_14_decision": {
+      "type": "noul",
+      "noul": 0.1,
+      "stats": {}
+    },
+    "case_15_decision": {
+      "type": "noul",
+      "noul": 0.93,
+      "stats": {}
+    },
+    "case_16_decision": {
+      "type": "noul",
+      "noul": 0.06,
+      "stats": {}
+    }
+  },
+  "usage": {
+    "input_tokens": 1762,
+    "output_tokens": 356
+  },
+  "request_id": "playground_163bcebf859eff943809b925b276ae898a4",
+  "evaluation_time_ms": 100.82835599314421
+}
