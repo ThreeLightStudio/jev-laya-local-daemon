@@ -1,5 +1,7 @@
 # jev-laya-local-daemon
 
+[Project page →](https://threelightstudio.github.io/jev-laya-local-daemon/)
+
 `jev-laya-local-daemon` exposes one localhost API for typed decisions from either local Laya or hosted Jev.
 
 ```text
