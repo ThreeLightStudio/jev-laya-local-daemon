@@ -21,6 +21,7 @@
         </a>
         <nav class="site-nav" aria-label="Primary navigation">
           <a href="#evidence">What we learned</a>
+          <a href="#comparison">Laya vs Jev</a>
           <a href="#pattern">How to use it</a>
           <a href="#run">Run locally</a>
           <a href="https://github.com/ThreeLightStudio/laya-local-api/blob/main/docs/laya-experiment.md">Experiment notes</a>
@@ -56,6 +57,10 @@
               <div>
                 <dt>Tested on</dt>
                 <dd>Apple Silicon · MPS</dd>
+              </div>
+              <div>
+                <dt>Compared with</dt>
+                <dd>Jev 1.13.0</dd>
               </div>
             </dl>
           </div>
@@ -125,29 +130,36 @@
 
         <section class="section primitives" aria-labelledby="primitives-title">
           <div class="section-heading compact">
-            <p class="eyebrow">Three kinds of decisions</p>
-            <h2 id="primitives-title">Ask a small question. Get a structured answer.</h2>
+            <p class="eyebrow">Shared decision primitives</p>
+            <h2 id="primitives-title">Jev and Laya speak the same three decision types.</h2>
+            <p>
+              Both models take a state plus typed questions and return probabilities instead of generated prose.
+              That shared interface is what makes a direct comparison useful. See TypeSafe's
+              <a class="inline-link" href="https://evals.typesafe.ai/">workflow primitives</a> and the
+              <a class="inline-link" href="https://github.com/NandhaKishorM/laya">Laya model interface</a>.
+            </p>
           </div>
 
           <div class="card-grid three-up">
             <article class="primitive-card">
               <div class="primitive-icon">01</div>
-              <h3><code>choice</code></h3>
-              <p>Pick one option from a short list and get a probability for every option.</p>
-              <pre><code>resume     0.22
-inspect    0.24
-reanalyze  0.19
-test       0.35  ←</code></pre>
+              <h3><code>noul</code></h3>
+              <p>Ask a yes/no question. The result is a probability for “true,” so your code can choose its own cutoff.</p>
+              <pre><code>should_notify?
+P(true) = 0.40
+
+your policy decides
+when 0.40 is enough</code></pre>
             </article>
 
             <article class="primitive-card">
               <div class="primitive-icon">02</div>
-              <h3><code>noul</code></h3>
-              <p>Ask a yes/no question and get how strongly Laya leans toward “yes.” Your app decides the cutoff.</p>
-              <pre><code>{
-  "noul": 0.4011,
-  "confidence": 0.5989
-}</code></pre>
+              <h3><code>choice</code></h3>
+              <p>Pick one option from a defined set and get a probability distribution across the available choices.</p>
+              <pre><code>resume     0.22
+inspect    0.24
+reanalyze  0.19
+test       0.35  ←</code></pre>
             </article>
 
             <article class="primitive-card">
@@ -240,6 +252,80 @@ critical  0.3672</code></pre>
           </p>
         </section>
 
+        <section id="comparison" class="section model-comparison" aria-labelledby="comparison-title">
+          <div class="section-heading">
+            <p class="eyebrow">Laya vs Jev</p>
+            <h2 id="comparison-title">Same 16 routing cases. Two very different result profiles.</h2>
+            <p>
+              I replayed the same developer-tool routing cases against Laya and Jev. The expected actions were
+              <code>resume</code>, <code>inspect</code>, <code>reanalyze</code>, or <code>test</code>.
+            </p>
+          </div>
+
+          <div class="version-tags" aria-label="Models tested">
+            <span>Laya package 0.3.5 · <code>typed-decisions</code></span>
+            <span>Jev 1.13.0 · TypeSafe Playground</span>
+            <span>Tested September 23, 2026</span>
+          </div>
+
+          <div class="model-compare-grid">
+            <article class="model-card">
+              <div class="model-card-head">
+                <span class="comparison-label">Local</span>
+                <h3>Laya</h3>
+              </div>
+              <strong class="model-score">14 / 16</strong>
+              <span class="model-score-caption">87.5% expected action</span>
+              <dl class="model-metrics">
+                <div><dt>Input shape</dt><dd>one compact state per request</dd></div>
+                <div><dt>Observed latency</dt><dd>35.3 ms / case avg</dd></div>
+                <div><dt>Typical warm calls</dt><dd>31–33 ms</dd></div>
+                <div><dt>Misses</dt><dd>2, both drifted to reanalyze</dd></div>
+              </dl>
+            </article>
+
+            <article class="model-card model-card-accent">
+              <div class="model-card-head">
+                <span class="comparison-label">Hosted</span>
+                <h3>Jev</h3>
+              </div>
+              <strong class="model-score">16 / 16</strong>
+              <span class="model-score-caption">100% expected action</span>
+              <dl class="model-metrics">
+                <div><dt>Input shape</dt><dd>16 questions in one Playground batch</dd></div>
+                <div><dt>Server evaluation</dt><dd>162.6 ms total</dd></div>
+                <div><dt>Network roundtrip</dt><dd>449 ms to us-west</dd></div>
+                <div><dt>Output profile</dt><dd>mostly 0.99–1.00 top probability</dd></div>
+              </dl>
+            </article>
+          </div>
+
+          <div class="batch-finding">
+            <div>
+              <span class="comparison-label">The surprising part</span>
+              <strong>When I copied Jev's multiplexed state shape into Laya, Laya dropped to 4 / 16.</strong>
+            </div>
+            <p>
+              Laya works well when each decision receives only the state it needs. Packing many independent cases into
+              one shared object and asking each question to inspect <code>state.case_XX</code> caused nearly every answer
+              to collapse toward <code>reanalyze</code>. Four-case mixed batches showed the same pattern, so this was not
+              only a long-context effect.
+            </p>
+          </div>
+
+          <p class="evidence-note">
+            Speed numbers are not an apples-to-apples benchmark: Laya ran locally on Apple Silicon while Jev ran on
+            TypeSafe infrastructure, and the request shapes differ. The accuracy result is the more useful observation here.
+            Jev's very sharp 0.99–1.00 probabilities were correct on these 16 cases, but this sample is too small to judge calibration.
+          </p>
+          <p class="evidence-note">
+            Upstream Laya reports a different ordering on its own typed-decisions benchmark: Laya typed-decisions 0.766
+            accuracy vs Jev 1.13.0 at 0.727. That benchmark and this small developer-tool test measure different domains,
+            which is exactly why I treat the result here as a product experiment rather than a universal ranking.
+            <a class="inline-link" href="https://github.com/NandhaKishorM/laya">See the upstream benchmark.</a>
+          </p>
+        </section>
+
         <section id="pattern" class="section pattern" aria-labelledby="pattern-title">
           <div class="section-heading">
             <p class="eyebrow">How to use it</p>
@@ -286,31 +372,63 @@ critical  0.3672</code></pre>
 
         <section class="section limits" aria-labelledby="limits-title">
           <div class="section-heading compact">
-            <p class="eyebrow">What it is good at</p>
-            <h2 id="limits-title">Use it for narrow decisions, not as a tiny all-purpose AI.</h2>
+            <p class="eyebrow">Good case / bad case</p>
+            <h2 id="limits-title">The shape of the state matters more than I expected.</h2>
           </div>
 
-          <div class="split-list">
+          <div class="split-list case-split">
             <div>
-              <h3>Good fit</h3>
+              <span class="case-badge case-good">Good case</span>
+              <h3>One small state with one clear job.</h3>
+              <pre><code>{
+  "tests": "47 tests are failing",
+  "analysis": "fresh"
+}
+
+→ choose next action</code></pre>
               <ul class="check-list">
-                <li>Choosing one of a few known next actions</li>
-                <li>Retry / skip / inspect / escalate decisions</li>
-                <li>A cheap first check before calling a larger model</li>
-                <li>Small handoff decisions between AI workers</li>
-                <li>Choosing what to do first from a short summary</li>
+                <li>Short semantic state with the meaning already made explicit</li>
+                <li>A small fixed choice set such as retry / inspect / test</li>
+                <li>Multiple questions that genuinely refer to the same state</li>
+                <li>Deterministic facts computed in normal code first</li>
               </ul>
             </div>
             <div>
-              <h3>Poor fit</h3>
+              <span class="case-badge case-bad">Bad case</span>
+              <h3>Many unrelated states hidden inside one large object.</h3>
+              <pre><code>{
+  "case_01": { ... },
+  "case_02": { ... },
+  "...": "...",
+  "case_16": { ... }
+}
+
+→ "consider only state.case_07"</code></pre>
               <ul class="dash-list">
-                <li>Understanding an entire project from scratch</li>
-                <li>Long-form generation</li>
-                <li>Problems that need many reasoning steps</li>
-                <li>Figuring out rich meaning from raw numbers and flags alone</li>
-                <li>Treating one probability as a universal confidence score</li>
+                <li>Asking Laya to isolate an independent nested sub-state by instruction</li>
+                <li>Large mixed contexts containing unrelated decisions</li>
+                <li>Raw flags and numbers whose application meaning is implicit</li>
+                <li>Long reasoning chains or open-ended generation</li>
               </ul>
             </div>
+          </div>
+        </section>
+
+        <section class="section maker-take" aria-labelledby="maker-take-title">
+          <div class="section-heading compact">
+            <p class="eyebrow">Maker's take · subjective</p>
+            <h2 id="maker-take-title">Jev looks stronger out of the box. Laya is interesting for a different reason.</h2>
+          </div>
+          <div class="callout maker-callout">
+            <p class="callout-quote">
+              For hosted typed decisions where batching and zero-shot accuracy matter, I would currently reach for Jev.
+              For decisions that must stay local, avoid a network dependency, and run repeatedly over small controlled
+              states, Laya is still compelling — but I would preprocess the state aggressively and keep each decision narrow.
+            </p>
+            <p class="maker-note">
+              That is my conclusion from this small experiment, not a general benchmark claim. The result may change with
+              different domains, prompts, hardware, or future model versions.
+            </p>
           </div>
         </section>
 

@@ -639,6 +639,8 @@ Based on the experiments so far, Laya appears well suited to narrow, repeated de
 - deeply interpreting raw telemetry without semantic context
 - treating one probability as a universal absolute confidence score
 
+One additional failure mode became clear when comparing Laya with Jev: packing many unrelated states into one shared object and asking each question to inspect only one nested path is a poor fit for Laya. With one compact state per request, the 16-case `choice` router scored 14/16. With the same 16 cases multiplexed into one shared object in the style used for the Jev Playground test, Laya scored 4/16 and most answers collapsed toward `reanalyze`. Four smaller mixed batches showed the same 4/16 total result.
+
 ## 14. What `laya-local-api` adds
 
 This project does not modify Laya itself.
@@ -656,7 +658,52 @@ one reusable process
 
 Because the daemon owns those concerns, TypeScript, Electron, Node, and Python applications do not need to manage model loading or a PyTorch runtime directly.
 
-## 15. Current conclusion
+## 15. Jev comparison snapshot
+
+On September 23, 2026, I replayed the same 16 next-action cases against Jev in the TypeSafe Playground.
+
+Versions used:
+
+```text
+Laya package: 0.3.5
+Laya checkpoint: convaiinnovations/laya / typed-decisions
+Jev: 1.13.0
+```
+
+The four possible actions were identical in both tests:
+
+```text
+resume
+inspect
+reanalyze
+test
+```
+
+Results:
+
+| Model / input shape | Correct | Accuracy | Timing observed |
+| --- | ---: | ---: | --- |
+| Laya, one compact state per request | 14/16 | 87.5% | 35.3 ms/case average locally; most warm calls 31–33 ms |
+| Jev 1.13.0, 16 questions in one Playground batch | 16/16 | 100% | 162.6 ms server evaluation; 449 ms network roundtrip to us-west |
+| Laya, Jev-style multiplexed shared state | 4/16 | 25% | 3771.5 ms for the single 16-question request |
+
+The speed numbers are not directly comparable. Laya ran locally on Apple Silicon with MPS, while Jev ran on TypeSafe infrastructure, and the successful Laya accuracy test used one compact state per request rather than one multiplexed batch.
+
+The more useful behavioral result is the input-shape difference. Jev correctly followed instructions such as `Consider only state.case_07` across one large state object. Laya did not reliably isolate those independent nested states. This matches Laya's intended multi-question pattern more closely when multiple questions refer to the same state, rather than when one state object is being used as a container for many unrelated scenarios.
+
+The typed-decisions checkpoint used here has `max_len: 1024`, which also makes very large shared states a poor fit. The four-case mixed test still showed the same collapse, however, so the issue was not explained by context length alone.
+
+There is useful counter-evidence in Laya's own published typed-decisions benchmark. Upstream currently reports `laya-typed-decisions` at 0.766 accuracy and Jev 1.13.0 at 0.727 on its four synthetic workflows. My 16-case developer-tool experiment produced the opposite ordering. Those results are not contradictory: they use different tasks, data, and evaluation harnesses. The disagreement is a useful reminder that this page documents one product-shaped experiment rather than a general leaderboard.
+
+### Maker's take
+
+My current subjective conclusion is:
+
+> For hosted typed decisions where batching and zero-shot accuracy matter, I would currently reach for Jev. For decisions that must stay local, avoid a network dependency, and run repeatedly over small controlled states, Laya remains interesting — but I would preprocess the state aggressively and keep each decision narrow.
+
+This is a small product-oriented experiment, not a general model benchmark. Different domains, prompts, hardware, and future model versions can change the result.
+
+## 16. Current conclusion
 
 The original question was:
 
@@ -679,7 +726,7 @@ The caller owns the final policy.
 
 Within that role, Laya looks like an interesting building block for local agents and developer tools.
 
-## 16. Reproducing the experiments
+## 17. Reproducing the experiments
 
 Start the daemon:
 
