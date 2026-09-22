@@ -1,6 +1,6 @@
-# Laya experiment: from a local decision model to a reusable localhost daemon
+# Jev + Laya experiment: one localhost contract for typed decisions
 
-This document records the full path from discovering Laya to building `laya-local-api`, evaluating how Laya behaves on real decision tasks, and deciding how it should be used in practice.
+This document records the full path from discovering Laya to building `jev-laya-local-daemon`, evaluating how Laya behaves on real decision tasks, and deciding how it should be used in practice.
 
 ## 1. How I discovered Laya
 
@@ -27,7 +27,7 @@ TypeScript / Python / other apps
              ↓ HTTP
       http://127.0.0.1:<port>
              ↓
-          laya-local-api
+          jev-laya-local-daemon
              ↓
             Laya
              ↓
@@ -38,7 +38,7 @@ The core goal became:
 
 > Load Laya once, keep it resident in memory, and let multiple local projects reuse it through HTTP.
 
-That is how `laya-local-api` started.
+That is how `jev-laya-local-daemon` started.
 
 ## 2. Verifying the real Laya API first
 
@@ -77,7 +77,7 @@ agent.predict(state, questions)
 - action probability
 - token usage
 
-Because the native output already contains what callers need, `laya-local-api` does not reinterpret those values or impose its own thresholds. The HTTP layer is intentionally thin: validate input, manage the model lifecycle, call Laya, and return the native result.
+Because the native output already contains what callers need, `jev-laya-local-daemon` does not reinterpret those values or impose its own thresholds. The HTTP layer is intentionally thin: validate input, manage the model lifecycle, call Laya, and return the native result.
 
 ## 3. Why a daemon is useful
 
@@ -122,9 +122,9 @@ The first checkpoint download reported approximately 847 MB from Hugging Face. A
 
 Observed process RSS after loading was roughly 1.0–1.2 GiB.
 
-The `laya-local-api` project uses `8787` as its default daemon port. This is a project-level choice, not an upstream Laya recommendation or protocol requirement; upstream Laya is a Python package and does not assign an HTTP port for this daemon. During development, `8787` was already occupied by a Headroom proxy on `127.0.0.1:8787`, so the smoke tests and decision experiments used port `8790` instead.
+The `jev-laya-local-daemon` project uses `8787` as its default daemon port. This is a project-level choice, not an upstream Laya recommendation or protocol requirement; upstream Laya is a Python package and does not assign an HTTP port for this daemon. During development, `8787` was already occupied by a Headroom proxy on `127.0.0.1:8787`, so the smoke tests and decision experiments used port `8790` instead.
 
-That real collision is why the README now documents how to inspect a port with `lsof`, stop a known process, or launch `laya-local-api` on another loopback port.
+That real collision is why the README now documents how to inspect a port with `lsof`, stop a known process, or launch `jev-laya-local-daemon` on another loopback port.
 
 ## 5. Verifying the daemon itself
 
@@ -145,8 +145,8 @@ The implementation was tested for:
 - inference failure
 - reusing one loaded model across multiple requests
 - graceful shutdown with Ctrl+C
-- the `laya-local-api` CLI entry point
-- the `python -m laya_local_api` entry point
+- the `jev-laya-local-daemon` CLI entry point
+- the `python -m jev_laya_local_daemon` entry point
 - the default bind address being `127.0.0.1`
 
 Unit and integration tests use a mockable model wrapper so they do not download or load the heavyweight checkpoint. The original Laya-only daemon reached:
@@ -641,7 +641,7 @@ Based on the experiments so far, Laya appears well suited to narrow, repeated de
 
 One additional failure mode became clear when comparing Laya with Jev: packing many unrelated states into one shared object and asking each question to inspect only one nested path is a poor fit for Laya. With one compact state per request, the 16-case `choice` router scored 14/16. With the same 16 cases multiplexed into one shared object in the style used for the Jev Playground test, Laya scored 4/16 and most answers collapsed toward `reanalyze`. Four smaller mixed batches showed the same 4/16 total result.
 
-## 14. What `laya-local-api` adds
+## 14. What `jev-laya-local-daemon` adds
 
 This project does not modify Laya itself.
 
@@ -746,26 +746,26 @@ Within that role, Laya looks like an interesting building block for local agents
 Start the daemon:
 
 ```bash
-LAYA_PORT=8790 laya-local-api
+DAEMON_PORT=8790 jev-laya-local-daemon
 ```
 
 Run the basic smoke test:
 
 ```bash
-LAYA_API_URL=http://127.0.0.1:8790 python scripts/smoke.py
+DECISION_API_URL=http://127.0.0.1:8790 python scripts/smoke.py
 ```
 
 Run the 16-case choice router evaluation:
 
 ```bash
-LAYA_API_URL=http://127.0.0.1:8790 \
+DECISION_API_URL=http://127.0.0.1:8790 \
   python scripts/eval_choice_router.py
 ```
 
 Run the independent binary-signal evaluation:
 
 ```bash
-LAYA_API_URL=http://127.0.0.1:8790 \
+DECISION_API_URL=http://127.0.0.1:8790 \
   python scripts/eval_binary_signals.py
 ```
 

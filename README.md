@@ -1,13 +1,13 @@
-# laya-local-api
+# jev-laya-local-daemon
 
-`laya-local-api` exposes one localhost API for typed decisions from either local Laya or hosted Jev.
+`jev-laya-local-daemon` exposes one localhost API for typed decisions from either local Laya or hosted Jev.
 
 ```text
 TypeScript / Python / other apps
              ↓ HTTP
       http://127.0.0.1:8787
              ↓
-          laya-local-api
+          jev-laya-local-daemon
           ↙       ↘
        Laya        Jev
        local       TypeSafe API
@@ -21,7 +21,7 @@ The default Laya checkpoint is `convaiinnovations/laya` with the `typed-decision
 
 ## Experiment notes
 
-For the full background, evaluation process, results, and recommended usage patterns, see [Laya experiment: from a local decision model to a reusable localhost daemon](docs/laya-experiment.md).
+For the full background, evaluation process, results, and recommended usage patterns, see [Jev + Laya experiment: one localhost contract for typed decisions](docs/jev-laya-experiment.md).
 
 For reproducible Jev Playground comparisons, see [`benchmarks/jev-playground/`](benchmarks/jev-playground/). Each round keeps `state.json`, `questions.json`, and the hidden-from-model `expected.json` answer key separate for easy copy/paste testing.
 
@@ -45,17 +45,28 @@ From the project directory:
 python3.13 -m venv .venv
 source .venv/bin/activate
 pip install -e .
-laya-local-api
+jev-laya-local-daemon
 ```
 
-Jev is optional. To enable it, set the key in the daemon environment before startup:
+Jev is optional. The simplest setup is a repo-root `.env` file. Start from the included example:
 
 ```bash
-export JEV_API_KEY="..."
-laya-local-api
+cp .env.example .env
 ```
 
-`TYPESAFE_API_KEY` is also accepted as a fallback name. Do not commit either value to the repository.
+Then put your TypeSafe key in `.env`:
+
+```dotenv
+JEV_API_KEY=your-typesafe-api-key
+```
+
+The daemon loads `.env` automatically on startup:
+
+```bash
+jev-laya-local-daemon
+```
+
+Shell environment variables still take precedence over `.env`. `TYPESAFE_API_KEY` is also accepted as a fallback name. `.env` and `.env.*` are gitignored; `.env.example` is safe to commit.
 
 The first run downloads the Laya checkpoint from Hugging Face, so model startup takes longer the first time. The tested `typed-decisions` checkpoint downloaded about 847 MB. Later starts reuse the local cache.
 
@@ -118,13 +129,13 @@ pytest
 ## Run
 
 ```bash
-laya-local-api
+jev-laya-local-daemon
 ```
 
 The module entry point works too:
 
 ```bash
-python -m laya_local_api
+python -m jev_laya_local_daemon
 ```
 
 Startup begins listening immediately while the model loads once in a daemon thread. During that time `/health` is available and `/ready` returns HTTP 503. When loading finishes, `/ready` returns HTTP 200 and all subsequent requests reuse the same in-memory agent.
@@ -132,7 +143,7 @@ Startup begins listening immediately while the model loads once in a daemon thre
 Typical startup output looks like this:
 
 ```text
-laya-local-api
+jev-laya-local-daemon
 Laya: convaiinnovations/laya/typed-decisions
 Jev: jev-latest (configured)
 Listening: http://127.0.0.1:8787
@@ -148,8 +159,8 @@ Default configuration:
 ```text
 LAYA_MODEL=convaiinnovations/laya
 LAYA_SUBFOLDER=typed-decisions
-LAYA_HOST=127.0.0.1
-LAYA_PORT=8787
+DAEMON_HOST=127.0.0.1
+DAEMON_PORT=8787
 LAYA_DEVICE=
 JEV_API_KEY=
 JEV_MODEL=jev-latest
@@ -160,14 +171,14 @@ JEV_TIMEOUT_SECONDS=30
 Example override:
 
 ```bash
-LAYA_PORT=8790 LAYA_DEVICE=mps laya-local-api
+DAEMON_PORT=8790 LAYA_DEVICE=mps jev-laya-local-daemon
 ```
 
-`LAYA_HOST` is intentionally restricted to loopback addresses (`127.0.0.1`, `localhost`, or `::1`). `0.0.0.0` is rejected.
+`DAEMON_HOST` is intentionally restricted to loopback addresses (`127.0.0.1`, `localhost`, or `::1`). `0.0.0.0` is rejected.
 
 `JEV_API_KEY` stays inside the daemon process and is attached as a Bearer token only when the selected provider is Jev. The local caller sends no provider credentials.
 
-`8787` is the default chosen by `laya-local-api`; it is not a port assigned or recommended by upstream Laya. The upstream Python package exposes model-loading and prediction APIs rather than this project's HTTP daemon, so the port has no Laya protocol significance and can be changed with `LAYA_PORT`. See the [upstream Laya project](https://github.com/NandhaKishorM/laya) and [model card](https://huggingface.co/convaiinnovations/laya) for the native package interface.
+`8787` is the default chosen by `jev-laya-local-daemon`; it is not a port assigned or recommended by upstream Laya. The upstream Python package exposes model-loading and prediction APIs rather than this project's HTTP daemon, so the port has no Laya protocol significance and can be changed with `DAEMON_PORT`. See the [upstream Laya project](https://github.com/NandhaKishorM/laya) and [model card](https://huggingface.co/convaiinnovations/laya) for the native package interface.
 
 ## Port already in use
 
@@ -207,7 +218,7 @@ lsof -nP -iTCP:8787 -sTCP:LISTEN
 If you want to keep the other service running, use another local port instead. `8790` is a convenient example:
 
 ```bash
-LAYA_PORT=8790 laya-local-api
+DAEMON_PORT=8790 jev-laya-local-daemon
 ```
 
 Then use the same port in every caller:
@@ -220,7 +231,7 @@ curl http://127.0.0.1:8790/ready
 And for the smoke test:
 
 ```bash
-LAYA_API_URL=http://127.0.0.1:8790 python scripts/smoke.py
+DECISION_API_URL=http://127.0.0.1:8790 python scripts/smoke.py
 ```
 
 For TypeScript or Python applications, change the endpoint from `http://127.0.0.1:8787` to `http://127.0.0.1:8790` as well.
@@ -508,7 +519,7 @@ const response = await fetch("http://127.0.0.1:8787/v1/decide", {
 });
 
 if (!response.ok) {
-  throw new Error(`laya-local-api failed: ${response.status} ${await response.text()}`);
+  throw new Error(`jev-laya-local-daemon failed: ${response.status} ${await response.text()}`);
 }
 
 const result = await response.json();
@@ -577,7 +588,7 @@ If the daemon is on a non-default port:
 DECISION_API_URL=http://127.0.0.1:8790 python scripts/smoke.py
 ```
 
-`LAYA_API_URL` remains accepted by the scripts as a backward-compatible alias.
+
 
 The script calls `/health`, `/ready`, and real `noul`, `choice`, and `score` requests against the running daemon.
 

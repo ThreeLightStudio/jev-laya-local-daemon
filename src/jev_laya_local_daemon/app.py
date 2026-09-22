@@ -39,7 +39,7 @@ def create_app(
         finally:
             resolved_runtime.release()
 
-    app = FastAPI(title="laya-local-api", version="0.2.0", lifespan=lifespan)
+    app = FastAPI(title="jev-laya-local-daemon", version="0.2.0", lifespan=lifespan)
 
     @app.get("/health")
     def health() -> dict[str, str]:

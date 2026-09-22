@@ -5,27 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="laya-local-api provides one localhost typed-decision API for local Laya and hosted Jev."
+      content="jev-laya-local-daemon provides one localhost typed-decision API for local Laya and hosted Jev."
     />
     <meta name="theme-color" content="#0a0b0d" />
-    <title>laya-local-api — One typed-decision API for Laya + Jev</title>
+    <title>jev-laya-local-daemon — One typed-decision API for Laya + Jev</title>
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <div class="page-shell">
       <header class="site-header">
-        <a class="brand" href="#top" aria-label="laya-local-api home">
-          <span class="brand-mark" aria-hidden="true">λ</span>
-          <span>laya-local-api</span>
+        <a class="brand" href="#top" aria-label="jev-laya-local-daemon home">
+          <span class="brand-mark brand-mark-wide" aria-hidden="true">JL</span>
+          <span>jev-laya-local-daemon</span>
         </a>
         <nav class="site-nav" aria-label="Primary navigation">
           <a href="#evidence">What we learned</a>
           <a href="#comparison">Laya vs Jev</a>
           <a href="#pattern">How to use it</a>
           <a href="#run">Run locally</a>
-          <a href="https://github.com/ThreeLightStudio/laya-local-api/blob/main/docs/laya-experiment.md">Experiment notes</a>
-          <a href="https://github.com/ThreeLightStudio/laya-local-api">GitHub</a>
+          <a href="https://github.com/ThreeLightStudio/jev-laya-local-daemon/blob/main/docs/jev-laya-experiment.md">Experiment notes</a>
+          <a href="https://github.com/ThreeLightStudio/jev-laya-local-daemon">GitHub</a>
         </nav>
       </header>
 
@@ -35,14 +35,14 @@
             <p class="eyebrow">One localhost API · Laya + Jev</p>
             <h1>One API.<br />Choose the decision provider.</h1>
             <p class="hero-lede">
-              <code>laya-local-api</code> keeps Laya ready on your machine and can send the same typed-decision request
+              <code>jev-laya-local-daemon</code> keeps Laya ready on your machine and can send the same typed-decision request
               to Jev through TypeSafe. Your app keeps one local endpoint and selects <code>laya</code> or <code>jev</code>
               per request.
             </p>
 
             <div class="hero-actions">
               <a class="button button-primary" href="#run">Run locally</a>
-              <a class="button button-secondary" href="https://github.com/ThreeLightStudio/laya-local-api">View on GitHub</a>
+              <a class="button button-secondary" href="https://github.com/ThreeLightStudio/jev-laya-local-daemon">View on GitHub</a>
             </div>
 
             <dl class="runtime-strip" aria-label="Runtime facts">
@@ -71,7 +71,7 @@
             </div>
           </div>
 
-          <div class="hero-console" aria-label="Example laya-local-api response">
+          <div class="hero-console" aria-label="Example jev-laya-local-daemon response">
             <div class="console-bar">
               <span class="console-dot"></span>
               <span class="console-label">POST /v1/decide</span>
@@ -114,7 +114,7 @@
             </p>
           </div>
 
-          <div class="architecture-flow" role="img" aria-label="Your app calls laya-local-api over HTTP, which routes to Laya or Jev">
+          <div class="architecture-flow" role="img" aria-label="Your app calls jev-laya-local-daemon over HTTP, which routes to Laya or Jev">
             <div class="flow-node">
               <span class="flow-kicker">Your code</span>
               <strong>Your app</strong>
@@ -123,7 +123,7 @@
             <div class="flow-arrow"><span>HTTP</span>→</div>
             <div class="flow-node flow-node-accent">
               <span class="flow-kicker">Local server</span>
-              <strong>laya-local-api</strong>
+              <strong>jev-laya-local-daemon</strong>
               <span>127.0.0.1:8787</span>
             </div>
             <div class="flow-arrow"><span>local</span>→</div>
@@ -377,7 +377,7 @@ critical  0.3672</code></pre>
             <a class="inline-link" href="https://github.com/NandhaKishorM/laya">See the upstream benchmark.</a>
           </p>
           <div class="hero-actions comparison-actions">
-            <a class="button button-secondary" href="https://github.com/ThreeLightStudio/laya-local-api/tree/main/benchmarks/jev-playground">Open the comparison fixtures</a>
+            <a class="button button-secondary" href="https://github.com/ThreeLightStudio/jev-laya-local-daemon/tree/main/benchmarks/jev-playground">Open the comparison fixtures</a>
           </div>
         </section>
 
@@ -526,15 +526,15 @@ critical  0.3672</code></pre>
             <button class="copy-button" type="button" data-copy-target="agent-setup-prompt" aria-live="polite">Copy agent prompt</button>
           </div>
 
-          <textarea id="agent-setup-prompt" class="copy-source" tabindex="-1" aria-hidden="true">Set up laya-local-api on this machine from https://github.com/ThreeLightStudio/laya-local-api.
+          <textarea id="agent-setup-prompt" class="copy-source" tabindex="-1" aria-hidden="true">Set up jev-laya-local-daemon on this machine from https://github.com/ThreeLightStudio/jev-laya-local-daemon.
 
 If the repository is not already checked out, clone it into an appropriate local development directory. Use Python 3.11–3.13, create a .venv, and install the project with `pip install -e .`.
 
-Start `laya-local-api` bound to a loopback address only. Use port 8787 unless it is already occupied. If 8787 is in use, do not stop an unrelated process; choose another available local port with `LAYA_PORT` and use that port consistently.
+Start `jev-laya-local-daemon` bound to a loopback address only. Use port 8787 unless it is already occupied. If 8787 is in use, do not stop an unrelated process; choose another available local port with `DAEMON_PORT` and use that port consistently.
 
-If `JEV_API_KEY` is already available in the environment, verify the Jev provider too without printing, copying, or storing the key in a file. Jev is optional; do not block setup when the key is absent.
+If Jev should be enabled, copy `.env.example` to `.env` and put `JEV_API_KEY` there without printing or committing the key. The daemon loads the repo-root `.env` automatically. Jev is optional; do not block setup when the key is absent.
 
-Wait until `GET /ready` returns HTTP 200 with `"ready": true`, then run the included `scripts/smoke.py` against the selected endpoint. If you changed the port, set `LAYA_API_URL` for the smoke test. Keep the daemon running after verification if your environment supports a persistent process; otherwise give me the exact command to start it again.
+Wait until `GET /ready` returns HTTP 200 with `"ready": true`, then run the included `scripts/smoke.py` against the selected endpoint. If you changed the port, set `DECISION_API_URL` for the smoke test. Keep the daemon running after verification if your environment supports a persistent process; otherwise give me the exact command to start it again.
 
 When finished, report the final local API URL, the selected port, provider availability from `GET /v1/providers`, the smoke-test result, and how to stop the daemon. Do not bind to 0.0.0.0 or expose the service to the public network.</textarea>
 
@@ -553,7 +553,7 @@ pip install -e .</code></pre>
             <div class="run-step">
               <span class="run-number">02</span>
               <h3>Start</h3>
-              <pre><code>laya-local-api</code></pre>
+              <pre><code>jev-laya-local-daemon</code></pre>
             </div>
             <div class="run-step">
               <span class="run-number">03</span>
@@ -586,7 +586,7 @@ pip install -e .</code></pre>
             <strong>Port already in use?</strong>
             <code>lsof -nP -iTCP:8787 -sTCP:LISTEN</code>
             <span>or launch with</span>
-            <code>LAYA_PORT=8790 laya-local-api</code>
+            <code>DAEMON_PORT=8790 jev-laya-local-daemon</code>
           </div>
         </section>
 
@@ -598,14 +598,14 @@ pip install -e .</code></pre>
             Use Laya when inputs must stay local; use Jev when its stronger hosted decision quality is worth the network hop.
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="https://github.com/ThreeLightStudio/laya-local-api/blob/main/docs/laya-experiment.md">Read the full experiment</a>
-            <a class="button button-secondary" href="https://github.com/ThreeLightStudio/laya-local-api">View on GitHub</a>
+            <a class="button button-primary" href="https://github.com/ThreeLightStudio/jev-laya-local-daemon/blob/main/docs/jev-laya-experiment.md">Read the full experiment</a>
+            <a class="button button-secondary" href="https://github.com/ThreeLightStudio/jev-laya-local-daemon">View on GitHub</a>
           </div>
         </section>
       </main>
 
       <footer class="site-footer">
-        <span>laya-local-api</span>
+        <span>jev-laya-local-daemon</span>
         <span>Typed decisions through one local API.</span>
       </footer>
     </div>

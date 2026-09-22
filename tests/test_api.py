@@ -4,10 +4,10 @@ import time
 
 from fastapi.testclient import TestClient
 
-from laya_local_api.app import create_app
-from laya_local_api.config import Settings
-from laya_local_api.jev import JevNotConfiguredError, JevUpstreamError
-from laya_local_api.model import ModelRuntime
+from jev_laya_local_daemon.app import create_app
+from jev_laya_local_daemon.config import Settings
+from jev_laya_local_daemon.jev import JevNotConfiguredError, JevUpstreamError
+from jev_laya_local_daemon.model import ModelRuntime
 
 
 class FakeAgent:

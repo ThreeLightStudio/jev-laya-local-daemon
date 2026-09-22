@@ -1,6 +1,6 @@
 # Jev Playground comparison fixtures
 
-These fixtures are designed for copy/paste testing in the TypeSafe Jev Playground and for replaying the same cases through `laya-local-api`.
+These fixtures are designed for copy/paste testing in the TypeSafe Jev Playground and for replaying the same cases through `jev-laya-local-daemon`.
 
 ## How to run a round in Jev Playground
 
@@ -23,7 +23,7 @@ The expected files are kept separate so the model input never contains the answe
 
 ## Laya replay
 
-With `laya-local-api` already running:
+With `jev-laya-local-daemon` already running:
 
 ```bash
 DECISION_PROVIDER=laya python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-a-noul
@@ -31,7 +31,7 @@ DECISION_PROVIDER=laya python scripts/eval_playground_fixture.py benchmarks/jev-
 DECISION_PROVIDER=laya python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-c-robustness
 ```
 
-Set `DECISION_API_URL` when the daemon is not on `http://127.0.0.1:8787`. The older `LAYA_API_URL` name remains supported as an alias.
+Set `DECISION_API_URL` when the daemon is not on `http://127.0.0.1:8787`.
 
 When `JEV_API_KEY` is configured on the daemon, replay the exact same compact-state requests through Jev by changing only the provider:
 

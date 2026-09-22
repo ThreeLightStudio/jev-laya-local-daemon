@@ -4,8 +4,8 @@ import json
 
 import pytest
 
-from laya_local_api.config import Settings
-from laya_local_api.jev import JevClient, JevNotConfiguredError
+from jev_laya_local_daemon.config import Settings
+from jev_laya_local_daemon.jev import JevClient, JevNotConfiguredError
 
 
 class FakeResponse:

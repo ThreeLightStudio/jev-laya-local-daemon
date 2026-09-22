@@ -3,7 +3,7 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "laya-local-api"
+name = "jev-laya-local-daemon"
 version = "0.2.0"
 description = "Localhost typed-decision API for Laya and Jev"
 readme = "README.md"
@@ -12,6 +12,7 @@ dependencies = [
   "fastapi>=0.116,<1",
   "laya==0.3.5",
   "pydantic>=2.11,<3",
+  "python-dotenv>=1.0,<2",
   "uvicorn>=0.35,<1",
 ]
 
@@ -22,7 +23,7 @@ dev = [
 ]
 
 [project.scripts]
-laya-local-api = "laya_local_api.cli:main"
+jev-laya-local-daemon = "jev_laya_local_daemon.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

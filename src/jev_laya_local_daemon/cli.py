@@ -14,7 +14,7 @@ def main() -> None:
     settings = Settings.from_env()
     runtime = ModelRuntime(settings)
 
-    print("laya-local-api")
+    print("jev-laya-local-daemon")
     print(f"Laya: {settings.model_label}")
     print(f"Jev: {settings.jev_model} ({'configured' if settings.jev_api_key else 'not configured'})")
     print(f"Listening: http://{settings.host}:{settings.port}")
