@@ -99,7 +99,7 @@ def score_choice(expected: dict, result: dict) -> None:
 
 def main() -> None:
     if len(sys.argv) != 2:
-        raise SystemExit("usage: python scripts/score_playground_result.py <fixture-directory>")
+        raise SystemExit("usage: python3 scripts/score_playground_result.py <fixture-directory>")
 
     fixture_dir = Path(sys.argv[1])
     expected, result = load_fixture(fixture_dir)

@@ -1,0 +1,285 @@
+[
+  {
+    "id": "continue-known-step",
+    "expected_action": "continue",
+    "urgency": 0,
+    "signals": {"safe_to_continue": true, "needs_reanalysis": false, "needs_inspection": false, "needs_review": false, "must_wait": false},
+    "state": {
+      "work": "The current implementation task is unfinished and its next code change is known.",
+      "tests": "All relevant tests are passing.",
+      "working_tree": "Current local changes are expected and understood.",
+      "analysis": "The project state was checked after the latest source changes.",
+      "direction": "The current direction is confirmed."
+    },
+    "paraphrase": "The task stopped before completion, but the exact next implementation step is already known. Tests are green, local edits are understood, and the project understanding reflects the latest source.",
+    "korean": "현재 구현 작업은 아직 끝나지 않았지만 다음 코드 변경이 명확합니다. 관련 테스트는 통과했고 로컬 변경은 모두 의도된 것이며 최신 소스 기준으로 프로젝트 상태도 확인되었습니다."
+  },
+  {
+    "id": "continue-understood-dirty-tree",
+    "expected_action": "continue",
+    "urgency": 0,
+    "signals": {"safe_to_continue": true, "needs_reanalysis": false, "needs_inspection": false, "needs_review": false, "must_wait": false},
+    "state": {
+      "work": "The current task is active and has a concrete next implementation step.",
+      "tests": "No blocking test failure is known.",
+      "working_tree": "The working tree is dirty because of the current task; every changed file is understood.",
+      "analysis": "The saved project understanding includes these local changes.",
+      "direction": "The direction remains active and confirmed."
+    },
+    "paraphrase": "There are uncommitted edits, but they all belong to the current unfinished task. The next step is clear and nothing indicates that the project understanding is stale.",
+    "korean": "커밋되지 않은 변경이 있지만 모두 현재 작업에서 만든 것으로 이해되고 있습니다. 작업은 미완료이며 다음 단계가 분명하고 기존 프로젝트 이해도 여전히 최신입니다."
+  },
+  {
+    "id": "inspect-unexplained-changes",
+    "expected_action": "inspect",
+    "urgency": 2,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": false, "needs_inspection": true, "needs_review": false, "must_wait": false},
+    "state": {
+      "work": "A previous task appears to have stopped.",
+      "tests": "No blocking test failure is known.",
+      "working_tree": "Several source files changed locally and their origin is unknown.",
+      "analysis": "The project analysis itself is recent.",
+      "direction": "The current direction is confirmed."
+    },
+    "paraphrase": "Unexpected uncommitted source edits are present and nobody has established why they exist. The stored project understanding is otherwise recent.",
+    "korean": "예상하지 못한 소스 파일 변경이 로컬에 있으며 왜 생겼는지 확인되지 않았습니다. 프로젝트 분석 자체는 최근 상태입니다."
+  },
+  {
+    "id": "inspect-merge-conflict",
+    "expected_action": "inspect",
+    "urgency": 3,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": false, "needs_inspection": true, "needs_review": false, "must_wait": false},
+    "state": {
+      "work": "The current task cannot be safely resumed yet.",
+      "tests": "Test status is not useful until repository state is resolved.",
+      "working_tree": "A merge conflict is present in files related to the current task.",
+      "analysis": "The high-level project understanding is recent.",
+      "direction": "The current direction is confirmed."
+    },
+    "paraphrase": "The project has unresolved merge conflicts in task-related files. The work direction is still valid, but the repository state must be understood first."
+  },
+  {
+    "id": "reanalyze-major-refactor",
+    "expected_action": "reanalyze",
+    "urgency": 2,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": true, "needs_inspection": false, "needs_review": false, "must_wait": false},
+    "state": {
+      "work": "No next implementation step should be chosen from the old project understanding.",
+      "tests": "Current tests pass.",
+      "working_tree": "The refactor is intentional and fully understood.",
+      "analysis": "The saved project analysis predates a major architecture refactor.",
+      "direction": "The product direction is unchanged."
+    },
+    "paraphrase": "A large intentional refactor changed the architecture after the current project analysis was created. The repository changes are understood, but the old analysis no longer describes the project.",
+    "korean": "대규모 리팩터링은 의도된 변경이며 모두 이해되고 있지만 현재 프로젝트 분석은 리팩터링 이전 구조를 설명하고 있어 더 이상 신뢰할 수 없습니다."
+  },
+  {
+    "id": "reanalyze-branch-switch",
+    "expected_action": "reanalyze",
+    "urgency": 2,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": true, "needs_inspection": false, "needs_review": false, "must_wait": false},
+    "state": {
+      "work": "The saved next step belongs to the previously checked source state.",
+      "tests": "No failure is currently known.",
+      "working_tree": "The current repository state is clean and understood.",
+      "analysis": "The project moved to a substantially different branch after the saved analysis.",
+      "direction": "The current direction is still valid."
+    },
+    "paraphrase": "The workspace moved to a substantially different branch after the last analysis, so the saved next step is based on a different source state."
+  },
+  {
+    "id": "review-result-ready",
+    "expected_action": "review_result",
+    "urgency": 2,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": false, "needs_inspection": false, "needs_review": true, "must_wait": false},
+    "state": {
+      "work": "The current delegated work has finished.",
+      "result": "A completed result is ready for the current work item.",
+      "dependencies": "One later task depends on accepting or rejecting this result.",
+      "analysis": "The project state is current.",
+      "direction": "The current direction is confirmed."
+    },
+    "paraphrase": "The current delegated task returned a completed result, and another task depends on what that result contains. It should be checked before moving on.",
+    "korean": "현재 위임된 작업의 완료 결과가 도착했으며 이후 작업 하나가 이 결과의 확인에 의존합니다. 다음으로 넘어가기 전에 결과를 검토해야 합니다."
+  },
+  {
+    "id": "review-failed-result",
+    "expected_action": "review_result",
+    "urgency": 3,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": false, "needs_inspection": false, "needs_review": true, "must_wait": false},
+    "state": {
+      "work": "The current delegated work stopped with a failure.",
+      "result": "The failure report is available for review.",
+      "dependencies": "Dependent work cannot proceed until the failure is understood.",
+      "analysis": "The project state is current.",
+      "direction": "The current direction is confirmed."
+    },
+    "paraphrase": "A delegated task failed and left a failure report. Work that comes after it is blocked until somebody reviews what happened."
+  },
+  {
+    "id": "wait-running-check",
+    "expected_action": "wait",
+    "urgency": 1,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": false, "needs_inspection": false, "needs_review": false, "must_wait": true},
+    "state": {
+      "work": "The current work is waiting for an already running verification.",
+      "process": "The verification is still running normally.",
+      "alternatives": "No independent low-cost work is available.",
+      "analysis": "The project state is current.",
+      "direction": "The current direction is confirmed."
+    },
+    "paraphrase": "A required check is already running and has not failed. There is no useful independent task to switch to while it finishes.",
+    "korean": "필수 검증이 이미 정상적으로 실행 중이며 아직 실패하지 않았습니다. 그동안 전환해서 진행할 만한 독립 작업도 없습니다."
+  },
+  {
+    "id": "switch-independent-work",
+    "expected_action": "switch_work",
+    "urgency": 1,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": false, "needs_inspection": false, "needs_review": false, "must_wait": false},
+    "state": {
+      "work": "The selected work is waiting on an external dependency.",
+      "process": "Nothing local can unblock the selected work right now.",
+      "alternatives": "Another active work item is independent and has a saved return point.",
+      "analysis": "The project state is current.",
+      "direction": "Both work items belong to the confirmed direction."
+    },
+    "paraphrase": "The selected task cannot move until an external dependency changes, while a separate task can be resumed cheaply from a saved return point."
+  },
+  {
+    "id": "reconnect-disconnected-project",
+    "expected_action": "reconnect",
+    "urgency": 3,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": false, "needs_inspection": false, "needs_review": false, "must_wait": false},
+    "state": {
+      "connection": "The project source is disconnected and cannot be inspected.",
+      "work": "Only the last saved work context is available.",
+      "analysis": "Current project state cannot be checked.",
+      "direction": "A previously confirmed direction exists."
+    },
+    "paraphrase": "The source connection is unavailable, so only saved context remains and the live project cannot be checked.",
+    "korean": "프로젝트 소스 연결이 끊겨 현재 상태를 확인할 수 없고 마지막으로 저장된 작업 맥락만 남아 있습니다."
+  },
+  {
+    "id": "choose-multiple-open-work",
+    "expected_action": "choose_work",
+    "urgency": 1,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": false, "needs_inspection": false, "needs_review": false, "must_wait": false},
+    "state": {
+      "work": "Three unfinished work items are available and none is selected as current.",
+      "analysis": "The project state is current.",
+      "direction": "All three work items belong to the confirmed direction.",
+      "repository": "No repository problem blocks work."
+    },
+    "paraphrase": "Several unfinished tasks are available under the current direction, but there is no current selection that tells the system which one should continue.",
+    "korean": "현재 방향 아래에 미완료 작업이 여러 개 있지만 어떤 작업을 현재 작업으로 이어갈지 선택되어 있지 않습니다."
+  },
+  {
+    "id": "define-missing-direction",
+    "expected_action": "define_direction",
+    "urgency": 2,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": false, "needs_inspection": false, "needs_review": false, "must_wait": false},
+    "state": {
+      "work": "No current work is selected.",
+      "analysis": "The project state is current.",
+      "direction": "There is no confirmed active direction.",
+      "repository": "The repository itself is available and healthy."
+    },
+    "paraphrase": "The project can be inspected normally, but there is no confirmed active direction that tells the system what work should be pursued."
+  },
+  {
+    "id": "review-direction-conflict",
+    "expected_action": "review_direction",
+    "urgency": 3,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": false, "needs_inspection": false, "needs_review": true, "must_wait": false},
+    "state": {
+      "work": "An active current work item exists.",
+      "analysis": "The project state is current.",
+      "direction": "The current direction conflicts with a recorded project constraint.",
+      "constraint": "The conflict is still open and has not been explicitly overridden."
+    },
+    "paraphrase": "The active work points in a direction that conflicts with a recorded project constraint, and nobody has approved continuing despite that conflict.",
+    "korean": "현재 작업 방향이 기록된 프로젝트 제약과 충돌하며 이 충돌을 무시하고 계속하겠다는 명시적 결정도 아직 없습니다."
+  },
+  {
+    "id": "review-release-problem",
+    "expected_action": "review_release",
+    "urgency": 4,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": false, "needs_inspection": false, "needs_review": true, "must_wait": false},
+    "state": {
+      "work": "The current work is complete.",
+      "release": "Delivery has a confirmed problem that needs attention.",
+      "analysis": "The project state is current.",
+      "direction": "The current direction remains valid.",
+      "next_work": "No more important work is queued ahead of the release issue."
+    },
+    "paraphrase": "Current implementation work is done, but delivery has a confirmed problem and there is no more urgent queued work ahead of it.",
+    "korean": "현재 구현 작업은 완료되었지만 배포에 확인된 문제가 있으며 그보다 먼저 처리해야 할 다른 작업은 없습니다."
+  },
+  {
+    "id": "review-completion-proposal",
+    "expected_action": "review_completion",
+    "urgency": 1,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": false, "needs_inspection": false, "needs_review": true, "must_wait": false},
+    "state": {
+      "work": "The selected work is still recorded as active.",
+      "proposal": "Fresh project evidence says the work appears done.",
+      "analysis": "The project state is current.",
+      "direction": "The current direction is confirmed."
+    },
+    "paraphrase": "The durable work record still says active, while fresh project evidence suggests the task has actually finished and should be checked for completion."
+  },
+  {
+    "id": "review-stale-return-point",
+    "expected_action": "review_plan",
+    "urgency": 2,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": true, "needs_inspection": false, "needs_review": true, "must_wait": false},
+    "state": {
+      "work": "The selected work has a saved return point.",
+      "return_point": "The saved return point was recorded before the current checked project state.",
+      "analysis": "Current project inspection is fresh.",
+      "match": "No explicit current interpretation confirms that the old return point still applies.",
+      "direction": "The current direction is confirmed."
+    },
+    "paraphrase": "A saved resume point exists, but the project has changed since it was recorded and no explicit fresh match confirms that its old plan is still valid."
+  },
+  {
+    "id": "start-queued-work",
+    "expected_action": "start_work",
+    "urgency": 1,
+    "signals": {"safe_to_continue": true, "needs_reanalysis": false, "needs_inspection": false, "needs_review": false, "must_wait": false},
+    "state": {
+      "work": "The selected work is complete.",
+      "next_work": "Exactly one active next-after relation points to a ready unfinished work item.",
+      "analysis": "The project state is current.",
+      "direction": "The current direction is confirmed."
+    },
+    "paraphrase": "The current task is finished and the work plan already names one ready task that should follow it next."
+  },
+  {
+    "id": "choose-next-after-complete",
+    "expected_action": "choose_next_work",
+    "urgency": 1,
+    "signals": {"safe_to_continue": false, "needs_reanalysis": false, "needs_inspection": false, "needs_review": false, "must_wait": false},
+    "state": {
+      "work": "The selected work is complete.",
+      "next_work": "No queued next work exists.",
+      "analysis": "The project state is current.",
+      "direction": "The current direction is still active."
+    },
+    "paraphrase": "The current task has finished, the direction remains active, and the plan does not already contain a next task."
+  },
+  {
+    "id": "continue-docs-only-change",
+    "expected_action": "continue",
+    "urgency": 0,
+    "signals": {"safe_to_continue": true, "needs_reanalysis": false, "needs_inspection": false, "needs_review": false, "must_wait": false},
+    "state": {
+      "work": "The current implementation task is unfinished and its next step is known.",
+      "tests": "All relevant tests pass.",
+      "working_tree": "Only an expected documentation file changed after the last check.",
+      "analysis": "The source code and architecture described by the analysis did not change.",
+      "direction": "The current direction is confirmed."
+    },
+    "paraphrase": "A documentation-only edit happened after the last check, but code and architecture stayed the same and the unfinished implementation still has a clear next step."
+  }
+]

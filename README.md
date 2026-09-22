@@ -25,6 +25,8 @@ For the full background, evaluation process, results, and recommended usage patt
 
 For reproducible Jev Playground comparisons, see [`benchmarks/jev-playground/`](benchmarks/jev-playground/). Each round keeps `state.json`, `questions.json`, and the hidden-from-model `expected.json` answer key separate for easy copy/paste testing.
 
+For the larger automated [StateCarry](https://github.com/ThreeLightStudio/statecarry) decision suite, see [StateCarry decision benchmark](docs/statecarry-benchmark.md). StateCarry is an open-source macOS app that helps developers return to interrupted work, understand the current project state, and choose what to do next. The benchmark expands 20 fully synthetic project-resume scenarios into 377 deterministic test cases per provider, runs Laya and Jev through the same localhost API, and records accuracy, robustness, single-vs-batch behavior, calibration, and latency results without storing local project paths.
+
 ## GitHub Pages site
 
 The project landing page is a dependency-free static site in [`docs/`](docs/). GitHub Pages can publish it directly from the `main` branch `/docs` folder.
@@ -42,11 +44,15 @@ Then open `http://127.0.0.1:8808/`.
 From the project directory:
 
 ```bash
-python3.13 -m venv .venv
+python3 --version
+python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
 jev-laya-local-daemon
 ```
+
+`python3 --version` should report Python 3.11, 3.12, or 3.13. On systems where `python` is missing or points to another interpreter, use `python3` for every command in this project.
+If your default `python3` is outside that range, create the virtual environment with an installed supported interpreter instead, for example `python3.13 -m venv .venv`.
 
 Jev is optional. The simplest setup is a repo-root `.env` file. Start from the included example:
 
@@ -54,13 +60,13 @@ Jev is optional. The simplest setup is a repo-root `.env` file. Start from the i
 cp .env.example .env
 ```
 
-Then put your TypeSafe key in `.env`:
+If you have a Jev API key, open `.env` and set:
 
 ```dotenv
 JEV_API_KEY=your-typesafe-api-key
 ```
 
-The daemon loads `.env` automatically on startup:
+Leave `JEV_API_KEY` empty if you only want local Laya. The daemon loads the repo-root `.env` automatically on startup:
 
 ```bash
 jev-laya-local-daemon
@@ -92,13 +98,13 @@ Run the included end-to-end smoke test against Laya:
 
 ```bash
 source .venv/bin/activate
-python scripts/smoke.py
+python3 scripts/smoke.py
 ```
 
 Or through Jev when `JEV_API_KEY` is configured:
 
 ```bash
-DECISION_PROVIDER=jev python scripts/smoke.py
+DECISION_PROVIDER=jev python3 scripts/smoke.py
 ```
 
 It checks `/health`, `/ready`, and real `noul`, `choice`, and `score` inference against the running daemon.
@@ -114,7 +120,8 @@ Laya 0.3.5 automatically selects MPS on supported Apple Silicon Macs, then falls
 ## Install
 
 ```bash
-python3.13 -m venv .venv
+python3 --version
+python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
 ```
@@ -135,7 +142,7 @@ jev-laya-local-daemon
 The module entry point works too:
 
 ```bash
-python -m jev_laya_local_daemon
+python3 -m jev_laya_local_daemon
 ```
 
 Startup begins listening immediately while the model loads once in a daemon thread. During that time `/health` is available and `/ready` returns HTTP 503. When loading finishes, `/ready` returns HTTP 200 and all subsequent requests reuse the same in-memory agent.
@@ -231,7 +238,7 @@ curl http://127.0.0.1:8790/ready
 And for the smoke test:
 
 ```bash
-DECISION_API_URL=http://127.0.0.1:8790 python scripts/smoke.py
+DECISION_API_URL=http://127.0.0.1:8790 python3 scripts/smoke.py
 ```
 
 For TypeScript or Python applications, change the endpoint from `http://127.0.0.1:8787` to `http://127.0.0.1:8790` as well.
@@ -566,7 +573,7 @@ print(result["answers"]["reanalyze"]["noul"])
 Laya downloads Hub checkpoints with `huggingface_hub.snapshot_download()`. Do not assume the cache path; ask the installed Hugging Face library:
 
 ```bash
-python - <<'PY'
+python3 - <<'PY'
 from huggingface_hub.constants import HF_HUB_CACHE
 print(HF_HUB_CACHE)
 PY
@@ -579,13 +586,13 @@ Environment variables supported by Hugging Face can relocate that cache.
 Start the daemon, wait until `/ready` is HTTP 200, then run:
 
 ```bash
-python scripts/smoke.py
+python3 scripts/smoke.py
 ```
 
 If the daemon is on a non-default port:
 
 ```bash
-DECISION_API_URL=http://127.0.0.1:8790 python scripts/smoke.py
+DECISION_API_URL=http://127.0.0.1:8790 python3 scripts/smoke.py
 ```
 
 
@@ -595,7 +602,7 @@ The script calls `/health`, `/ready`, and real `noul`, `choice`, and `score` req
 To use the same script through Jev:
 
 ```bash
-DECISION_PROVIDER=jev python scripts/smoke.py
+DECISION_PROVIDER=jev python3 scripts/smoke.py
 ```
 
 ## Errors

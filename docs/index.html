@@ -22,9 +22,9 @@
         <nav class="site-nav" aria-label="Primary navigation">
           <a href="#evidence">What we learned</a>
           <a href="#comparison">Laya vs Jev</a>
+          <a href="#statecarry">StateCarry test</a>
           <a href="#pattern">How to use it</a>
           <a href="#run">Run locally</a>
-          <a href="https://github.com/ThreeLightStudio/jev-laya-local-daemon/blob/main/docs/jev-laya-experiment.md">Experiment notes</a>
           <a href="https://github.com/ThreeLightStudio/jev-laya-local-daemon">GitHub</a>
         </nav>
       </header>
@@ -60,7 +60,7 @@
               </div>
               <div>
                 <dt>Tested</dt>
-                <dd>Laya 0.3.5 · Jev 1.13.0</dd>
+                <dd>Laya 0.3.5 · Jev hosted API</dd>
               </div>
             </dl>
 
@@ -381,6 +381,105 @@ critical  0.3672</code></pre>
           </div>
         </section>
 
+        <section id="statecarry" class="section model-comparison" aria-labelledby="statecarry-title">
+          <div class="section-heading">
+            <p class="eyebrow">Applied benchmark</p>
+            <h2 id="statecarry-title">Then I tested the same idea against real product-shaped decisions.</h2>
+            <p>
+              <a class="inline-link" href="https://github.com/ThreeLightStudio/statecarry">StateCarry</a>
+              is an open-source macOS app for returning to interrupted development work: it helps you understand where a
+              project stands and decide what to do next. That made it a useful target for testing decisions such as
+              continue, inspect, reanalyze, review a result, wait, reconnect, or choose different work.
+            </p>
+          </div>
+
+          <div class="version-tags" aria-label="StateCarry benchmark scope">
+            <span>20 synthetic StateCarry scenarios</span>
+            <span>377 cases / provider</span>
+            <span>754 provider runs · 0 request errors</span>
+            <span>Tested September 23, 2026</span>
+          </div>
+
+          <div class="model-compare-grid">
+            <article class="model-card">
+              <div class="model-card-head">
+                <span class="comparison-label">StateCarry Choice · local</span>
+                <h3>Laya</h3>
+              </div>
+              <strong class="model-score">40.0%</strong>
+              <span class="model-score-caption">expected next action</span>
+              <dl class="model-metrics">
+                <div><dt>2 choices</dt><dd>75%</dd></div>
+                <div><dt>8 choices</dt><dd>40%</dd></div>
+                <div><dt>15 choices</dt><dd>10%</dd></div>
+                <div><dt>State variants</dt><dd>10% fully consistent</dd></div>
+              </dl>
+            </article>
+
+            <article class="model-card model-card-accent">
+              <div class="model-card-head">
+                <span class="comparison-label">StateCarry Choice · hosted</span>
+                <h3>Jev</h3>
+              </div>
+              <strong class="model-score">96.4%</strong>
+              <span class="model-score-caption">expected next action</span>
+              <dl class="model-metrics">
+                <div><dt>2 choices</dt><dd>95%</dd></div>
+                <div><dt>8 choices</dt><dd>95%</dd></div>
+                <div><dt>15 choices</dt><dd>90%</dd></div>
+                <div><dt>State variants</dt><dd>95% fully consistent</dd></div>
+              </dl>
+            </article>
+          </div>
+
+          <div class="result-table-wrap">
+            <table class="result-table">
+              <thead>
+                <tr>
+                  <th>StateCarry test</th>
+                  <th>Laya 0.3.5</th>
+                  <th>Jev hosted API</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Choice routing</strong><span>220 scored Choice + challenge cases</span></td>
+                  <td>40.0% overall</td>
+                  <td>96.4% overall</td>
+                </tr>
+                <tr>
+                  <td><strong>Meaning-preserving state changes</strong><span>text, nested, reordered, noise, Korean</span></td>
+                  <td>10% fully consistent</td>
+                  <td>95% fully consistent</td>
+                </tr>
+                <tr>
+                  <td><strong>Targeted challenge cases</strong><span>negation, time, stale state, overlapping actions</span></td>
+                  <td>3 / 10</td>
+                  <td>10 / 10</td>
+                </tr>
+                <tr>
+                  <td><strong>7 related questions about one state</strong><span>single requests vs one batch request</span></td>
+                  <td>same decisions · no measured speedup</td>
+                  <td>same decisions · ~6.96× lower sequential latency</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout">
+            <p class="callout-quote">
+              For Laya, the safest pattern is one small English semantic state with a narrow decision. For Jev, related
+              questions about one shared state can be batched efficiently without an observed top-level quality loss in
+              this test.
+            </p>
+          </div>
+
+          <div class="hero-actions comparison-actions">
+            <a class="button button-primary" href="https://github.com/ThreeLightStudio/jev-laya-local-daemon/blob/main/docs/statecarry-benchmark.md">Read the StateCarry benchmark</a>
+            <a class="button button-secondary" href="https://github.com/ThreeLightStudio/statecarry">What is StateCarry? ↗</a>
+          </div>
+        </section>
+
         <section id="pattern" class="section pattern" aria-labelledby="pattern-title">
           <div class="section-heading">
             <p class="eyebrow">How to use it</p>
@@ -503,8 +602,8 @@ critical  0.3672</code></pre>
             <small>extra download after the model was already cached</small>
           </div>
           <div class="spec-card">
-            <span>14 passed</span>
-            <small>API unit / integration tests</small>
+            <span>22 passed</span>
+            <small>project test suite</small>
           </div>
         </section>
 
@@ -528,13 +627,13 @@ critical  0.3672</code></pre>
 
           <textarea id="agent-setup-prompt" class="copy-source" tabindex="-1" aria-hidden="true">Set up jev-laya-local-daemon on this machine from https://github.com/ThreeLightStudio/jev-laya-local-daemon.
 
-If the repository is not already checked out, clone it into an appropriate local development directory. Use Python 3.11–3.13, create a .venv, and install the project with `pip install -e .`.
+If the repository is not already checked out, clone it into an appropriate local development directory. Use `python3` with Python 3.11–3.13, create a .venv, and install the project with `pip install -e .`.
 
 Start `jev-laya-local-daemon` bound to a loopback address only. Use port 8787 unless it is already occupied. If 8787 is in use, do not stop an unrelated process; choose another available local port with `DAEMON_PORT` and use that port consistently.
 
 If Jev should be enabled, copy `.env.example` to `.env` and put `JEV_API_KEY` there without printing or committing the key. The daemon loads the repo-root `.env` automatically. Jev is optional; do not block setup when the key is absent.
 
-Wait until `GET /ready` returns HTTP 200 with `"ready": true`, then run the included `scripts/smoke.py` against the selected endpoint. If you changed the port, set `DECISION_API_URL` for the smoke test. Keep the daemon running after verification if your environment supports a persistent process; otherwise give me the exact command to start it again.
+Wait until `GET /ready` returns HTTP 200 with `"ready": true`, then run the included smoke test with `python3 scripts/smoke.py` against the selected endpoint. If you changed the port, set `DECISION_API_URL` for the smoke test. Keep the daemon running after verification if your environment supports a persistent process; otherwise give me the exact command to start it again.
 
 When finished, report the final local API URL, the selected port, provider availability from `GET /v1/providers`, the smoke-test result, and how to stop the daemon. Do not bind to 0.0.0.0 or expose the service to the public network.</textarea>
 
@@ -546,7 +645,8 @@ When finished, report the final local API URL, the selected port, provider avail
             <div class="run-step">
               <span class="run-number">01</span>
               <h3>Install</h3>
-              <pre><code>python3.13 -m venv .venv
+              <pre><code>python3 --version
+python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .</code></pre>
             </div>
@@ -564,8 +664,9 @@ pip install -e .</code></pre>
 
           <div class="port-note">
             <strong>Enable Jev</strong>
-            <code>export JEV_API_KEY="..."</code>
-            <span>The key stays in the daemon environment; local callers only send <code>provider: "jev"</code>.</span>
+            <code>cp .env.example .env</code>
+            <code>JEV_API_KEY=your-typesafe-api-key</code>
+            <span>Put the key in the repo-root <code>.env</code>. The daemon loads it automatically, and local callers only send <code>provider: "jev"</code>.</span>
           </div>
 
           <div class="port-note">
@@ -598,7 +699,8 @@ pip install -e .</code></pre>
             Use Laya when inputs must stay local; use Jev when its stronger hosted decision quality is worth the network hop.
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="https://github.com/ThreeLightStudio/jev-laya-local-daemon/blob/main/docs/jev-laya-experiment.md">Read the full experiment</a>
+            <a class="button button-primary" href="https://github.com/ThreeLightStudio/jev-laya-local-daemon/blob/main/docs/statecarry-benchmark.md">Read the applied benchmark</a>
+            <a class="button button-secondary" href="https://github.com/ThreeLightStudio/jev-laya-local-daemon/blob/main/docs/jev-laya-experiment.md">Read the initial experiment</a>
             <a class="button button-secondary" href="https://github.com/ThreeLightStudio/jev-laya-local-daemon">View on GitHub</a>
           </div>
         </section>

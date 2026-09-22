@@ -89,7 +89,7 @@ def evaluate_choice(rows: list[tuple[dict, dict]]) -> None:
 
 def main() -> None:
     if len(sys.argv) != 2:
-        raise SystemExit("usage: python scripts/eval_playground_fixture.py <fixture-directory>")
+        raise SystemExit("usage: python3 scripts/eval_playground_fixture.py <fixture-directory>")
 
     fixture_dir = Path(sys.argv[1])
     state = json.loads((fixture_dir / "state.json").read_text())

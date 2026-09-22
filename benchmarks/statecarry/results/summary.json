@@ -1,0 +1,1517 @@
+{
+  "schema_version": 1,
+  "benchmark": "statecarry-synthetic-decision-suite",
+  "run_at": "2026-09-22T22:45:55.065226+00:00",
+  "case_count": 377,
+  "providers": {
+    "laya": {
+      "records": 377,
+      "errors": 0,
+      "models": [
+        "laya-rl-agent"
+      ],
+      "latency_ms": {
+        "p50": 52.673,
+        "p95": 296.45439999999996,
+        "mean": 91.12210079575597
+      },
+      "choice": {
+        "cases": 220,
+        "accuracy": 0.4,
+        "by_variant": {
+          "ambiguous-docs-and-config-change": {
+            "cases": 1,
+            "accuracy": 1.0
+          },
+          "choice-15": {
+            "cases": 20,
+            "accuracy": 0.1
+          },
+          "choice-2": {
+            "cases": 20,
+            "accuracy": 0.75
+          },
+          "choice-4": {
+            "cases": 20,
+            "accuracy": 0.5
+          },
+          "choice-8": {
+            "cases": 20,
+            "accuracy": 0.4
+          },
+          "choice-8-shuffled": {
+            "cases": 20,
+            "accuracy": 0.45
+          },
+          "double-negation-project-changed": {
+            "cases": 1,
+            "accuracy": 0.0
+          },
+          "korean": {
+            "cases": 10,
+            "accuracy": 0.1
+          },
+          "missing-selection-with-one-unmatched-proposal": {
+            "cases": 1,
+            "accuracy": 1.0
+          },
+          "negation-no-failure": {
+            "cases": 1,
+            "accuracy": 0.0
+          },
+          "nested": {
+            "cases": 20,
+            "accuracy": 0.35
+          },
+          "noise-32": {
+            "cases": 20,
+            "accuracy": 0.35
+          },
+          "noise-8": {
+            "cases": 20,
+            "accuracy": 0.35
+          },
+          "old-conflict-resolved-currently": {
+            "cases": 1,
+            "accuracy": 0.0
+          },
+          "other-result-secondary-to-current-work": {
+            "cases": 1,
+            "accuracy": 1.0
+          },
+          "release-secondary-to-active-work": {
+            "cases": 1,
+            "accuracy": 0.0
+          },
+          "reordered": {
+            "cases": 20,
+            "accuracy": 0.35
+          },
+          "stale-return-point-with-explicit-fresh-match": {
+            "cases": 1,
+            "accuracy": 0.0
+          },
+          "temporal-latest-clean": {
+            "cases": 1,
+            "accuracy": 0.0
+          },
+          "temporal-latest-stale": {
+            "cases": 1,
+            "accuracy": 0.0
+          },
+          "text": {
+            "cases": 20,
+            "accuracy": 0.6
+          }
+        },
+        "metamorphic_consistency": 0.1,
+        "calibration": {
+          "0.1-0.2": {
+            "cases": 20,
+            "accuracy": 0.2
+          },
+          "0.2-0.3": {
+            "cases": 69,
+            "accuracy": 0.2753623188405797
+          },
+          "0.3-0.4": {
+            "cases": 70,
+            "accuracy": 0.4142857142857143
+          },
+          "0.4-0.5": {
+            "cases": 19,
+            "accuracy": 0.47368421052631576
+          },
+          "0.5-0.6": {
+            "cases": 26,
+            "accuracy": 0.6153846153846154
+          },
+          "0.6-0.7": {
+            "cases": 13,
+            "accuracy": 0.6153846153846154
+          },
+          "0.7-0.8": {
+            "cases": 3,
+            "accuracy": 1.0
+          }
+        }
+      },
+      "noul": {
+        "safe_to_continue": {
+          "cases": 20,
+          "accuracy_at_0_5": 0.75,
+          "brier": 0.17724030500000001,
+          "best_threshold": {
+            "threshold": 0.39085000000000003,
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.75,
+            "tp": 3,
+            "fp": 4,
+            "fn": 1,
+            "tn": 12
+          },
+          "positive_mean": 0.42175,
+          "negative_mean": 0.3549375
+        },
+        "needs_reanalysis": {
+          "cases": 20,
+          "accuracy_at_0_5": 0.9,
+          "brier": 0.1412450995,
+          "best_threshold": {
+            "threshold": 0.47425,
+            "accuracy": 0.95,
+            "balanced_accuracy": 0.8333333333333333,
+            "tp": 2,
+            "fp": 0,
+            "fn": 1,
+            "tn": 17
+          },
+          "positive_mean": 0.4172666666666667,
+          "negative_mean": 0.3095117647058824
+        },
+        "needs_inspection": {
+          "cases": 20,
+          "accuracy_at_0_5": 0.8,
+          "brier": 0.162808604,
+          "best_threshold": {
+            "threshold": 0.5139,
+            "accuracy": 0.9,
+            "balanced_accuracy": 0.7222222222222222,
+            "tp": 1,
+            "fp": 1,
+            "fn": 1,
+            "tn": 17
+          },
+          "positive_mean": 0.4225,
+          "negative_mean": 0.36648888888888886
+        },
+        "needs_review": {
+          "cases": 20,
+          "accuracy_at_0_5": 0.85,
+          "brier": 0.1783334875,
+          "best_threshold": {
+            "threshold": 0.38029999999999997,
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.7738095238095238,
+            "tp": 5,
+            "fp": 4,
+            "fn": 1,
+            "tn": 10
+          },
+          "positive_mean": 0.44325,
+          "negative_mean": 0.3398428571428571
+        },
+        "must_wait": {
+          "cases": 20,
+          "accuracy_at_0_5": 0.9,
+          "brier": 0.16073612850000002,
+          "best_threshold": {
+            "threshold": 0.5036499999999999,
+            "accuracy": 0.9,
+            "balanced_accuracy": 0.9473684210526316,
+            "tp": 1,
+            "fp": 2,
+            "fn": 0,
+            "tn": 17
+          },
+          "positive_mean": 0.5264,
+          "negative_mean": 0.3874157894736842
+        }
+      },
+      "score": {
+        "cases": 20,
+        "top_level_accuracy": 0.5,
+        "mae": 0.55
+      },
+      "repeat": {
+        "groups": 8,
+        "fully_consistent": 8,
+        "rate": 1.0,
+        "by_group": {
+          "continue-known-step": true,
+          "inspect-unexplained-changes": true,
+          "reanalyze-major-refactor": true,
+          "review-result-ready": true,
+          "wait-running-check": true,
+          "reconnect-disconnected-project": true,
+          "review-direction-conflict": true,
+          "review-release-problem": true
+        }
+      },
+      "batching": {
+        "same_state_batch": {
+          "1": {
+            "questions": 4,
+            "accuracy": 0.25,
+            "consistency_with_baseline": 1.0
+          },
+          "2": {
+            "questions": 8,
+            "accuracy": 0.25,
+            "consistency_with_baseline": 1.0
+          },
+          "4": {
+            "questions": 16,
+            "accuracy": 0.25,
+            "consistency_with_baseline": 1.0
+          },
+          "8": {
+            "questions": 32,
+            "accuracy": 0.25,
+            "consistency_with_baseline": 1.0
+          },
+          "16": {
+            "questions": 64,
+            "accuracy": 0.25,
+            "consistency_with_baseline": 1.0
+          }
+        },
+        "cross_case_batch": {
+          "2": {
+            "questions": 2,
+            "accuracy": 0.0,
+            "consistency_with_baseline": 1.0
+          },
+          "4": {
+            "questions": 4,
+            "accuracy": 0.25,
+            "consistency_with_baseline": 0.5
+          },
+          "8": {
+            "questions": 8,
+            "accuracy": 0.0,
+            "consistency_with_baseline": 0.25
+          }
+        }
+      },
+      "mixed_question_accuracy": {
+        "choice": 0.5,
+        "noul": 0.8666666666666667,
+        "score": 0.3333333333333333
+      },
+      "request_ab": {
+        "scenarios": 8,
+        "questions_per_scenario": 7,
+        "quality": {
+          "choice": {
+            "single": {
+              "questions": 8,
+              "accuracy": 0.375
+            },
+            "batch": {
+              "questions": 8,
+              "accuracy": 0.375
+            }
+          },
+          "noul": {
+            "single": {
+              "questions": 40,
+              "accuracy": 0.775
+            },
+            "batch": {
+              "questions": 40,
+              "accuracy": 0.775
+            }
+          },
+          "score": {
+            "single": {
+              "questions": 8,
+              "accuracy": 0.375
+            },
+            "batch": {
+              "questions": 8,
+              "accuracy": 0.375
+            }
+          }
+        },
+        "decision_consistency": {
+          "questions": 56,
+          "rate": 1.0,
+          "mean_abs_noul_delta": 0.0,
+          "mean_abs_score_delta": 0.0
+        },
+        "latency_ms": {
+          "single_requests_total": 2198.6929999999998,
+          "batch_requests_total": 2384.307,
+          "single_mean_per_scenario": 274.83662499999997,
+          "batch_mean_per_scenario": 298.038375,
+          "batch_speedup": 0.9221518034380639
+        },
+        "tokens": {
+          "input": {
+            "single": 7269,
+            "batch": 7269
+          },
+          "output": {
+            "single": 0,
+            "batch": 0
+          }
+        }
+      }
+    },
+    "jev": {
+      "records": 377,
+      "errors": 0,
+      "models": [
+        "jev-1.13.0"
+      ],
+      "latency_ms": {
+        "p50": 558.888,
+        "p95": 720.9703999999999,
+        "mean": 582.1004588859416
+      },
+      "choice": {
+        "cases": 220,
+        "accuracy": 0.9636363636363636,
+        "by_variant": {
+          "ambiguous-docs-and-config-change": {
+            "cases": 1,
+            "accuracy": 1.0
+          },
+          "choice-15": {
+            "cases": 20,
+            "accuracy": 0.9
+          },
+          "choice-2": {
+            "cases": 20,
+            "accuracy": 0.95
+          },
+          "choice-4": {
+            "cases": 20,
+            "accuracy": 1.0
+          },
+          "choice-8": {
+            "cases": 20,
+            "accuracy": 0.95
+          },
+          "choice-8-shuffled": {
+            "cases": 20,
+            "accuracy": 0.95
+          },
+          "double-negation-project-changed": {
+            "cases": 1,
+            "accuracy": 1.0
+          },
+          "korean": {
+            "cases": 10,
+            "accuracy": 1.0
+          },
+          "missing-selection-with-one-unmatched-proposal": {
+            "cases": 1,
+            "accuracy": 1.0
+          },
+          "negation-no-failure": {
+            "cases": 1,
+            "accuracy": 1.0
+          },
+          "nested": {
+            "cases": 20,
+            "accuracy": 0.95
+          },
+          "noise-32": {
+            "cases": 20,
+            "accuracy": 0.95
+          },
+          "noise-8": {
+            "cases": 20,
+            "accuracy": 0.95
+          },
+          "old-conflict-resolved-currently": {
+            "cases": 1,
+            "accuracy": 1.0
+          },
+          "other-result-secondary-to-current-work": {
+            "cases": 1,
+            "accuracy": 1.0
+          },
+          "release-secondary-to-active-work": {
+            "cases": 1,
+            "accuracy": 1.0
+          },
+          "reordered": {
+            "cases": 20,
+            "accuracy": 1.0
+          },
+          "stale-return-point-with-explicit-fresh-match": {
+            "cases": 1,
+            "accuracy": 1.0
+          },
+          "temporal-latest-clean": {
+            "cases": 1,
+            "accuracy": 1.0
+          },
+          "temporal-latest-stale": {
+            "cases": 1,
+            "accuracy": 1.0
+          },
+          "text": {
+            "cases": 20,
+            "accuracy": 1.0
+          }
+        },
+        "metamorphic_consistency": 0.95,
+        "calibration": {
+          "0.4-0.5": {
+            "cases": 1,
+            "accuracy": 0.0
+          },
+          "0.5-0.6": {
+            "cases": 6,
+            "accuracy": 0.8333333333333334
+          },
+          "0.6-0.7": {
+            "cases": 12,
+            "accuracy": 1.0
+          },
+          "0.7-0.8": {
+            "cases": 14,
+            "accuracy": 0.9285714285714286
+          },
+          "0.8-0.9": {
+            "cases": 37,
+            "accuracy": 0.918918918918919
+          },
+          "0.9-1.0": {
+            "cases": 150,
+            "accuracy": 0.9866666666666667
+          }
+        }
+      },
+      "noul": {
+        "safe_to_continue": {
+          "cases": 20,
+          "accuracy_at_0_5": 1.0,
+          "brier": 0.056155,
+          "best_threshold": {
+            "threshold": 0.53,
+            "accuracy": 1.0,
+            "balanced_accuracy": 1.0,
+            "tp": 4,
+            "fp": 0,
+            "fn": 0,
+            "tn": 16
+          },
+          "positive_mean": 0.7125,
+          "negative_mean": 0.18125
+        },
+        "needs_reanalysis": {
+          "cases": 20,
+          "accuracy_at_0_5": 0.85,
+          "brier": 0.12648,
+          "best_threshold": {
+            "threshold": 0.7,
+            "accuracy": 0.9,
+            "balanced_accuracy": 0.9411764705882353,
+            "tp": 3,
+            "fp": 2,
+            "fn": 0,
+            "tn": 15
+          },
+          "positive_mean": 0.85,
+          "negative_mean": 0.28647058823529414
+        },
+        "needs_inspection": {
+          "cases": 20,
+          "accuracy_at_0_5": 0.6,
+          "brier": 0.255055,
+          "best_threshold": {
+            "threshold": 0.92,
+            "accuracy": 1.0,
+            "balanced_accuracy": 1.0,
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "tn": 18
+          },
+          "positive_mean": 0.95,
+          "negative_mean": 0.4583333333333333
+        },
+        "needs_review": {
+          "cases": 20,
+          "accuracy_at_0_5": 0.75,
+          "brier": 0.16333999999999999,
+          "best_threshold": {
+            "threshold": 0.43,
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.8214285714285714,
+            "tp": 6,
+            "fp": 5,
+            "fn": 0,
+            "tn": 9
+          },
+          "positive_mean": 0.775,
+          "negative_mean": 0.34785714285714286
+        },
+        "must_wait": {
+          "cases": 20,
+          "accuracy_at_0_5": 0.75,
+          "brier": 0.155565,
+          "best_threshold": {
+            "threshold": 0.845,
+            "accuracy": 1.0,
+            "balanced_accuracy": 1.0,
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "tn": 19
+          },
+          "positive_mean": 0.95,
+          "negative_mean": 0.3494736842105263
+        }
+      },
+      "score": {
+        "cases": 20,
+        "top_level_accuracy": 0.7,
+        "mae": 0.35
+      },
+      "repeat": {
+        "groups": 8,
+        "fully_consistent": 8,
+        "rate": 1.0,
+        "by_group": {
+          "continue-known-step": true,
+          "inspect-unexplained-changes": true,
+          "reanalyze-major-refactor": true,
+          "review-result-ready": true,
+          "wait-running-check": true,
+          "reconnect-disconnected-project": true,
+          "review-direction-conflict": true,
+          "review-release-problem": true
+        }
+      },
+      "batching": {
+        "same_state_batch": {
+          "1": {
+            "questions": 4,
+            "accuracy": 1.0,
+            "consistency_with_baseline": 1.0
+          },
+          "2": {
+            "questions": 8,
+            "accuracy": 1.0,
+            "consistency_with_baseline": 1.0
+          },
+          "4": {
+            "questions": 16,
+            "accuracy": 1.0,
+            "consistency_with_baseline": 1.0
+          },
+          "8": {
+            "questions": 32,
+            "accuracy": 1.0,
+            "consistency_with_baseline": 1.0
+          },
+          "16": {
+            "questions": 64,
+            "accuracy": 1.0,
+            "consistency_with_baseline": 1.0
+          }
+        },
+        "cross_case_batch": {
+          "2": {
+            "questions": 2,
+            "accuracy": 1.0,
+            "consistency_with_baseline": 1.0
+          },
+          "4": {
+            "questions": 4,
+            "accuracy": 1.0,
+            "consistency_with_baseline": 1.0
+          },
+          "8": {
+            "questions": 8,
+            "accuracy": 1.0,
+            "consistency_with_baseline": 1.0
+          }
+        }
+      },
+      "mixed_question_accuracy": {
+        "choice": 1.0,
+        "noul": 0.6666666666666666,
+        "score": 0.8333333333333334
+      },
+      "request_ab": {
+        "scenarios": 8,
+        "questions_per_scenario": 7,
+        "quality": {
+          "choice": {
+            "single": {
+              "questions": 8,
+              "accuracy": 1.0
+            },
+            "batch": {
+              "questions": 8,
+              "accuracy": 1.0
+            }
+          },
+          "noul": {
+            "single": {
+              "questions": 40,
+              "accuracy": 0.725
+            },
+            "batch": {
+              "questions": 40,
+              "accuracy": 0.725
+            }
+          },
+          "score": {
+            "single": {
+              "questions": 8,
+              "accuracy": 0.625
+            },
+            "batch": {
+              "questions": 8,
+              "accuracy": 0.625
+            }
+          }
+        },
+        "decision_consistency": {
+          "questions": 56,
+          "rate": 1.0,
+          "mean_abs_noul_delta": 0.01575,
+          "mean_abs_score_delta": 0.03375
+        },
+        "latency_ms": {
+          "single_requests_total": 32685.597999999998,
+          "batch_requests_total": 4695.619,
+          "single_mean_per_scenario": 4085.6997499999998,
+          "batch_mean_per_scenario": 586.952375,
+          "batch_speedup": 6.960870973560675
+        },
+        "tokens": {
+          "input": {
+            "single": 23677,
+            "batch": 7783
+          },
+          "output": {
+            "single": 1694,
+            "batch": 1510
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "shared_choice_cases": 220,
+    "same_top_choice": 86,
+    "different_top_choice": 134,
+    "outcome_buckets": {
+      "both_correct": 84,
+      "laya_only": 4,
+      "jev_only": 128,
+      "both_wrong": 4
+    },
+    "disagreements": [
+      {
+        "case_id": "challenge::double-negation-project-changed",
+        "expected": "reanalyze",
+        "laya": "choose_next_work",
+        "jev": "reanalyze"
+      },
+      {
+        "case_id": "challenge::negation-no-failure",
+        "expected": "continue",
+        "laya": "inspect",
+        "jev": "continue"
+      },
+      {
+        "case_id": "challenge::old-conflict-resolved-currently",
+        "expected": "continue",
+        "laya": "define_direction",
+        "jev": "continue"
+      },
+      {
+        "case_id": "challenge::release-secondary-to-active-work",
+        "expected": "continue",
+        "laya": "choose_work",
+        "jev": "continue"
+      },
+      {
+        "case_id": "challenge::stale-return-point-with-explicit-fresh-match",
+        "expected": "continue",
+        "laya": "review_result",
+        "jev": "continue"
+      },
+      {
+        "case_id": "challenge::temporal-latest-clean",
+        "expected": "continue",
+        "laya": "review_completion",
+        "jev": "continue"
+      },
+      {
+        "case_id": "challenge::temporal-latest-stale",
+        "expected": "reanalyze",
+        "laya": "inspect",
+        "jev": "reanalyze"
+      },
+      {
+        "case_id": "choose-multiple-open-work::choice-15",
+        "expected": "choose_work",
+        "laya": "define_direction",
+        "jev": "choose_work"
+      },
+      {
+        "case_id": "choose-next-after-complete::choice-15",
+        "expected": "choose_next_work",
+        "laya": "define_direction",
+        "jev": "choose_next_work"
+      },
+      {
+        "case_id": "choose-next-after-complete::choice-4",
+        "expected": "choose_next_work",
+        "laya": "review_completion",
+        "jev": "choose_next_work"
+      },
+      {
+        "case_id": "choose-next-after-complete::choice-8",
+        "expected": "choose_next_work",
+        "laya": "define_direction",
+        "jev": "choose_next_work"
+      },
+      {
+        "case_id": "choose-next-after-complete::choice-8-shuffled",
+        "expected": "choose_next_work",
+        "laya": "review_completion",
+        "jev": "choose_next_work"
+      },
+      {
+        "case_id": "choose-next-after-complete::nested",
+        "expected": "choose_next_work",
+        "laya": "define_direction",
+        "jev": "choose_next_work"
+      },
+      {
+        "case_id": "choose-next-after-complete::noise-32",
+        "expected": "choose_next_work",
+        "laya": "review_completion",
+        "jev": "choose_next_work"
+      },
+      {
+        "case_id": "choose-next-after-complete::noise-8",
+        "expected": "choose_next_work",
+        "laya": "review_completion",
+        "jev": "choose_next_work"
+      },
+      {
+        "case_id": "choose-next-after-complete::reordered",
+        "expected": "choose_next_work",
+        "laya": "define_direction",
+        "jev": "choose_next_work"
+      },
+      {
+        "case_id": "continue-docs-only-change::choice-15",
+        "expected": "continue",
+        "laya": "define_direction",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-docs-only-change::choice-2",
+        "expected": "continue",
+        "laya": "review_plan",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-docs-only-change::choice-4",
+        "expected": "continue",
+        "laya": "reanalyze",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-docs-only-change::choice-8",
+        "expected": "continue",
+        "laya": "review_completion",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-docs-only-change::choice-8-shuffled",
+        "expected": "continue",
+        "laya": "review_result",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-docs-only-change::nested",
+        "expected": "continue",
+        "laya": "review_completion",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-docs-only-change::noise-32",
+        "expected": "continue",
+        "laya": "review_completion",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-docs-only-change::noise-8",
+        "expected": "continue",
+        "laya": "review_completion",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-docs-only-change::reordered",
+        "expected": "continue",
+        "laya": "review_completion",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-known-step::choice-15",
+        "expected": "continue",
+        "laya": "define_direction",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-known-step::choice-2",
+        "expected": "continue",
+        "laya": "review_result",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-known-step::choice-4",
+        "expected": "continue",
+        "laya": "define_direction",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-known-step::choice-8",
+        "expected": "continue",
+        "laya": "define_direction",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-known-step::choice-8-shuffled",
+        "expected": "continue",
+        "laya": "define_direction",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-known-step::korean",
+        "expected": "continue",
+        "laya": "start_work",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-known-step::nested",
+        "expected": "continue",
+        "laya": "define_direction",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-known-step::noise-32",
+        "expected": "continue",
+        "laya": "review_result",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-known-step::noise-8",
+        "expected": "continue",
+        "laya": "review_result",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-known-step::reordered",
+        "expected": "continue",
+        "laya": "define_direction",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-known-step::text",
+        "expected": "continue",
+        "laya": "review_completion",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-understood-dirty-tree::choice-15",
+        "expected": "continue",
+        "laya": "define_direction",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-understood-dirty-tree::choice-4",
+        "expected": "continue",
+        "laya": "review_plan",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-understood-dirty-tree::choice-8",
+        "expected": "continue",
+        "laya": "define_direction",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-understood-dirty-tree::choice-8-shuffled",
+        "expected": "continue",
+        "laya": "define_direction",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-understood-dirty-tree::korean",
+        "expected": "continue",
+        "laya": "define_direction",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-understood-dirty-tree::nested",
+        "expected": "continue",
+        "laya": "define_direction",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-understood-dirty-tree::noise-32",
+        "expected": "continue",
+        "laya": "review_completion",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-understood-dirty-tree::noise-8",
+        "expected": "continue",
+        "laya": "define_direction",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-understood-dirty-tree::reordered",
+        "expected": "continue",
+        "laya": "define_direction",
+        "jev": "continue"
+      },
+      {
+        "case_id": "continue-understood-dirty-tree::text",
+        "expected": "continue",
+        "laya": "inspect",
+        "jev": "continue"
+      },
+      {
+        "case_id": "define-missing-direction::choice-15",
+        "expected": "define_direction",
+        "laya": "inspect",
+        "jev": "choose_work"
+      },
+      {
+        "case_id": "define-missing-direction::choice-8",
+        "expected": "define_direction",
+        "laya": "define_direction",
+        "jev": "choose_work"
+      },
+      {
+        "case_id": "define-missing-direction::choice-8-shuffled",
+        "expected": "define_direction",
+        "laya": "define_direction",
+        "jev": "choose_work"
+      },
+      {
+        "case_id": "define-missing-direction::nested",
+        "expected": "define_direction",
+        "laya": "define_direction",
+        "jev": "choose_work"
+      },
+      {
+        "case_id": "inspect-merge-conflict::choice-15",
+        "expected": "inspect",
+        "laya": "define_direction",
+        "jev": "inspect"
+      },
+      {
+        "case_id": "inspect-merge-conflict::nested",
+        "expected": "inspect",
+        "laya": "define_direction",
+        "jev": "inspect"
+      },
+      {
+        "case_id": "inspect-unexplained-changes::choice-15",
+        "expected": "inspect",
+        "laya": "define_direction",
+        "jev": "inspect"
+      },
+      {
+        "case_id": "inspect-unexplained-changes::choice-4",
+        "expected": "inspect",
+        "laya": "choose_work",
+        "jev": "inspect"
+      },
+      {
+        "case_id": "inspect-unexplained-changes::choice-8",
+        "expected": "inspect",
+        "laya": "review_result",
+        "jev": "inspect"
+      },
+      {
+        "case_id": "inspect-unexplained-changes::choice-8-shuffled",
+        "expected": "inspect",
+        "laya": "review_result",
+        "jev": "inspect"
+      },
+      {
+        "case_id": "inspect-unexplained-changes::korean",
+        "expected": "inspect",
+        "laya": "choose_next_work",
+        "jev": "inspect"
+      },
+      {
+        "case_id": "inspect-unexplained-changes::nested",
+        "expected": "inspect",
+        "laya": "reanalyze",
+        "jev": "inspect"
+      },
+      {
+        "case_id": "inspect-unexplained-changes::noise-32",
+        "expected": "inspect",
+        "laya": "review_result",
+        "jev": "inspect"
+      },
+      {
+        "case_id": "inspect-unexplained-changes::noise-8",
+        "expected": "inspect",
+        "laya": "review_result",
+        "jev": "inspect"
+      },
+      {
+        "case_id": "reanalyze-branch-switch::choice-15",
+        "expected": "reanalyze",
+        "laya": "define_direction",
+        "jev": "review_plan"
+      },
+      {
+        "case_id": "reanalyze-branch-switch::choice-4",
+        "expected": "reanalyze",
+        "laya": "define_direction",
+        "jev": "reanalyze"
+      },
+      {
+        "case_id": "reanalyze-branch-switch::choice-8-shuffled",
+        "expected": "reanalyze",
+        "laya": "review_result",
+        "jev": "reanalyze"
+      },
+      {
+        "case_id": "reanalyze-branch-switch::noise-32",
+        "expected": "reanalyze",
+        "laya": "review_result",
+        "jev": "reanalyze"
+      },
+      {
+        "case_id": "reanalyze-branch-switch::noise-8",
+        "expected": "reanalyze",
+        "laya": "review_result",
+        "jev": "reanalyze"
+      },
+      {
+        "case_id": "reanalyze-branch-switch::reordered",
+        "expected": "reanalyze",
+        "laya": "review_direction",
+        "jev": "reanalyze"
+      },
+      {
+        "case_id": "reanalyze-branch-switch::text",
+        "expected": "reanalyze",
+        "laya": "choose_next_work",
+        "jev": "reanalyze"
+      },
+      {
+        "case_id": "reanalyze-major-refactor::choice-15",
+        "expected": "reanalyze",
+        "laya": "define_direction",
+        "jev": "reanalyze"
+      },
+      {
+        "case_id": "reanalyze-major-refactor::choice-2",
+        "expected": "reanalyze",
+        "laya": "review_result",
+        "jev": "reanalyze"
+      },
+      {
+        "case_id": "reanalyze-major-refactor::korean",
+        "expected": "reanalyze",
+        "laya": "choose_work",
+        "jev": "reanalyze"
+      },
+      {
+        "case_id": "reanalyze-major-refactor::reordered",
+        "expected": "reanalyze",
+        "laya": "define_direction",
+        "jev": "reanalyze"
+      },
+      {
+        "case_id": "reanalyze-major-refactor::text",
+        "expected": "reanalyze",
+        "laya": "choose_work",
+        "jev": "reanalyze"
+      },
+      {
+        "case_id": "reconnect-disconnected-project::choice-15",
+        "expected": "reconnect",
+        "laya": "define_direction",
+        "jev": "reconnect"
+      },
+      {
+        "case_id": "reconnect-disconnected-project::choice-8",
+        "expected": "reconnect",
+        "laya": "review_direction",
+        "jev": "reconnect"
+      },
+      {
+        "case_id": "reconnect-disconnected-project::choice-8-shuffled",
+        "expected": "reconnect",
+        "laya": "review_direction",
+        "jev": "reconnect"
+      },
+      {
+        "case_id": "reconnect-disconnected-project::korean",
+        "expected": "reconnect",
+        "laya": "review_release",
+        "jev": "reconnect"
+      },
+      {
+        "case_id": "reconnect-disconnected-project::nested",
+        "expected": "reconnect",
+        "laya": "review_direction",
+        "jev": "reconnect"
+      },
+      {
+        "case_id": "reconnect-disconnected-project::noise-32",
+        "expected": "reconnect",
+        "laya": "review_direction",
+        "jev": "reconnect"
+      },
+      {
+        "case_id": "reconnect-disconnected-project::noise-8",
+        "expected": "reconnect",
+        "laya": "review_direction",
+        "jev": "reconnect"
+      },
+      {
+        "case_id": "reconnect-disconnected-project::reordered",
+        "expected": "reconnect",
+        "laya": "review_direction",
+        "jev": "reconnect"
+      },
+      {
+        "case_id": "review-completion-proposal::choice-15",
+        "expected": "review_completion",
+        "laya": "define_direction",
+        "jev": "review_completion"
+      },
+      {
+        "case_id": "review-completion-proposal::choice-4",
+        "expected": "review_completion",
+        "laya": "define_direction",
+        "jev": "review_completion"
+      },
+      {
+        "case_id": "review-completion-proposal::choice-8",
+        "expected": "review_completion",
+        "laya": "define_direction",
+        "jev": "review_completion"
+      },
+      {
+        "case_id": "review-completion-proposal::choice-8-shuffled",
+        "expected": "review_completion",
+        "laya": "define_direction",
+        "jev": "review_completion"
+      },
+      {
+        "case_id": "review-completion-proposal::nested",
+        "expected": "review_completion",
+        "laya": "define_direction",
+        "jev": "review_completion"
+      },
+      {
+        "case_id": "review-completion-proposal::reordered",
+        "expected": "review_completion",
+        "laya": "define_direction",
+        "jev": "review_completion"
+      },
+      {
+        "case_id": "review-direction-conflict::choice-15",
+        "expected": "review_direction",
+        "laya": "define_direction",
+        "jev": "review_direction"
+      },
+      {
+        "case_id": "review-direction-conflict::choice-8",
+        "expected": "review_direction",
+        "laya": "define_direction",
+        "jev": "review_direction"
+      },
+      {
+        "case_id": "review-direction-conflict::korean",
+        "expected": "review_direction",
+        "laya": "review_result",
+        "jev": "review_direction"
+      },
+      {
+        "case_id": "review-direction-conflict::nested",
+        "expected": "review_direction",
+        "laya": "define_direction",
+        "jev": "review_direction"
+      },
+      {
+        "case_id": "review-direction-conflict::noise-32",
+        "expected": "review_direction",
+        "laya": "choose_work",
+        "jev": "review_direction"
+      },
+      {
+        "case_id": "review-direction-conflict::noise-8",
+        "expected": "review_direction",
+        "laya": "choose_work",
+        "jev": "review_direction"
+      },
+      {
+        "case_id": "review-direction-conflict::reordered",
+        "expected": "review_direction",
+        "laya": "define_direction",
+        "jev": "review_direction"
+      },
+      {
+        "case_id": "review-release-problem::korean",
+        "expected": "review_release",
+        "laya": "reanalyze",
+        "jev": "review_release"
+      },
+      {
+        "case_id": "review-result-ready::choice-15",
+        "expected": "review_result",
+        "laya": "define_direction",
+        "jev": "review_result"
+      },
+      {
+        "case_id": "review-result-ready::choice-8",
+        "expected": "review_result",
+        "laya": "review_completion",
+        "jev": "review_result"
+      },
+      {
+        "case_id": "review-result-ready::korean",
+        "expected": "review_result",
+        "laya": "continue",
+        "jev": "review_result"
+      },
+      {
+        "case_id": "review-result-ready::nested",
+        "expected": "review_result",
+        "laya": "review_completion",
+        "jev": "review_result"
+      },
+      {
+        "case_id": "review-result-ready::noise-32",
+        "expected": "review_result",
+        "laya": "review_completion",
+        "jev": "review_result"
+      },
+      {
+        "case_id": "review-result-ready::noise-8",
+        "expected": "review_result",
+        "laya": "review_completion",
+        "jev": "review_result"
+      },
+      {
+        "case_id": "review-result-ready::text",
+        "expected": "review_result",
+        "laya": "review_completion",
+        "jev": "review_result"
+      },
+      {
+        "case_id": "review-stale-return-point::choice-15",
+        "expected": "review_plan",
+        "laya": "define_direction",
+        "jev": "review_plan"
+      },
+      {
+        "case_id": "review-stale-return-point::choice-2",
+        "expected": "review_plan",
+        "laya": "review_plan",
+        "jev": "choose_next_work"
+      },
+      {
+        "case_id": "review-stale-return-point::choice-4",
+        "expected": "review_plan",
+        "laya": "define_direction",
+        "jev": "review_plan"
+      },
+      {
+        "case_id": "review-stale-return-point::choice-8",
+        "expected": "review_plan",
+        "laya": "define_direction",
+        "jev": "review_plan"
+      },
+      {
+        "case_id": "review-stale-return-point::choice-8-shuffled",
+        "expected": "review_plan",
+        "laya": "define_direction",
+        "jev": "review_plan"
+      },
+      {
+        "case_id": "review-stale-return-point::nested",
+        "expected": "review_plan",
+        "laya": "define_direction",
+        "jev": "review_plan"
+      },
+      {
+        "case_id": "review-stale-return-point::noise-32",
+        "expected": "review_plan",
+        "laya": "reanalyze",
+        "jev": "review_plan"
+      },
+      {
+        "case_id": "review-stale-return-point::noise-8",
+        "expected": "review_plan",
+        "laya": "reanalyze",
+        "jev": "review_plan"
+      },
+      {
+        "case_id": "review-stale-return-point::reordered",
+        "expected": "review_plan",
+        "laya": "define_direction",
+        "jev": "review_plan"
+      },
+      {
+        "case_id": "start-queued-work::choice-15",
+        "expected": "start_work",
+        "laya": "define_direction",
+        "jev": "start_work"
+      },
+      {
+        "case_id": "start-queued-work::choice-2",
+        "expected": "start_work",
+        "laya": "inspect",
+        "jev": "start_work"
+      },
+      {
+        "case_id": "start-queued-work::choice-4",
+        "expected": "start_work",
+        "laya": "choose_next_work",
+        "jev": "start_work"
+      },
+      {
+        "case_id": "start-queued-work::choice-8",
+        "expected": "start_work",
+        "laya": "define_direction",
+        "jev": "start_work"
+      },
+      {
+        "case_id": "start-queued-work::choice-8-shuffled",
+        "expected": "start_work",
+        "laya": "define_direction",
+        "jev": "start_work"
+      },
+      {
+        "case_id": "start-queued-work::nested",
+        "expected": "start_work",
+        "laya": "define_direction",
+        "jev": "start_work"
+      },
+      {
+        "case_id": "start-queued-work::noise-32",
+        "expected": "start_work",
+        "laya": "choose_work",
+        "jev": "start_work"
+      },
+      {
+        "case_id": "start-queued-work::noise-8",
+        "expected": "start_work",
+        "laya": "choose_work",
+        "jev": "start_work"
+      },
+      {
+        "case_id": "start-queued-work::reordered",
+        "expected": "start_work",
+        "laya": "define_direction",
+        "jev": "start_work"
+      },
+      {
+        "case_id": "start-queued-work::text",
+        "expected": "start_work",
+        "laya": "choose_work",
+        "jev": "start_work"
+      },
+      {
+        "case_id": "switch-independent-work::choice-15",
+        "expected": "switch_work",
+        "laya": "define_direction",
+        "jev": "switch_work"
+      },
+      {
+        "case_id": "switch-independent-work::choice-2",
+        "expected": "switch_work",
+        "laya": "reanalyze",
+        "jev": "switch_work"
+      },
+      {
+        "case_id": "switch-independent-work::choice-4",
+        "expected": "switch_work",
+        "laya": "wait",
+        "jev": "switch_work"
+      },
+      {
+        "case_id": "switch-independent-work::choice-8",
+        "expected": "switch_work",
+        "laya": "define_direction",
+        "jev": "switch_work"
+      },
+      {
+        "case_id": "switch-independent-work::choice-8-shuffled",
+        "expected": "switch_work",
+        "laya": "define_direction",
+        "jev": "switch_work"
+      },
+      {
+        "case_id": "switch-independent-work::nested",
+        "expected": "switch_work",
+        "laya": "define_direction",
+        "jev": "switch_work"
+      },
+      {
+        "case_id": "switch-independent-work::noise-32",
+        "expected": "switch_work",
+        "laya": "define_direction",
+        "jev": "switch_work"
+      },
+      {
+        "case_id": "switch-independent-work::noise-8",
+        "expected": "switch_work",
+        "laya": "define_direction",
+        "jev": "switch_work"
+      },
+      {
+        "case_id": "switch-independent-work::reordered",
+        "expected": "switch_work",
+        "laya": "define_direction",
+        "jev": "switch_work"
+      },
+      {
+        "case_id": "switch-independent-work::text",
+        "expected": "switch_work",
+        "laya": "choose_next_work",
+        "jev": "switch_work"
+      },
+      {
+        "case_id": "wait-running-check::choice-15",
+        "expected": "wait",
+        "laya": "define_direction",
+        "jev": "wait"
+      },
+      {
+        "case_id": "wait-running-check::korean",
+        "expected": "wait",
+        "laya": "start_work",
+        "jev": "wait"
+      },
+      {
+        "case_id": "wait-running-check::reordered",
+        "expected": "wait",
+        "laya": "define_direction",
+        "jev": "wait"
+      },
+      {
+        "case_id": "wait-running-check::text",
+        "expected": "wait",
+        "laya": "inspect",
+        "jev": "wait"
+      }
+    ]
+  },
+  "privacy": {
+    "synthetic_only": true,
+    "absolute_paths_written": false,
+    "source_project_content_copied": false,
+    "api_keys_written": false
+  }
+}

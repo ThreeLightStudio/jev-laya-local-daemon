@@ -146,7 +146,7 @@ The implementation was tested for:
 - reusing one loaded model across multiple requests
 - graceful shutdown with Ctrl+C
 - the `jev-laya-local-daemon` CLI entry point
-- the `python -m jev_laya_local_daemon` entry point
+- the `python3 -m jev_laya_local_daemon` entry point
 - the default bind address being `127.0.0.1`
 
 Unit and integration tests use a mockable model wrapper so they do not download or load the heavyweight checkpoint. The original Laya-only daemon reached:
@@ -752,21 +752,21 @@ DAEMON_PORT=8790 jev-laya-local-daemon
 Run the basic smoke test:
 
 ```bash
-DECISION_API_URL=http://127.0.0.1:8790 python scripts/smoke.py
+DECISION_API_URL=http://127.0.0.1:8790 python3 scripts/smoke.py
 ```
 
 Run the 16-case choice router evaluation:
 
 ```bash
 DECISION_API_URL=http://127.0.0.1:8790 \
-  python scripts/eval_choice_router.py
+  python3 scripts/eval_choice_router.py
 ```
 
 Run the independent binary-signal evaluation:
 
 ```bash
 DECISION_API_URL=http://127.0.0.1:8790 \
-  python scripts/eval_binary_signals.py
+  python3 scripts/eval_binary_signals.py
 ```
 
 For installation, API usage, and port-collision handling, see the project [`README.md`](../README.md).
@@ -809,10 +809,18 @@ localhost /v1/decide
 
 Jev authentication is owned by the daemon environment:
 
+```bash
+cp .env.example .env
+```
+
+Then set the key in the repo-root `.env` file:
+
 ```text
 JEV_API_KEY=...
 JEV_MODEL=jev-latest
 ```
+
+The daemon loads `.env` automatically. If `JEV_API_KEY` is empty, Laya still works and Jev is reported as not configured.
 
 The API key is never part of the caller payload. `GET /v1/providers` reports Laya readiness and whether Jev is configured without exposing the credential.
 

@@ -26,9 +26,9 @@ The expected files are kept separate so the model input never contains the answe
 With `jev-laya-local-daemon` already running:
 
 ```bash
-DECISION_PROVIDER=laya python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-a-noul
-DECISION_PROVIDER=laya python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-b-score
-DECISION_PROVIDER=laya python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-c-robustness
+DECISION_PROVIDER=laya python3 scripts/eval_playground_fixture.py benchmarks/jev-playground/round-a-noul
+DECISION_PROVIDER=laya python3 scripts/eval_playground_fixture.py benchmarks/jev-playground/round-b-score
+DECISION_PROVIDER=laya python3 scripts/eval_playground_fixture.py benchmarks/jev-playground/round-c-robustness
 ```
 
 Set `DECISION_API_URL` when the daemon is not on `http://127.0.0.1:8787`.
@@ -36,17 +36,17 @@ Set `DECISION_API_URL` when the daemon is not on `http://127.0.0.1:8787`.
 When `JEV_API_KEY` is configured on the daemon, replay the exact same compact-state requests through Jev by changing only the provider:
 
 ```bash
-DECISION_PROVIDER=jev python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-a-noul
-DECISION_PROVIDER=jev python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-b-score
-DECISION_PROVIDER=jev python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-c-robustness
+DECISION_PROVIDER=jev python3 scripts/eval_playground_fixture.py benchmarks/jev-playground/round-a-noul
+DECISION_PROVIDER=jev python3 scripts/eval_playground_fixture.py benchmarks/jev-playground/round-b-score
+DECISION_PROVIDER=jev python3 scripts/eval_playground_fixture.py benchmarks/jev-playground/round-c-robustness
 ```
 
 ## Score saved Jev results
 
 ```bash
-python scripts/score_playground_result.py benchmarks/jev-playground/round-a-noul
-python scripts/score_playground_result.py benchmarks/jev-playground/round-b-score
-python scripts/score_playground_result.py benchmarks/jev-playground/round-c-robustness
+python3 scripts/score_playground_result.py benchmarks/jev-playground/round-a-noul
+python3 scripts/score_playground_result.py benchmarks/jev-playground/round-b-score
+python3 scripts/score_playground_result.py benchmarks/jev-playground/round-c-robustness
 ```
 
 Current Jev 1.13.0 snapshot:
