@@ -342,15 +342,15 @@ critical  0.3672</code></pre>
             </p>
           </div>
 
-          <div class="agent-prompt-card">
-            <div class="agent-prompt-header">
-              <div>
-                <span class="agent-prompt-kicker">Agent setup prompt</span>
-                <strong>Copy, paste, run.</strong>
-              </div>
-              <button class="copy-button" type="button" data-copy-target="agent-setup-prompt">Copy prompt</button>
+          <div class="agent-copy-row">
+            <div>
+              <strong>Use a coding agent</strong>
+              <span>Copy one setup prompt and paste it into Codex, Claude Code, or another coding agent.</span>
             </div>
-            <pre class="agent-prompt"><code id="agent-setup-prompt">Set up laya-local-api on this machine from https://github.com/ThreeLightStudio/laya-local-api.
+            <button class="copy-button" type="button" data-copy-target="agent-setup-prompt" aria-live="polite">Copy agent prompt</button>
+          </div>
+
+          <textarea id="agent-setup-prompt" class="copy-source" tabindex="-1" aria-hidden="true">Set up laya-local-api on this machine from https://github.com/ThreeLightStudio/laya-local-api.
 
 If the repository is not already checked out, clone it into an appropriate local development directory. Use Python 3.11–3.13, create a .venv, and install the project with `pip install -e .`.
 
@@ -358,8 +358,7 @@ Start `laya-local-api` bound to a loopback address only. Use port 8787 unless it
 
 Wait until `GET /ready` returns HTTP 200 with `"ready": true`, then run the included `scripts/smoke.py` against the selected endpoint. If you changed the port, set `LAYA_API_URL` for the smoke test. Keep the daemon running after verification if your environment supports a persistent process; otherwise give me the exact command to start it again.
 
-When finished, report the final local API URL, the selected port, the smoke-test result, and how to stop the daemon. Do not bind to 0.0.0.0 or expose the service to the public network.</code></pre>
-          </div>
+When finished, report the final local API URL, the selected port, the smoke-test result, and how to stop the daemon. Do not bind to 0.0.0.0 or expose the service to the public network.</textarea>
 
           <div class="manual-label">
             <span>Prefer to run it yourself?</span>
@@ -421,26 +420,28 @@ pip install -e .</code></pre>
     <script>
       const copyButton = document.querySelector("[data-copy-target]");
 
+      const showCopiedState = () => {
+        const originalLabel = copyButton.textContent;
+        copyButton.textContent = "Copied";
+        copyButton.classList.add("is-copied");
+        window.setTimeout(() => {
+          copyButton.textContent = originalLabel;
+          copyButton.classList.remove("is-copied");
+        }, 1800);
+      };
+
       copyButton?.addEventListener("click", async () => {
         const target = document.getElementById(copyButton.dataset.copyTarget);
-        const prompt = target?.textContent?.trim();
+        const prompt = target?.value?.trim();
         if (!prompt) return;
 
         try {
           await navigator.clipboard.writeText(prompt);
-          const originalLabel = copyButton.textContent;
-          copyButton.textContent = "Copied";
-          copyButton.classList.add("is-copied");
-          window.setTimeout(() => {
-            copyButton.textContent = originalLabel;
-            copyButton.classList.remove("is-copied");
-          }, 1800);
+          showCopiedState();
         } catch {
-          const selection = window.getSelection();
-          const range = document.createRange();
-          range.selectNodeContents(target);
-          selection?.removeAllRanges();
-          selection?.addRange(range);
+          target.focus();
+          target.select();
+          if (document.execCommand("copy")) showCopiedState();
         }
       });
     </script>
