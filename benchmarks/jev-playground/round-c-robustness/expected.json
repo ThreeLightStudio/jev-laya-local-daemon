@@ -1,0 +1,211 @@
+{
+  "primitive": "choice",
+  "strict_cases": 12,
+  "ambiguous_cases": 4,
+  "cases": {
+    "case_01_decision": {
+      "case": "case_01",
+      "expected": "test",
+      "use_for_accuracy": true,
+      "paraphrase_group": "test",
+      "criteria_order": [
+        "resume",
+        "inspect",
+        "reanalyze",
+        "test"
+      ]
+    },
+    "case_02_decision": {
+      "case": "case_02",
+      "expected": "test",
+      "use_for_accuracy": true,
+      "paraphrase_group": "test",
+      "criteria_order": [
+        "test",
+        "reanalyze",
+        "inspect",
+        "resume"
+      ]
+    },
+    "case_03_decision": {
+      "case": "case_03",
+      "expected": "test",
+      "use_for_accuracy": true,
+      "paraphrase_group": "test",
+      "criteria_order": [
+        "inspect",
+        "resume",
+        "test",
+        "reanalyze"
+      ]
+    },
+    "case_04_decision": {
+      "case": "case_04",
+      "expected": "inspect",
+      "use_for_accuracy": true,
+      "paraphrase_group": "inspect",
+      "criteria_order": [
+        "reanalyze",
+        "test",
+        "resume",
+        "inspect"
+      ]
+    },
+    "case_05_decision": {
+      "case": "case_05",
+      "expected": "inspect",
+      "use_for_accuracy": true,
+      "paraphrase_group": "inspect",
+      "criteria_order": [
+        "resume",
+        "inspect",
+        "reanalyze",
+        "test"
+      ]
+    },
+    "case_06_decision": {
+      "case": "case_06",
+      "expected": "inspect",
+      "use_for_accuracy": true,
+      "paraphrase_group": "inspect",
+      "criteria_order": [
+        "test",
+        "reanalyze",
+        "inspect",
+        "resume"
+      ]
+    },
+    "case_07_decision": {
+      "case": "case_07",
+      "expected": "reanalyze",
+      "use_for_accuracy": true,
+      "paraphrase_group": "reanalyze",
+      "criteria_order": [
+        "inspect",
+        "resume",
+        "test",
+        "reanalyze"
+      ]
+    },
+    "case_08_decision": {
+      "case": "case_08",
+      "expected": "reanalyze",
+      "use_for_accuracy": true,
+      "paraphrase_group": "reanalyze",
+      "criteria_order": [
+        "reanalyze",
+        "test",
+        "resume",
+        "inspect"
+      ]
+    },
+    "case_09_decision": {
+      "case": "case_09",
+      "expected": "reanalyze",
+      "use_for_accuracy": true,
+      "paraphrase_group": "reanalyze",
+      "criteria_order": [
+        "resume",
+        "inspect",
+        "reanalyze",
+        "test"
+      ]
+    },
+    "case_10_decision": {
+      "case": "case_10",
+      "expected": "resume",
+      "use_for_accuracy": true,
+      "paraphrase_group": "resume",
+      "criteria_order": [
+        "test",
+        "reanalyze",
+        "inspect",
+        "resume"
+      ]
+    },
+    "case_11_decision": {
+      "case": "case_11",
+      "expected": "resume",
+      "use_for_accuracy": true,
+      "paraphrase_group": "resume",
+      "criteria_order": [
+        "inspect",
+        "resume",
+        "test",
+        "reanalyze"
+      ]
+    },
+    "case_12_decision": {
+      "case": "case_12",
+      "expected": "resume",
+      "use_for_accuracy": true,
+      "paraphrase_group": "resume",
+      "criteria_order": [
+        "reanalyze",
+        "test",
+        "resume",
+        "inspect"
+      ]
+    },
+    "case_13_decision": {
+      "case": "case_13",
+      "preferred": "resume",
+      "plausible_alternatives": [
+        "test"
+      ],
+      "use_for_accuracy": false,
+      "note": "The only failing tests are known unrelated flakes; confidence should ideally reflect that conflict.",
+      "criteria_order": [
+        "resume",
+        "inspect",
+        "reanalyze",
+        "test"
+      ]
+    },
+    "case_14_decision": {
+      "case": "case_14",
+      "preferred": "inspect",
+      "plausible_alternatives": [
+        "resume"
+      ],
+      "use_for_accuracy": false,
+      "note": "The untracked file may be harmless generated output, so inspect is preferred but resume is plausible.",
+      "criteria_order": [
+        "test",
+        "reanalyze",
+        "inspect",
+        "resume"
+      ]
+    },
+    "case_15_decision": {
+      "case": "case_15",
+      "preferred": "reanalyze",
+      "plausible_alternatives": [
+        "test"
+      ],
+      "use_for_accuracy": false,
+      "note": "Both stale architecture understanding and failing tests matter; probability spread is more informative than top-1.",
+      "criteria_order": [
+        "inspect",
+        "resume",
+        "test",
+        "reanalyze"
+      ]
+    },
+    "case_16_decision": {
+      "case": "case_16",
+      "preferred": "test",
+      "plausible_alternatives": [
+        "resume"
+      ],
+      "use_for_accuracy": false,
+      "note": "The failure is external rather than a code defect; test is the closest available action but resume is plausible.",
+      "criteria_order": [
+        "reanalyze",
+        "test",
+        "resume",
+        "inspect"
+      ]
+    }
+  }
+}

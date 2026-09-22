@@ -1,0 +1,98 @@
+{
+  "case_01": {
+    "tests": "47 tests are failing and block validation.",
+    "implementation": "The feature implementation is complete.",
+    "repository": "All working-tree changes are understood.",
+    "analysis": "The project analysis is fresh."
+  },
+  "case_02": {
+    "tests": "The test suite currently reports forty-seven failures, so validation cannot finish.",
+    "implementation": "No additional feature code is needed.",
+    "repository": "There are no unexplained local changes.",
+    "analysis": "The current analysis still matches the repository."
+  },
+  "case_03": {
+    "tests": "Validation is blocked because 47 tests fail consistently.",
+    "implementation": "The intended implementation has already been made.",
+    "repository": "Every local modification is expected.",
+    "analysis": "No reanalysis is necessary."
+  },
+  "case_04": {
+    "tests": "All tests pass.",
+    "implementation": "There is no unfinished implementation step.",
+    "repository": "Several uncommitted files appeared and their origin is unknown.",
+    "analysis": "The project analysis is fresh."
+  },
+  "case_05": {
+    "tests": "The suite is green.",
+    "implementation": "No coding step is currently waiting to be resumed.",
+    "repository": "Unexpected local modifications are present and were not part of the current task.",
+    "analysis": "The stored analysis is still valid."
+  },
+  "case_06": {
+    "tests": "There are no known test failures.",
+    "implementation": "Work should not continue until the working tree is understood.",
+    "repository": "Source files changed locally for an unknown reason.",
+    "analysis": "The analysis itself is recent."
+  },
+  "case_07": {
+    "tests": "All tests pass.",
+    "implementation": "There is no unfinished implementation to continue.",
+    "repository": "The repository state is understood.",
+    "analysis": "The stored analysis predates a major architectural refactor and is no longer trustworthy."
+  },
+  "case_08": {
+    "tests": "No failing tests require attention.",
+    "implementation": "There is no immediate code change to make.",
+    "repository": "Current changes are known.",
+    "analysis": "Many important files changed after the analysis was created, so it no longer represents the project."
+  },
+  "case_09": {
+    "tests": "Tests are green.",
+    "implementation": "Safe implementation requires an accurate understanding of the new architecture.",
+    "repository": "A large intentional refactor changed the project structure.",
+    "analysis": "The current analysis describes the pre-refactor structure."
+  },
+  "case_10": {
+    "tests": "All tests pass.",
+    "implementation": "The feature is unfinished and the exact next code change is known.",
+    "repository": "There are no unexplained changes.",
+    "analysis": "The project analysis is fresh."
+  },
+  "case_11": {
+    "tests": "There are no failing tests.",
+    "implementation": "Work stopped halfway through a clearly defined task and can continue immediately.",
+    "repository": "All current changes are expected.",
+    "analysis": "The analysis accurately represents the project."
+  },
+  "case_12": {
+    "tests": "The existing suite is green.",
+    "implementation": "A concrete unfinished step is ready to execute now.",
+    "repository": "The working-tree state is understood.",
+    "analysis": "No reanalysis is necessary."
+  },
+  "case_13": {
+    "tests": "Two tests fail, but both are documented flaky tests unrelated to the active task.",
+    "implementation": "The active feature is unfinished and its next code change is clear.",
+    "repository": "All local changes are expected.",
+    "analysis": "The analysis is fresh."
+  },
+  "case_14": {
+    "tests": "Tests pass.",
+    "implementation": "The previous task is complete.",
+    "repository": "One new untracked file appeared, but it looks like a generated build artifact. Its origin has not been confirmed.",
+    "analysis": "The analysis is a few hours old and no source files changed after it."
+  },
+  "case_15": {
+    "tests": "Several tests fail after a large intentional refactor.",
+    "implementation": "The refactor itself is complete enough to validate, but follow-up fixes may still be needed.",
+    "repository": "All refactor changes are known.",
+    "analysis": "The stored analysis describes the project before the refactor."
+  },
+  "case_16": {
+    "tests": "One integration test fails because a third-party sandbox is unavailable.",
+    "implementation": "The feature implementation is complete.",
+    "repository": "The repository is clean.",
+    "analysis": "The project analysis is fresh."
+  }
+}

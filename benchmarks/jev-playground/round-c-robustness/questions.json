@@ -1,0 +1,162 @@
+{
+  "case_01_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_01. Choose the single next action justified by that case.",
+    "criteria": {
+      "resume": "Continue unfinished implementation work",
+      "inspect": "Inspect unexplained repository changes",
+      "reanalyze": "Refresh the stale project analysis",
+      "test": "Investigate and fix failing tests"
+    }
+  },
+  "case_02_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_02. Choose the single next action justified by that case.",
+    "criteria": {
+      "test": "Investigate and fix failing tests",
+      "reanalyze": "Refresh the stale project analysis",
+      "inspect": "Inspect unexplained repository changes",
+      "resume": "Continue unfinished implementation work"
+    }
+  },
+  "case_03_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_03. Choose the single next action justified by that case.",
+    "criteria": {
+      "inspect": "Inspect unexplained repository changes",
+      "resume": "Continue unfinished implementation work",
+      "test": "Investigate and fix failing tests",
+      "reanalyze": "Refresh the stale project analysis"
+    }
+  },
+  "case_04_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_04. Choose the single next action justified by that case.",
+    "criteria": {
+      "reanalyze": "Refresh the stale project analysis",
+      "test": "Investigate and fix failing tests",
+      "resume": "Continue unfinished implementation work",
+      "inspect": "Inspect unexplained repository changes"
+    }
+  },
+  "case_05_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_05. Choose the single next action justified by that case.",
+    "criteria": {
+      "resume": "Continue unfinished implementation work",
+      "inspect": "Inspect unexplained repository changes",
+      "reanalyze": "Refresh the stale project analysis",
+      "test": "Investigate and fix failing tests"
+    }
+  },
+  "case_06_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_06. Choose the single next action justified by that case.",
+    "criteria": {
+      "test": "Investigate and fix failing tests",
+      "reanalyze": "Refresh the stale project analysis",
+      "inspect": "Inspect unexplained repository changes",
+      "resume": "Continue unfinished implementation work"
+    }
+  },
+  "case_07_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_07. Choose the single next action justified by that case.",
+    "criteria": {
+      "inspect": "Inspect unexplained repository changes",
+      "resume": "Continue unfinished implementation work",
+      "test": "Investigate and fix failing tests",
+      "reanalyze": "Refresh the stale project analysis"
+    }
+  },
+  "case_08_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_08. Choose the single next action justified by that case.",
+    "criteria": {
+      "reanalyze": "Refresh the stale project analysis",
+      "test": "Investigate and fix failing tests",
+      "resume": "Continue unfinished implementation work",
+      "inspect": "Inspect unexplained repository changes"
+    }
+  },
+  "case_09_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_09. Choose the single next action justified by that case.",
+    "criteria": {
+      "resume": "Continue unfinished implementation work",
+      "inspect": "Inspect unexplained repository changes",
+      "reanalyze": "Refresh the stale project analysis",
+      "test": "Investigate and fix failing tests"
+    }
+  },
+  "case_10_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_10. Choose the single next action justified by that case.",
+    "criteria": {
+      "test": "Investigate and fix failing tests",
+      "reanalyze": "Refresh the stale project analysis",
+      "inspect": "Inspect unexplained repository changes",
+      "resume": "Continue unfinished implementation work"
+    }
+  },
+  "case_11_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_11. Choose the single next action justified by that case.",
+    "criteria": {
+      "inspect": "Inspect unexplained repository changes",
+      "resume": "Continue unfinished implementation work",
+      "test": "Investigate and fix failing tests",
+      "reanalyze": "Refresh the stale project analysis"
+    }
+  },
+  "case_12_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_12. Choose the single next action justified by that case.",
+    "criteria": {
+      "reanalyze": "Refresh the stale project analysis",
+      "test": "Investigate and fix failing tests",
+      "resume": "Continue unfinished implementation work",
+      "inspect": "Inspect unexplained repository changes"
+    }
+  },
+  "case_13_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_13. Choose the single next action justified by that case.",
+    "criteria": {
+      "resume": "Continue unfinished implementation work",
+      "inspect": "Inspect unexplained repository changes",
+      "reanalyze": "Refresh the stale project analysis",
+      "test": "Investigate and fix failing tests"
+    }
+  },
+  "case_14_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_14. Choose the single next action justified by that case.",
+    "criteria": {
+      "test": "Investigate and fix failing tests",
+      "reanalyze": "Refresh the stale project analysis",
+      "inspect": "Inspect unexplained repository changes",
+      "resume": "Continue unfinished implementation work"
+    }
+  },
+  "case_15_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_15. Choose the single next action justified by that case.",
+    "criteria": {
+      "inspect": "Inspect unexplained repository changes",
+      "resume": "Continue unfinished implementation work",
+      "test": "Investigate and fix failing tests",
+      "reanalyze": "Refresh the stale project analysis"
+    }
+  },
+  "case_16_decision": {
+    "type": "choice",
+    "instructions": "Consider only state.case_16. Choose the single next action justified by that case.",
+    "criteria": {
+      "reanalyze": "Refresh the stale project analysis",
+      "test": "Investigate and fix failing tests",
+      "resume": "Continue unfinished implementation work",
+      "inspect": "Inspect unexplained repository changes"
+    }
+  }
+}

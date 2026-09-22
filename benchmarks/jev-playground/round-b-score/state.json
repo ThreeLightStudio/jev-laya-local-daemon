@@ -1,0 +1,66 @@
+{
+  "case_01": {
+    "domain": "documentation",
+    "state": "A typo appears in an internal README. It does not affect a release, runtime behavior, or customer-facing documentation."
+  },
+  "case_02": {
+    "domain": "analytics",
+    "state": "A nightly analytics export is delayed by twenty minutes. Dashboards still show yesterday’s complete data and no operational workflow depends on the export."
+  },
+  "case_03": {
+    "domain": "developer-tools",
+    "state": "A non-blocking formatter check reports whitespace changes in generated fixtures. Build and tests pass."
+  },
+  "case_04": {
+    "domain": "infrastructure",
+    "state": "A cache warm-up job missed one scheduled run. Requests continue to succeed with a small temporary latency increase."
+  },
+  "case_05": {
+    "domain": "developer-tools",
+    "state": "Two flaky integration tests failed on a feature branch. They are not release-blocking, but the failure should be investigated during normal development."
+  },
+  "case_06": {
+    "domain": "webhooks",
+    "state": "A partner webhook delivery failed twice and is retrying automatically. No customer action is blocked yet."
+  },
+  "case_07": {
+    "domain": "analysis",
+    "state": "The project analysis is a day old and several small files changed, but the current task is still understandable and tests pass."
+  },
+  "case_08": {
+    "domain": "service-health",
+    "state": "A non-critical internal service is degraded for one team. A workaround exists and there is no data loss."
+  },
+  "case_09": {
+    "domain": "release",
+    "state": "Multiple integration tests fail consistently and the failures block today’s planned release."
+  },
+  "case_10": {
+    "domain": "repository",
+    "state": "Unexpected source changes appeared in the release branch shortly before deployment. Their origin is not known."
+  },
+  "case_11": {
+    "domain": "billing",
+    "state": "A subset of customers see incorrect invoice totals. Charges have not been collected yet, but billing closes later today."
+  },
+  "case_12": {
+    "domain": "production",
+    "state": "A production API is returning errors for roughly fifteen percent of requests. The rest of the service remains available."
+  },
+  "case_13": {
+    "domain": "security",
+    "state": "A production credential is actively being used from an unauthorized network and privileged actions are visible in the audit log."
+  },
+  "case_14": {
+    "domain": "database",
+    "state": "A deployment is deleting production records faster than expected and the deletion is still running."
+  },
+  "case_15": {
+    "domain": "outage",
+    "state": "The primary customer-facing service is unavailable across all regions and there is no working failover."
+  },
+  "case_16": {
+    "domain": "security",
+    "state": "Sensitive customer records are being transferred to an external destination that is not approved, and the transfer is currently in progress."
+  }
+}

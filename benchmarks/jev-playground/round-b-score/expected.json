@@ -1,0 +1,107 @@
+{
+  "primitive": "score",
+  "scale": [
+    "low",
+    "medium",
+    "high",
+    "critical"
+  ],
+  "cases": {
+    "case_01_decision": {
+      "case": "case_01",
+      "expected_level": "low",
+      "expected_index": 0,
+      "use_for_accuracy": true
+    },
+    "case_02_decision": {
+      "case": "case_02",
+      "expected_level": "low",
+      "expected_index": 0,
+      "use_for_accuracy": true
+    },
+    "case_03_decision": {
+      "case": "case_03",
+      "expected_level": "low",
+      "expected_index": 0,
+      "use_for_accuracy": true
+    },
+    "case_04_decision": {
+      "case": "case_04",
+      "expected_level": "low",
+      "expected_index": 0,
+      "use_for_accuracy": true
+    },
+    "case_05_decision": {
+      "case": "case_05",
+      "expected_level": "medium",
+      "expected_index": 1,
+      "use_for_accuracy": true
+    },
+    "case_06_decision": {
+      "case": "case_06",
+      "expected_level": "medium",
+      "expected_index": 1,
+      "use_for_accuracy": true
+    },
+    "case_07_decision": {
+      "case": "case_07",
+      "expected_level": "medium",
+      "expected_index": 1,
+      "use_for_accuracy": true
+    },
+    "case_08_decision": {
+      "case": "case_08",
+      "expected_level": "medium",
+      "expected_index": 1,
+      "use_for_accuracy": true
+    },
+    "case_09_decision": {
+      "case": "case_09",
+      "expected_level": "high",
+      "expected_index": 2,
+      "use_for_accuracy": true
+    },
+    "case_10_decision": {
+      "case": "case_10",
+      "expected_level": "high",
+      "expected_index": 2,
+      "use_for_accuracy": true
+    },
+    "case_11_decision": {
+      "case": "case_11",
+      "expected_level": "high",
+      "expected_index": 2,
+      "use_for_accuracy": true
+    },
+    "case_12_decision": {
+      "case": "case_12",
+      "expected_level": "high",
+      "expected_index": 2,
+      "use_for_accuracy": true
+    },
+    "case_13_decision": {
+      "case": "case_13",
+      "expected_level": "critical",
+      "expected_index": 3,
+      "use_for_accuracy": true
+    },
+    "case_14_decision": {
+      "case": "case_14",
+      "expected_level": "critical",
+      "expected_index": 3,
+      "use_for_accuracy": true
+    },
+    "case_15_decision": {
+      "case": "case_15",
+      "expected_level": "critical",
+      "expected_index": 3,
+      "use_for_accuracy": true
+    },
+    "case_16_decision": {
+      "case": "case_16",
+      "expected_level": "critical",
+      "expected_index": 3,
+      "use_for_accuracy": true
+    }
+  }
+}

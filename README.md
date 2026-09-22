@@ -22,6 +22,8 @@ The default checkpoint is `convaiinnovations/laya` with the `typed-decisions` su
 
 For the full background, evaluation process, results, and recommended usage patterns, see [Laya experiment: from a local decision model to a reusable localhost daemon](docs/laya-experiment.md).
 
+For reproducible Jev Playground comparisons, see [`benchmarks/jev-playground/`](benchmarks/jev-playground/). Each round keeps `state.json`, `questions.json`, and the hidden-from-model `expected.json` answer key separate for easy copy/paste testing.
+
 ## GitHub Pages site
 
 The project landing page is a dependency-free static site in [`docs/`](docs/). GitHub Pages can publish it directly from the `main` branch `/docs` folder.

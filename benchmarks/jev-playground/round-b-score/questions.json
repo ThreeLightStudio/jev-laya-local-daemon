@@ -1,0 +1,162 @@
+{
+  "case_01_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_01. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  },
+  "case_02_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_02. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  },
+  "case_03_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_03. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  },
+  "case_04_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_04. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  },
+  "case_05_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_05. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  },
+  "case_06_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_06. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  },
+  "case_07_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_07. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  },
+  "case_08_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_08. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  },
+  "case_09_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_09. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  },
+  "case_10_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_10. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  },
+  "case_11_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_11. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  },
+  "case_12_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_12. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  },
+  "case_13_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_13. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  },
+  "case_14_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_14. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  },
+  "case_15_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_15. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  },
+  "case_16_decision": {
+    "type": "score",
+    "instructions": "Consider only state.case_16. How urgent is this situation for the team responsible for it?",
+    "criteria": [
+      "Low: routine work that can wait without meaningful harm.",
+      "Medium: should be handled in normal near-term work, but no immediate intervention is required.",
+      "High: needs prompt attention because users, a release, money, or production reliability are materially affected.",
+      "Critical: immediate intervention is required to stop active severe harm, broad outage, data loss, or security compromise."
+    ]
+  }
+}

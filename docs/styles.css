@@ -251,6 +251,35 @@ h3 {
   font-size: 0.88rem;
 }
 
+.model-source-links {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.model-source-links > span {
+  font-family: "SFMono-Regular", Consolas, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+}
+
+.model-source-links a {
+  color: var(--muted-strong);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 3px;
+}
+
+.model-source-links a:hover,
+.model-source-links a:focus-visible {
+  color: var(--text);
+}
+
 .hero-console {
   position: relative;
   overflow: hidden;
@@ -556,6 +585,10 @@ h3 {
   margin: 16px 0 0;
   color: var(--muted);
   font-size: 0.8rem;
+}
+
+.comparison-actions {
+  margin-bottom: 0;
 }
 
 .version-tags {
