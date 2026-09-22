@@ -1,13 +1,13 @@
-# laya-api
+# laya-local-api
 
-`laya-api` keeps one local Laya decision model loaded in memory and exposes it through a small HTTP API on localhost.
+`laya-local-api` keeps one local Laya decision model loaded in memory and exposes it through a small HTTP API on localhost.
 
 ```text
 TypeScript / Python / other apps
              ↓ HTTP
       http://127.0.0.1:8787
              ↓
-          laya-api
+          laya-local-api
              ↓
             Laya
              ↓
@@ -18,6 +18,22 @@ The default checkpoint is `convaiinnovations/laya` with the `typed-decisions` su
 
 > Do not expose this daemon directly to the public internet.
 
+## Experiment notes
+
+For the full background, evaluation process, results, and recommended usage patterns, see [Laya experiment: from a local decision model to a reusable localhost daemon](docs/laya-experiment.md).
+
+## GitHub Pages site
+
+The project landing page is a dependency-free static site in [`docs/`](docs/). GitHub Pages can publish it directly from the `main` branch `/docs` folder.
+
+For a local preview:
+
+```bash
+python3 -m http.server 8808 --directory docs
+```
+
+Then open `http://127.0.0.1:8808/`.
+
 ## Quick start
 
 From the project directory:
@@ -26,7 +42,7 @@ From the project directory:
 python3.13 -m venv .venv
 source .venv/bin/activate
 pip install -e .
-laya-api
+laya-local-api
 ```
 
 The first run downloads the Laya checkpoint from Hugging Face, so model startup takes longer the first time. The tested `typed-decisions` checkpoint downloaded about 847 MB. Later starts reuse the local cache.
@@ -80,13 +96,13 @@ pytest
 ## Run
 
 ```bash
-laya-api
+laya-local-api
 ```
 
 The module entry point works too:
 
 ```bash
-python -m laya_api
+python -m laya_local_api
 ```
 
 Startup begins listening immediately while the model loads once in a daemon thread. During that time `/health` is available and `/ready` returns HTTP 503. When loading finishes, `/ready` returns HTTP 200 and all subsequent requests reuse the same in-memory agent.
@@ -94,7 +110,7 @@ Startup begins listening immediately while the model loads once in a daemon thre
 Typical startup output looks like this:
 
 ```text
-Laya API
+Laya Local API
 Model: convaiinnovations/laya/typed-decisions
 Listening: http://127.0.0.1:8787
 Status: loading
@@ -117,7 +133,7 @@ LAYA_DEVICE=
 Example override:
 
 ```bash
-LAYA_PORT=8790 LAYA_DEVICE=mps laya-api
+LAYA_PORT=8790 LAYA_DEVICE=mps laya-local-api
 ```
 
 `LAYA_HOST` is intentionally restricted to loopback addresses (`127.0.0.1`, `localhost`, or `::1`). `0.0.0.0` is rejected.
@@ -160,7 +176,7 @@ lsof -nP -iTCP:8787 -sTCP:LISTEN
 If you want to keep the other service running, use another local port instead. `8790` is a convenient example:
 
 ```bash
-LAYA_PORT=8790 laya-api
+LAYA_PORT=8790 laya-local-api
 ```
 
 Then use the same port in every caller:
@@ -405,7 +421,7 @@ const response = await fetch("http://127.0.0.1:8787/v1/decide", {
 });
 
 if (!response.ok) {
-  throw new Error(`laya-api failed: ${response.status} ${await response.text()}`);
+  throw new Error(`laya-local-api failed: ${response.status} ${await response.text()}`);
 }
 
 const result = await response.json();
@@ -485,7 +501,7 @@ If model loading fails, `/health` remains 200 and `/ready` returns 503 with `sta
 
 `Ctrl+C` and `SIGTERM` use Uvicorn's normal graceful shutdown path. Laya 0.3.5 does not expose an Agent `close()` or `unload()` method, so the daemon drops its model reference during shutdown and lets Python/PyTorch release resources with the process.
 
-## Current Laya API used here
+## Current Laya package API used here
 
 This project is pinned to `laya==0.3.5`. The implementation was checked against the installed package, where the relevant APIs are:
 

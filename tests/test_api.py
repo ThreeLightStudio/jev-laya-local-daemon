@@ -4,9 +4,9 @@ import time
 
 from fastapi.testclient import TestClient
 
-from laya_api.app import create_app
-from laya_api.config import Settings
-from laya_api.model import ModelRuntime
+from laya_local_api.app import create_app
+from laya_local_api.config import Settings
+from laya_local_api.model import ModelRuntime
 
 
 class FakeAgent:
@@ -216,4 +216,3 @@ def test_load_failure_keeps_health_up_and_ready_false() -> None:
         assert response.status_code == 503
         assert response.json()["ready"] is False
         assert response.json()["status"] == "failed"
-

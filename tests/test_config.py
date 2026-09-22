@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from laya_api.config import Settings
+from laya_local_api.config import Settings
 
 
 def test_default_host_is_loopback() -> None:
@@ -11,4 +11,3 @@ def test_default_host_is_loopback() -> None:
 def test_non_loopback_host_is_rejected() -> None:
     with pytest.raises(ValidationError):
         Settings(host="0.0.0.0")
-

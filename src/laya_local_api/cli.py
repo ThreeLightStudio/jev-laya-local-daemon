@@ -14,7 +14,7 @@ def main() -> None:
     settings = Settings.from_env()
     runtime = ModelRuntime(settings)
 
-    print("Laya API")
+    print("Laya Local API")
     print(f"Model: {settings.model_label}")
     print(f"Listening: http://{settings.host}:{settings.port}")
     print("Status: loading")
@@ -25,4 +25,3 @@ def main() -> None:
         port=settings.port,
         log_level="info",
     )
-

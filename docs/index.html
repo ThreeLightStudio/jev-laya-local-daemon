@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="laya-local-api keeps Laya running once on your computer and lets local apps ask it small decision questions over HTTP."
+    />
+    <meta name="theme-color" content="#0a0b0d" />
+    <title>laya-local-api — Run Laya once, call it locally</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="#top" aria-label="laya-local-api home">
+          <span class="brand-mark" aria-hidden="true">λ</span>
+          <span>laya-local-api</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="#evidence">What we learned</a>
+          <a href="#pattern">How to use it</a>
+          <a href="#run">Run locally</a>
+          <a href="https://github.com/ThreeLightStudio/laya-local-api/blob/main/docs/laya-experiment.md">Experiment notes</a>
+          <a href="https://github.com/ThreeLightStudio/laya-local-api">GitHub</a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero section-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Run Laya locally · call it over HTTP</p>
+            <h1>Load Laya once.<br />Reuse it from any local app.</h1>
+            <p class="hero-lede">
+              Laya is a small local model built to make decisions instead of writing long answers.
+              <code>laya-local-api</code> starts it once, keeps it in memory, and lets any local app ask it simple
+              questions over HTTP.
+            </p>
+
+            <div class="hero-actions">
+              <a class="button button-primary" href="#run">Run locally</a>
+              <a class="button button-secondary" href="https://github.com/ThreeLightStudio/laya-local-api">View on GitHub</a>
+            </div>
+
+            <dl class="runtime-strip" aria-label="Runtime facts">
+              <div>
+                <dt>Model</dt>
+                <dd>Laya 0.3.5</dd>
+              </div>
+              <div>
+                <dt>Model setup</dt>
+                <dd>typed-decisions</dd>
+              </div>
+              <div>
+                <dt>Tested on</dt>
+                <dd>Apple Silicon · MPS</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="hero-console" aria-label="Example laya-local-api response">
+            <div class="console-bar">
+              <span class="console-dot"></span>
+              <span class="console-label">POST /v1/decide</span>
+              <span class="status-pill">200</span>
+            </div>
+            <pre><code>{
+  "state": {
+    "tests": "47 tests are failing",
+    "analysis": "fresh"
+  },
+  "questions": {
+    "next_action": {
+      "type": "choice",
+      "criteria": {
+        "resume": "Continue work",
+        "inspect": "Inspect changes",
+        "reanalyze": "Refresh analysis",
+        "test": "Fix failing tests"
+      }
+    }
+  }
+}</code></pre>
+            <div class="console-result">
+              <span>→</span>
+              <strong>test</strong>
+              <span class="muted">0.35 top probability</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="section architecture" aria-labelledby="architecture-title">
+          <div class="section-heading">
+            <p class="eyebrow">Why this exists</p>
+            <h2 id="architecture-title">Start Laya once. Use it from any local app.</h2>
+            <p>
+              Laya normally runs inside Python. Without <code>laya-local-api</code>, every project would need to load the
+              model and manage Python itself. This project moves that work into one small local server that stays
+              running and can be shared by your other apps.
+            </p>
+          </div>
+
+          <div class="architecture-flow" role="img" aria-label="Your app calls laya-local-api over HTTP, which calls Laya locally">
+            <div class="flow-node">
+              <span class="flow-kicker">Your code</span>
+              <strong>Your app</strong>
+              <span>TypeScript · Python · Electron</span>
+            </div>
+            <div class="flow-arrow"><span>HTTP</span>→</div>
+            <div class="flow-node flow-node-accent">
+              <span class="flow-kicker">Local server</span>
+              <strong>laya-local-api</strong>
+              <span>127.0.0.1:8787</span>
+            </div>
+            <div class="flow-arrow"><span>local</span>→</div>
+            <div class="flow-node">
+              <span class="flow-kicker">Model</span>
+              <strong>Laya</strong>
+              <span>typed-decisions</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="section primitives" aria-labelledby="primitives-title">
+          <div class="section-heading compact">
+            <p class="eyebrow">Three kinds of decisions</p>
+            <h2 id="primitives-title">Ask a small question. Get a structured answer.</h2>
+          </div>
+
+          <div class="card-grid three-up">
+            <article class="primitive-card">
+              <div class="primitive-icon">01</div>
+              <h3><code>choice</code></h3>
+              <p>Pick one option from a short list and get a probability for every option.</p>
+              <pre><code>resume     0.22
+inspect    0.24
+reanalyze  0.19
+test       0.35  ←</code></pre>
+            </article>
+
+            <article class="primitive-card">
+              <div class="primitive-icon">02</div>
+              <h3><code>noul</code></h3>
+              <p>Ask a yes/no question and get how strongly Laya leans toward “yes.” Your app decides the cutoff.</p>
+              <pre><code>{
+  "noul": 0.4011,
+  "confidence": 0.5989
+}</code></pre>
+            </article>
+
+            <article class="primitive-card">
+              <div class="primitive-icon">03</div>
+              <h3><code>score</code></h3>
+              <p>Rate something on an ordered scale, such as ignore → normal → urgent → critical.</p>
+              <pre><code>ignore    0.0436
+normal    0.1200
+urgent    0.4692
+critical  0.3672</code></pre>
+            </article>
+          </div>
+        </section>
+
+        <section id="evidence" class="section evidence" aria-labelledby="evidence-title">
+          <div class="section-heading">
+            <p class="eyebrow">What we actually tested</p>
+            <h2 id="evidence-title">The useful discovery: wording matters.</h2>
+            <p>
+              When we passed raw flags and numbers, Laya's answers barely changed. When we described what those
+              facts meant in short plain-language sentences, the model reacted much more clearly.
+            </p>
+          </div>
+
+          <div class="before-after">
+            <article class="comparison-panel comparison-muted">
+              <span class="comparison-label">Raw data</span>
+              <pre><code>{
+  "git_dirty": true,
+  "analysis_age_minutes": 240
+}</code></pre>
+              <div class="comparison-result">
+                <span>reanalyze</span>
+                <strong>0.5326</strong>
+                <small>the answer barely changed from 5 → 240 minutes</small>
+              </div>
+            </article>
+
+            <div class="comparison-arrow" aria-hidden="true">→</div>
+
+            <article class="comparison-panel comparison-strong">
+              <span class="comparison-label">Plain-language state</span>
+              <pre><code>{
+  "analysis": "The current analysis
+  predates major architectural changes
+  and is no longer trustworthy."
+}</code></pre>
+              <div class="comparison-result">
+                <span>Result</span>
+                <strong>clearer reaction</strong>
+                <small>the meaning is stated directly</small>
+              </div>
+            </article>
+          </div>
+
+          <div class="eval-panel">
+            <div class="eval-score">
+              <span class="score-value">87.5%</span>
+              <span class="score-caption">Picked the expected action</span>
+              <span class="score-detail">14 / 16 small decision examples</span>
+            </div>
+
+            <div class="eval-breakdown" aria-label="Choice router evaluation breakdown">
+              <div class="eval-row">
+                <span>test</span>
+                <div class="bar-track"><span class="bar-fill" style="width: 100%"></span></div>
+                <strong>4/4</strong>
+              </div>
+              <div class="eval-row">
+                <span>reanalyze</span>
+                <div class="bar-track"><span class="bar-fill" style="width: 100%"></span></div>
+                <strong>4/4</strong>
+              </div>
+              <div class="eval-row">
+                <span>inspect</span>
+                <div class="bar-track"><span class="bar-fill" style="width: 75%"></span></div>
+                <strong>3/4</strong>
+              </div>
+              <div class="eval-row">
+                <span>resume</span>
+                <div class="bar-track"><span class="bar-fill" style="width: 75%"></span></div>
+                <strong>3/4</strong>
+              </div>
+            </div>
+          </div>
+
+          <p class="evidence-note">
+            This is a small hand-built test, not a general benchmark. The goal was to see how Laya behaves inside
+            an app, where it gets confused, and what kinds of decisions it can help with.
+          </p>
+        </section>
+
+        <section id="pattern" class="section pattern" aria-labelledby="pattern-title">
+          <div class="section-heading">
+            <p class="eyebrow">How to use it</p>
+            <h2 id="pattern-title">Let normal code gather facts. Give Laya one clear, small decision.</h2>
+            <p>
+              The model worked best after the app had already gathered the facts and turned them into a short,
+              clear description of the current situation.
+            </p>
+          </div>
+
+          <div class="pipeline">
+            <div class="pipeline-step">
+              <span>1</span>
+              <strong>Gather facts</strong>
+              <p>Git state, tests, known changes, how old the analysis is.</p>
+            </div>
+            <div class="pipeline-link">→</div>
+            <div class="pipeline-step">
+              <span>2</span>
+              <strong>Explain them simply</strong>
+              <p>Use simple templates to turn raw facts into short sentences.</p>
+            </div>
+            <div class="pipeline-link">→</div>
+            <div class="pipeline-step pipeline-step-accent">
+              <span>3</span>
+              <strong>Ask Laya</strong>
+              <p>Ask it to pick one option, rate something, or answer yes/no.</p>
+            </div>
+            <div class="pipeline-link">→</div>
+            <div class="pipeline-step">
+              <span>4</span>
+              <strong>Decide what to do</strong>
+              <p>Your app owns the cutoff, fallback, and final action.</p>
+            </div>
+          </div>
+
+          <div class="callout">
+            <p class="callout-quote">
+              “Code gathers the facts. Simple templates explain what they mean. Laya handles the small decision.
+              Your app decides what to do with the answer.”
+            </p>
+          </div>
+        </section>
+
+        <section class="section limits" aria-labelledby="limits-title">
+          <div class="section-heading compact">
+            <p class="eyebrow">What it is good at</p>
+            <h2 id="limits-title">Use it for narrow decisions, not as a tiny all-purpose AI.</h2>
+          </div>
+
+          <div class="split-list">
+            <div>
+              <h3>Good fit</h3>
+              <ul class="check-list">
+                <li>Choosing one of a few known next actions</li>
+                <li>Retry / skip / inspect / escalate decisions</li>
+                <li>A cheap first check before calling a larger model</li>
+                <li>Small handoff decisions between AI workers</li>
+                <li>Choosing what to do first from a short summary</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Poor fit</h3>
+              <ul class="dash-list">
+                <li>Understanding an entire project from scratch</li>
+                <li>Long-form generation</li>
+                <li>Problems that need many reasoning steps</li>
+                <li>Figuring out rich meaning from raw numbers and flags alone</li>
+                <li>Treating one probability as a universal confidence score</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="section specs" aria-label="Observed runtime facts">
+          <div class="spec-card">
+            <span>≈ 847 MB</span>
+            <small>first model download we observed</small>
+          </div>
+          <div class="spec-card">
+            <span>≈ 1.0–1.2 GiB</span>
+            <small>memory used after loading</small>
+          </div>
+          <div class="spec-card">
+            <span>0.00B</span>
+            <small>extra download after the model was already cached</small>
+          </div>
+          <div class="spec-card">
+            <span>7 passed</span>
+            <small>API unit / integration tests</small>
+          </div>
+        </section>
+
+        <section id="run" class="section run" aria-labelledby="run-title">
+          <div class="section-heading">
+            <p class="eyebrow">Run it locally</p>
+            <h2 id="run-title">Start one local server. Then call it like any HTTP API.</h2>
+            <p>By default it only listens on your own computer at <code>127.0.0.1</code>.</p>
+          </div>
+
+          <div class="run-grid">
+            <div class="run-step">
+              <span class="run-number">01</span>
+              <h3>Install</h3>
+              <pre><code>python3.13 -m venv .venv
+source .venv/bin/activate
+pip install -e .</code></pre>
+            </div>
+            <div class="run-step">
+              <span class="run-number">02</span>
+              <h3>Start</h3>
+              <pre><code>laya-local-api</code></pre>
+            </div>
+            <div class="run-step">
+              <span class="run-number">03</span>
+              <h3>Check</h3>
+              <pre><code>curl http://127.0.0.1:8787/ready</code></pre>
+            </div>
+          </div>
+
+          <div class="port-note">
+            <strong>Port already in use?</strong>
+            <code>lsof -nP -iTCP:8787 -sTCP:LISTEN</code>
+            <span>or launch with</span>
+            <code>LAYA_PORT=8790 laya-local-api</code>
+          </div>
+        </section>
+
+        <section class="section final-cta">
+          <p class="eyebrow">Current conclusion</p>
+          <h2>Laya is useful when the question is narrow and the choices are clear.</h2>
+          <p>
+            <code>laya-local-api</code> makes that model easy to reuse from local apps while leaving the final action in
+            your own code.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://github.com/ThreeLightStudio/laya-local-api/blob/main/docs/laya-experiment.md">Read the full experiment</a>
+            <a class="button button-secondary" href="https://github.com/ThreeLightStudio/laya-local-api">View on GitHub</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span>laya-local-api</span>
+        <span>Small local decisions over HTTP.</span>
+      </footer>
+    </div>
+  </body>
+</html>

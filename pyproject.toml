@@ -3,7 +3,7 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "laya-api"
+name = "laya-local-api"
 version = "0.1.0"
 description = "Localhost HTTP daemon for reusing one loaded Laya decision model"
 readme = "README.md"
@@ -22,7 +22,7 @@ dev = [
 ]
 
 [project.scripts]
-laya-api = "laya_api.cli:main"
+laya-local-api = "laya_local_api.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -30,4 +30,3 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
-

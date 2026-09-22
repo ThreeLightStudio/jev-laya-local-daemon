@@ -36,7 +36,7 @@ def create_app(
         finally:
             resolved_runtime.release()
 
-    app = FastAPI(title="Laya API", version="0.1.0", lifespan=lifespan)
+    app = FastAPI(title="Laya Local API", version="0.1.0", lifespan=lifespan)
 
     @app.get("/health")
     def health() -> dict[str, str]:
@@ -71,4 +71,3 @@ def create_app(
 
 
 app = create_app()
-
