@@ -8,10 +8,12 @@ from pathlib import Path
 from statistics import mean
 
 
-BASE_URL = os.getenv("LAYA_API_URL", "http://127.0.0.1:8787")
+BASE_URL = os.getenv("DECISION_API_URL", os.getenv("LAYA_API_URL", "http://127.0.0.1:8787"))
+PROVIDER = os.getenv("DECISION_PROVIDER", "laya")
 
 
 def post(payload: dict) -> dict:
+    payload = {"provider": PROVIDER, **payload}
     request = urllib.request.Request(
         f"{BASE_URL}/v1/decide",
         data=json.dumps(payload).encode(),
@@ -96,7 +98,8 @@ def main() -> None:
     primitive = expected["primitive"]
 
     print(f"Fixture: {fixture_dir}")
-    print(f"Laya API: {BASE_URL}")
+    print(f"Decision API: {BASE_URL}")
+    print(f"Provider: {PROVIDER}")
     print(f"Primitive: {primitive}")
     print("=" * 88)
 

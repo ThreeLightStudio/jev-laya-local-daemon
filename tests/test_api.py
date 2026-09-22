@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 
 from laya_local_api.app import create_app
 from laya_local_api.config import Settings
+from laya_local_api.jev import JevNotConfiguredError, JevUpstreamError
 from laya_local_api.model import ModelRuntime
 
 
@@ -13,9 +14,13 @@ class FakeAgent:
     def __init__(self, *, fail: bool = False) -> None:
         self.fail = fail
         self.calls = 0
+        self.last_state = None
+        self.last_questions = None
 
     def predict(self, state, questions):
         self.calls += 1
+        self.last_state = state
+        self.last_questions = questions
         if self.fail:
             raise RuntimeError("synthetic inference failure")
 
@@ -56,6 +61,29 @@ class FakeAgent:
         }
 
 
+class FakeJevClient:
+    def __init__(self, *, configured: bool = True, failure: Exception | None = None) -> None:
+        self.configured = configured
+        self.failure = failure
+        self.calls: list[tuple[object, dict]] = []
+
+    def predict(self, state, questions):
+        self.calls.append((state, questions))
+        if self.failure:
+            raise self.failure
+        return {
+            "model": "jev-1.13.0",
+            "answers": {
+                "decision": {
+                    "type": "noul",
+                    "noul": 0.91,
+                    "stats": {},
+                }
+            },
+            "usage": {"input_tokens": 10, "output_tokens": 2},
+        }
+
+
 def wait_ready(client: TestClient) -> None:
     deadline = time.monotonic() + 1.0
     while time.monotonic() < deadline:
@@ -65,9 +93,10 @@ def wait_ready(client: TestClient) -> None:
     raise AssertionError("fake model did not become ready")
 
 
-def make_client(agent: FakeAgent | None = None):
+def make_client(agent: FakeAgent | None = None, jev_client: FakeJevClient | None = None):
     settings = Settings()
     fake_agent = agent or FakeAgent()
+    fake_jev = jev_client or FakeJevClient()
     loads = {"count": 0}
 
     def loader(_settings: Settings):
@@ -75,11 +104,17 @@ def make_client(agent: FakeAgent | None = None):
         return fake_agent
 
     runtime = ModelRuntime(settings, loader=loader)
-    return TestClient(create_app(settings=settings, runtime=runtime)), runtime, fake_agent, loads
+    return (
+        TestClient(create_app(settings=settings, runtime=runtime, jev_client=fake_jev)),
+        runtime,
+        fake_agent,
+        fake_jev,
+        loads,
+    )
 
 
 def test_health_and_ready() -> None:
-    client, runtime, _, _ = make_client()
+    client, runtime, _, _, _ = make_client()
     with client:
         assert client.get("/health").json() == {"status": "ok"}
         wait_ready(client)
@@ -92,9 +127,24 @@ def test_health_and_ready() -> None:
         }
         assert runtime.load_count == 1
 
+        providers = client.get("/v1/providers")
+        assert providers.status_code == 200
+        assert providers.json() == {
+            "laya": {
+                "ready": True,
+                "status": "ready",
+                "model": "convaiinnovations/laya/typed-decisions",
+            },
+            "jev": {
+                "configured": True,
+                "model": "jev-latest",
+                "api_url": "https://api.typesafe.ai",
+            },
+        }
+
 
 def test_noul_choice_score_and_single_load() -> None:
-    client, runtime, agent, loads = make_client()
+    client, runtime, agent, _, loads = make_client()
     with client:
         wait_ready(client)
 
@@ -128,6 +178,7 @@ def test_noul_choice_score_and_single_load() -> None:
         ]
 
         results = [client.post("/v1/decide", json=payload).json() for payload in payloads]
+        assert all(result["provider"] == "laya" for result in results)
         assert results[0]["answers"]["notify"]["noul"] == 0.87
         assert results[1]["answers"]["next"]["choice"] == "resume"
         assert results[1]["answers"]["next"]["probabilities"] == {"resume": 1.0, "inspect": 0.0}
@@ -138,8 +189,111 @@ def test_noul_choice_score_and_single_load() -> None:
         assert agent.calls == 3
 
 
+def test_jev_provider_uses_same_endpoint_and_preserves_noul_criteria() -> None:
+    fake_jev = FakeJevClient()
+    client, _, agent, jev, _ = make_client(jev_client=fake_jev)
+    with client:
+        response = client.post(
+            "/v1/decide",
+            json={
+                "provider": "jev",
+                "state": {"event": "suspicious transfer"},
+                "questions": {
+                    "decision": {
+                        "type": "noul",
+                        "instructions": "Should this be escalated?",
+                        "criteria": {
+                            "true": "Human review is required.",
+                            "false": "Automation may continue.",
+                        },
+                    }
+                },
+            },
+        )
+
+        assert response.status_code == 200
+        assert response.json()["provider"] == "jev"
+        assert response.json()["model"] == "jev-1.13.0"
+        assert response.json()["answers"]["decision"]["noul"] == 0.91
+        assert agent.calls == 0
+        assert jev.calls == [
+            (
+                {"event": "suspicious transfer"},
+                {
+                    "decision": {
+                        "type": "noul",
+                        "instructions": "Should this be escalated?",
+                        "criteria": {
+                            "true": "Human review is required.",
+                            "false": "Automation may continue.",
+                        },
+                    }
+                },
+            )
+        ]
+
+
+def test_laya_provider_strips_jev_only_noul_criteria() -> None:
+    client, _, agent, _, _ = make_client()
+    with client:
+        wait_ready(client)
+        response = client.post(
+            "/v1/decide",
+            json={
+                "provider": "laya",
+                "state": {"event": "build failed"},
+                "questions": {
+                    "notify": {
+                        "type": "noul",
+                        "instructions": "Should the user be notified?",
+                        "criteria": {"true": "Yes", "false": "No"},
+                    }
+                },
+            },
+        )
+
+        assert response.status_code == 200
+        assert agent.calls == 1
+        assert agent.last_questions == {
+            "notify": {
+                "type": "noul",
+                "instructions": "Should the user be notified?",
+            }
+        }
+
+
+def test_jev_provider_errors_are_sanitized() -> None:
+    not_configured = FakeJevClient(configured=False, failure=JevNotConfiguredError("Jev provider is not configured; set JEV_API_KEY"))
+    client, _, _, _, _ = make_client(jev_client=not_configured)
+    with client:
+        response = client.post(
+            "/v1/decide",
+            json={
+                "provider": "jev",
+                "state": {},
+                "questions": {"decision": {"type": "noul", "instructions": "Proceed?"}},
+            },
+        )
+        assert response.status_code == 503
+        assert response.json() == {"detail": "Jev provider is not configured; set JEV_API_KEY"}
+
+    upstream_failure = FakeJevClient(failure=JevUpstreamError("Jev authentication failed"))
+    client, _, _, _, _ = make_client(jev_client=upstream_failure)
+    with client:
+        response = client.post(
+            "/v1/decide",
+            json={
+                "provider": "jev",
+                "state": {},
+                "questions": {"decision": {"type": "noul", "instructions": "Proceed?"}},
+            },
+        )
+        assert response.status_code == 502
+        assert response.json() == {"detail": "Jev authentication failed"}
+
+
 def test_invalid_payloads_return_4xx() -> None:
-    client, _, _, _ = make_client()
+    client, _, _, _, _ = make_client()
     with client:
         wait_ready(client)
         invalid_payloads = [
@@ -182,7 +336,7 @@ def test_invalid_payloads_return_4xx() -> None:
 
 
 def test_model_failure_is_sanitized_500() -> None:
-    client, _, _, _ = make_client(FakeAgent(fail=True))
+    client, _, _, _, _ = make_client(FakeAgent(fail=True))
     with client:
         wait_ready(client)
         response = client.post(
@@ -204,7 +358,7 @@ def test_load_failure_keeps_health_up_and_ready_false() -> None:
         raise RuntimeError("synthetic load failure")
 
     runtime = ModelRuntime(settings, loader=failing_loader)
-    client = TestClient(create_app(settings=settings, runtime=runtime))
+    client = TestClient(create_app(settings=settings, runtime=runtime, jev_client=FakeJevClient()))
     with client:
         deadline = time.monotonic() + 1.0
         response = client.get("/ready")

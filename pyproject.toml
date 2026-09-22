@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "laya-local-api"
-version = "0.1.0"
-description = "Localhost HTTP daemon for reusing one loaded Laya decision model"
+version = "0.2.0"
+description = "Localhost typed-decision API for Laya and Jev"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
 dependencies = [

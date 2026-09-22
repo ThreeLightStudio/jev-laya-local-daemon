@@ -26,12 +26,20 @@ The expected files are kept separate so the model input never contains the answe
 With `laya-local-api` already running:
 
 ```bash
-python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-a-noul
-python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-b-score
-python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-c-robustness
+DECISION_PROVIDER=laya python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-a-noul
+DECISION_PROVIDER=laya python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-b-score
+DECISION_PROVIDER=laya python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-c-robustness
 ```
 
-Set `LAYA_API_URL` when the daemon is not on `http://127.0.0.1:8787`.
+Set `DECISION_API_URL` when the daemon is not on `http://127.0.0.1:8787`. The older `LAYA_API_URL` name remains supported as an alias.
+
+When `JEV_API_KEY` is configured on the daemon, replay the exact same compact-state requests through Jev by changing only the provider:
+
+```bash
+DECISION_PROVIDER=jev python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-a-noul
+DECISION_PROVIDER=jev python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-b-score
+DECISION_PROVIDER=jev python scripts/eval_playground_fixture.py benchmarks/jev-playground/round-c-robustness
+```
 
 ## Score saved Jev results
 

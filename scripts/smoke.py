@@ -5,7 +5,8 @@ import os
 import urllib.request
 
 
-BASE_URL = os.getenv("LAYA_API_URL", "http://127.0.0.1:8787")
+BASE_URL = os.getenv("DECISION_API_URL", os.getenv("LAYA_API_URL", "http://127.0.0.1:8787"))
+PROVIDER = os.getenv("DECISION_PROVIDER", "laya")
 
 
 def get(path: str) -> dict:
@@ -14,6 +15,7 @@ def get(path: str) -> dict:
 
 
 def post(path: str, payload: dict) -> dict:
+    payload = {"provider": PROVIDER, **payload}
     request = urllib.request.Request(
         f"{BASE_URL}{path}",
         data=json.dumps(payload).encode(),
@@ -71,4 +73,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

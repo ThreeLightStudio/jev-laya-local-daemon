@@ -14,10 +14,11 @@ def main() -> None:
     settings = Settings.from_env()
     runtime = ModelRuntime(settings)
 
-    print("Laya Local API")
-    print(f"Model: {settings.model_label}")
+    print("laya-local-api")
+    print(f"Laya: {settings.model_label}")
+    print(f"Jev: {settings.jev_model} ({'configured' if settings.jev_api_key else 'not configured'})")
     print(f"Listening: http://{settings.host}:{settings.port}")
-    print("Status: loading")
+    print("Laya status: loading")
 
     uvicorn.run(
         create_app(settings=settings, runtime=runtime),

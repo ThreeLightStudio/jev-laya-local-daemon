@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="laya-local-api keeps Laya running once on your computer and lets local apps ask it small decision questions over HTTP."
+      content="laya-local-api provides one localhost typed-decision API for local Laya and hosted Jev."
     />
     <meta name="theme-color" content="#0a0b0d" />
-    <title>laya-local-api — Run Laya once, call it locally</title>
+    <title>laya-local-api — One typed-decision API for Laya + Jev</title>
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -32,12 +32,12 @@
       <main id="top">
         <section class="hero section-grid">
           <div class="hero-copy">
-            <p class="eyebrow">Run Laya locally · call it over HTTP</p>
-            <h1>Load Laya once.<br />Reuse it from any local app.</h1>
+            <p class="eyebrow">One localhost API · Laya + Jev</p>
+            <h1>One API.<br />Choose the decision provider.</h1>
             <p class="hero-lede">
-              Laya is a small local model built to make decisions instead of writing long answers.
-              <code>laya-local-api</code> starts it once, keeps it in memory, and lets any local app ask it simple
-              questions over HTTP.
+              <code>laya-local-api</code> keeps Laya ready on your machine and can send the same typed-decision request
+              to Jev through TypeSafe. Your app keeps one local endpoint and selects <code>laya</code> or <code>jev</code>
+              per request.
             </p>
 
             <div class="hero-actions">
@@ -47,20 +47,20 @@
 
             <dl class="runtime-strip" aria-label="Runtime facts">
               <div>
-                <dt>Model</dt>
+                <dt>Local</dt>
                 <dd>Laya 0.3.5</dd>
               </div>
               <div>
-                <dt>Model setup</dt>
-                <dd>typed-decisions</dd>
+                <dt>Hosted</dt>
+                <dd>Jev · TypeSafe</dd>
               </div>
               <div>
-                <dt>Tested on</dt>
-                <dd>Apple Silicon · MPS</dd>
+                <dt>Contract</dt>
+                <dd>state + questions</dd>
               </div>
               <div>
-                <dt>Compared with</dt>
-                <dd>Jev 1.13.0</dd>
+                <dt>Tested</dt>
+                <dd>Laya 0.3.5 · Jev 1.13.0</dd>
               </div>
             </dl>
 
@@ -78,6 +78,7 @@
               <span class="status-pill">200</span>
             </div>
             <pre><code>{
+  "provider": "laya",
   "state": {
     "tests": "47 tests are failing",
     "analysis": "fresh"
@@ -105,15 +106,15 @@
         <section class="section architecture" aria-labelledby="architecture-title">
           <div class="section-heading">
             <p class="eyebrow">Why this exists</p>
-            <h2 id="architecture-title">Start Laya once. Use it from any local app.</h2>
+            <h2 id="architecture-title">Keep one caller contract. Switch providers underneath.</h2>
             <p>
-              Laya normally runs inside Python. Without <code>laya-local-api</code>, every project would need to load the
-              model and manage Python itself. This project moves that work into one small local server that stays
-              running and can be shared by your other apps.
+              Laya needs a resident Python model process. Jev needs a hosted API key and network request. This gateway
+              hides those provider-specific details behind one localhost endpoint while keeping the actual decision
+              values untouched.
             </p>
           </div>
 
-          <div class="architecture-flow" role="img" aria-label="Your app calls laya-local-api over HTTP, which calls Laya locally">
+          <div class="architecture-flow" role="img" aria-label="Your app calls laya-local-api over HTTP, which routes to Laya or Jev">
             <div class="flow-node">
               <span class="flow-kicker">Your code</span>
               <strong>Your app</strong>
@@ -127,9 +128,9 @@
             </div>
             <div class="flow-arrow"><span>local</span>→</div>
             <div class="flow-node">
-              <span class="flow-kicker">Model</span>
-              <strong>Laya</strong>
-              <span>typed-decisions</span>
+              <span class="flow-kicker">Provider</span>
+              <strong>Laya / Jev</strong>
+              <span>local model / TypeSafe API</span>
             </div>
           </div>
         </section>
@@ -405,8 +406,8 @@ critical  0.3672</code></pre>
             <div class="pipeline-link">→</div>
             <div class="pipeline-step pipeline-step-accent">
               <span>3</span>
-              <strong>Ask Laya</strong>
-              <p>Ask it to pick one option, rate something, or answer yes/no.</p>
+              <strong>Ask the provider</strong>
+              <p>Select Laya or Jev, then ask it to pick one option, rate something, or answer yes/no.</p>
             </div>
             <div class="pipeline-link">→</div>
             <div class="pipeline-step">
@@ -418,8 +419,8 @@ critical  0.3672</code></pre>
 
           <div class="callout">
             <p class="callout-quote">
-              “Code gathers the facts. Simple templates explain what they mean. Laya handles the small decision.
-              Your app decides what to do with the answer.”
+              “Code gathers the facts. Simple templates explain what they mean. The selected provider handles the small
+              decision. Your app decides what to do with the answer.”
             </p>
           </div>
         </section>
@@ -502,7 +503,7 @@ critical  0.3672</code></pre>
             <small>extra download after the model was already cached</small>
           </div>
           <div class="spec-card">
-            <span>7 passed</span>
+            <span>14 passed</span>
             <small>API unit / integration tests</small>
           </div>
         </section>
@@ -531,9 +532,11 @@ If the repository is not already checked out, clone it into an appropriate local
 
 Start `laya-local-api` bound to a loopback address only. Use port 8787 unless it is already occupied. If 8787 is in use, do not stop an unrelated process; choose another available local port with `LAYA_PORT` and use that port consistently.
 
+If `JEV_API_KEY` is already available in the environment, verify the Jev provider too without printing, copying, or storing the key in a file. Jev is optional; do not block setup when the key is absent.
+
 Wait until `GET /ready` returns HTTP 200 with `"ready": true`, then run the included `scripts/smoke.py` against the selected endpoint. If you changed the port, set `LAYA_API_URL` for the smoke test. Keep the daemon running after verification if your environment supports a persistent process; otherwise give me the exact command to start it again.
 
-When finished, report the final local API URL, the selected port, the smoke-test result, and how to stop the daemon. Do not bind to 0.0.0.0 or expose the service to the public network.</textarea>
+When finished, report the final local API URL, the selected port, provider availability from `GET /v1/providers`, the smoke-test result, and how to stop the daemon. Do not bind to 0.0.0.0 or expose the service to the public network.</textarea>
 
           <div class="manual-label">
             <span>Prefer to run it yourself?</span>
@@ -560,6 +563,20 @@ pip install -e .</code></pre>
           </div>
 
           <div class="port-note">
+            <strong>Enable Jev</strong>
+            <code>export JEV_API_KEY="..."</code>
+            <span>The key stays in the daemon environment; local callers only send <code>provider: "jev"</code>.</span>
+          </div>
+
+          <div class="port-note">
+            <strong>Choose per request</strong>
+            <code>"provider": "laya"</code>
+            <span>or</span>
+            <code>"provider": "jev"</code>
+            <span>Check both with <code>GET /v1/providers</code>.</span>
+          </div>
+
+          <div class="port-note">
             <strong>About port 8787</strong>
             <span>It is this project's configurable default, not an upstream Laya requirement.</span>
             <a href="https://github.com/NandhaKishorM/laya">Upstream Laya</a>
@@ -575,10 +592,10 @@ pip install -e .</code></pre>
 
         <section class="section final-cta">
           <p class="eyebrow">Current conclusion</p>
-          <h2>Laya is useful when the question is narrow and the choices are clear.</h2>
+          <h2>Use one local API. Choose local Laya or hosted Jev per decision.</h2>
           <p>
-            <code>laya-local-api</code> makes that model easy to reuse from local apps while leaving the final action in
-            your own code.
+            The gateway keeps provider wiring out of your application while preserving the same typed-decision contract.
+            Use Laya when inputs must stay local; use Jev when its stronger hosted decision quality is worth the network hop.
           </p>
           <div class="hero-actions">
             <a class="button button-primary" href="https://github.com/ThreeLightStudio/laya-local-api/blob/main/docs/laya-experiment.md">Read the full experiment</a>
@@ -589,7 +606,7 @@ pip install -e .</code></pre>
 
       <footer class="site-footer">
         <span>laya-local-api</span>
-        <span>Small local decisions over HTTP.</span>
+        <span>Typed decisions through one local API.</span>
       </footer>
     </div>
     <script>

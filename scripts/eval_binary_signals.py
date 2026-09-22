@@ -6,7 +6,8 @@ import urllib.request
 from dataclasses import dataclass
 
 
-BASE_URL = os.getenv("LAYA_API_URL", "http://127.0.0.1:8787")
+BASE_URL = os.getenv("DECISION_API_URL", os.getenv("LAYA_API_URL", "http://127.0.0.1:8787"))
+PROVIDER = os.getenv("DECISION_PROVIDER", "laya")
 URL = f"{BASE_URL}/v1/decide"
 
 QUESTIONS = {
@@ -162,7 +163,7 @@ class Metrics:
 
 
 def call_laya(state: dict) -> dict[str, float]:
-    payload = {"state": state, "questions": QUESTIONS}
+    payload = {"provider": PROVIDER, "state": state, "questions": QUESTIONS}
     request = urllib.request.Request(
         URL,
         data=json.dumps(payload).encode(),
@@ -221,7 +222,7 @@ def best_threshold(values: list[tuple[float, bool]]) -> Metrics:
 
 
 def main() -> None:
-    print(f"Laya binary signal evaluation: {BASE_URL}")
+    print(f"Binary signal evaluation: provider={PROVIDER} api={BASE_URL}")
     print("=" * 118)
 
     results = []

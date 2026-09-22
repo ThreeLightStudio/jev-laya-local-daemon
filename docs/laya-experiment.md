@@ -149,13 +149,13 @@ The implementation was tested for:
 - the `python -m laya_local_api` entry point
 - the default bind address being `127.0.0.1`
 
-Unit and integration tests use a mockable model wrapper so they do not download or load the heavyweight checkpoint.
-
-Final result:
+Unit and integration tests use a mockable model wrapper so they do not download or load the heavyweight checkpoint. The original Laya-only daemon reached:
 
 ```text
 7 passed
 ```
+
+After adding the Jev provider adapter, provider routing, configuration, and transport coverage, the current suite reaches 14 passing tests.
 
 Real-model smoke tests were also performed.
 
@@ -770,3 +770,50 @@ LAYA_API_URL=http://127.0.0.1:8790 \
 ```
 
 For installation, API usage, and port-collision handling, see the project [`README.md`](../README.md).
+
+## 18. Unified provider gateway
+
+After the Laya/Jev comparison, the project was expanded so the same localhost endpoint can call either provider.
+
+The public request shape is now:
+
+```json
+{
+  "provider": "laya",
+  "state": {},
+  "questions": {}
+}
+```
+
+or:
+
+```json
+{
+  "provider": "jev",
+  "state": {},
+  "questions": {}
+}
+```
+
+`provider` defaults to `laya`, so existing callers remain compatible.
+
+The provider boundary is intentionally simple:
+
+```text
+caller
+  ↓
+localhost /v1/decide
+  ├─ provider=laya → resident local Laya model
+  └─ provider=jev  → TypeSafe /v1/systemone
+```
+
+Jev authentication is owned by the daemon environment:
+
+```text
+JEV_API_KEY=...
+JEV_MODEL=jev-latest
+```
+
+The API key is never part of the caller payload. `GET /v1/providers` reports Laya readiness and whether Jev is configured without exposing the credential.
+
+This also makes the benchmark harness more useful: the same fixture runner can now switch between providers with `DECISION_PROVIDER=laya` or `DECISION_PROVIDER=jev`, which removes most of the manual transformation work from future comparisons.

@@ -5,7 +5,8 @@ import os
 import urllib.request
 
 
-BASE_URL = os.getenv("LAYA_API_URL", "http://127.0.0.1:8787")
+BASE_URL = os.getenv("DECISION_API_URL", os.getenv("LAYA_API_URL", "http://127.0.0.1:8787"))
+PROVIDER = os.getenv("DECISION_PROVIDER", "laya")
 URL = f"{BASE_URL}/v1/decide"
 
 CRITERIA = {
@@ -117,6 +118,7 @@ CASES = [
 
 def call_laya(state: dict) -> dict:
     payload = {
+        "provider": PROVIDER,
         "state": state,
         "questions": {
             "next_action": {
@@ -138,7 +140,7 @@ def call_laya(state: dict) -> dict:
 
 def main() -> None:
     results = []
-    print(f"Laya choice routing evaluation: {BASE_URL}")
+    print(f"Choice routing evaluation: provider={PROVIDER} api={BASE_URL}")
     print("=" * 92)
     print(
         f"{'CASE':<14}{'EXPECTED':<12}{'ACTUAL':<12}"

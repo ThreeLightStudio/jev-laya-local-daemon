@@ -1,6 +1,6 @@
 # laya-local-api
 
-`laya-local-api` keeps one local Laya decision model loaded in memory and exposes it through a small HTTP API on localhost.
+`laya-local-api` exposes one localhost API for typed decisions from either local Laya or hosted Jev.
 
 ```text
 TypeScript / Python / other apps
@@ -8,13 +8,14 @@ TypeScript / Python / other apps
       http://127.0.0.1:8787
              ↓
           laya-local-api
-             ↓
-            Laya
-             ↓
-       local inference
+          ↙       ↘
+       Laya        Jev
+       local       TypeSafe API
 ```
 
-The default checkpoint is `convaiinnovations/laya` with the `typed-decisions` subfolder. The server uses the official `laya` Python package and returns `agent.predict(state, questions)` results without changing the decision values or applying thresholds.
+Callers use the same `state + questions` shape and select `"provider": "laya"` or `"provider": "jev"`. Laya runs entirely on the local machine. Jev requests are forwarded to TypeSafe using an API key read from the daemon environment; callers never send the key in request bodies.
+
+The default Laya checkpoint is `convaiinnovations/laya` with the `typed-decisions` subfolder. The default Jev model alias is `jev-latest`.
 
 > Do not expose this daemon directly to the public internet.
 
@@ -47,6 +48,15 @@ pip install -e .
 laya-local-api
 ```
 
+Jev is optional. To enable it, set the key in the daemon environment before startup:
+
+```bash
+export JEV_API_KEY="..."
+laya-local-api
+```
+
+`TYPESAFE_API_KEY` is also accepted as a fallback name. Do not commit either value to the repository.
+
 The first run downloads the Laya checkpoint from Hugging Face, so model startup takes longer the first time. The tested `typed-decisions` checkpoint downloaded about 847 MB. Later starts reuse the local cache.
 
 In another terminal, check that the process is alive:
@@ -61,13 +71,23 @@ Then wait until the model is ready:
 curl -i http://127.0.0.1:8787/ready
 ```
 
-When the response changes to HTTP 200 with `"ready": true`, inference is available.
+When the response changes to HTTP 200 with `"ready": true`, local Laya inference is available. Jev does not depend on Laya readiness; check provider availability with:
 
-Run the included end-to-end smoke test:
+```bash
+curl http://127.0.0.1:8787/v1/providers
+```
+
+Run the included end-to-end smoke test against Laya:
 
 ```bash
 source .venv/bin/activate
 python scripts/smoke.py
+```
+
+Or through Jev when `JEV_API_KEY` is configured:
+
+```bash
+DECISION_PROVIDER=jev python scripts/smoke.py
 ```
 
 It checks `/health`, `/ready`, and real `noul`, `choice`, and `score` inference against the running daemon.
@@ -78,7 +98,7 @@ It checks `/health`, `/ready`, and real `noul`, `choice`, and `score` inference 
 - Python 3.11, 3.12, or 3.13.
 - Internet access is needed the first time a Hugging Face checkpoint is downloaded. Inference is local after the model is cached.
 
-Laya 0.3.5 automatically selects MPS on supported Apple Silicon Macs, then falls back to CPU if MPS is unavailable. `LAYA_DEVICE` can explicitly select a device accepted by Laya/PyTorch.
+Laya 0.3.5 automatically selects MPS on supported Apple Silicon Macs, then falls back to CPU if MPS is unavailable. `LAYA_DEVICE` can explicitly select a device accepted by Laya/PyTorch. Jev requires network access for every inference because it is called through TypeSafe's hosted API.
 
 ## Install
 
@@ -112,10 +132,11 @@ Startup begins listening immediately while the model loads once in a daemon thre
 Typical startup output looks like this:
 
 ```text
-Laya Local API
-Model: convaiinnovations/laya/typed-decisions
+laya-local-api
+Laya: convaiinnovations/laya/typed-decisions
+Jev: jev-latest (configured)
 Listening: http://127.0.0.1:8787
-Status: loading
+Laya status: loading
 ...
 Status: ready
 ```
@@ -130,6 +151,10 @@ LAYA_SUBFOLDER=typed-decisions
 LAYA_HOST=127.0.0.1
 LAYA_PORT=8787
 LAYA_DEVICE=
+JEV_API_KEY=
+JEV_MODEL=jev-latest
+JEV_API_URL=https://api.typesafe.ai
+JEV_TIMEOUT_SECONDS=30
 ```
 
 Example override:
@@ -139,6 +164,8 @@ LAYA_PORT=8790 LAYA_DEVICE=mps laya-local-api
 ```
 
 `LAYA_HOST` is intentionally restricted to loopback addresses (`127.0.0.1`, `localhost`, or `::1`). `0.0.0.0` is rejected.
+
+`JEV_API_KEY` stays inside the daemon process and is attached as a Bearer token only when the selected provider is Jev. The local caller sends no provider credentials.
 
 `8787` is the default chosen by `laya-local-api`; it is not a port assigned or recommended by upstream Laya. The upstream Python package exposes model-loading and prediction APIs rather than this project's HTTP daemon, so the port has no Laya protocol significance and can be changed with `LAYA_PORT`. See the [upstream Laya project](https://github.com/NandhaKishorM/laya) and [model card](https://huggingface.co/convaiinnovations/laya) for the native package interface.
 
@@ -242,13 +269,60 @@ After the checkpoint is ready:
 }
 ```
 
+## Providers
+
+`/ready` intentionally describes the resident Laya model. To inspect both providers, use:
+
+```bash
+curl http://127.0.0.1:8787/v1/providers
+```
+
+Example without a Jev API key:
+
+```json
+{
+  "laya": {
+    "ready": true,
+    "status": "ready",
+    "model": "convaiinnovations/laya/typed-decisions"
+  },
+  "jev": {
+    "configured": false,
+    "model": "jev-latest",
+    "api_url": "https://api.typesafe.ai"
+  }
+}
+```
+
+When `JEV_API_KEY` is present, `jev.configured` becomes `true`. The key itself is never returned.
+
 ## `POST /v1/decide`
 
-The endpoint accepts Laya's current typed decision primitives: `noul`, `choice`, and `score`. Every request can contain one or more questions and Laya evaluates them in one `predict()` call.
+The endpoint accepts the shared typed decision primitives `noul`, `choice`, and `score`. Choose the provider per request:
+
+```json
+{
+  "provider": "laya",
+  "state": {},
+  "questions": {}
+}
+```
+
+or:
+
+```json
+{
+  "provider": "jev",
+  "state": {},
+  "questions": {}
+}
+```
+
+`provider` defaults to `laya` for backward compatibility. Both providers return the same top-level `model`, `answers`, and `usage` shape, and the gateway adds the selected `provider` to the response.
 
 ### `noul`
 
-`noul` returns Laya's calibrated `P(true)` value. The server does not convert it to a boolean; the caller owns the threshold.
+`noul` returns a `P(true)`-style value. The server does not convert it to a boolean; the caller owns the threshold.
 
 ```bash
 curl http://127.0.0.1:8787/v1/decide \
@@ -258,6 +332,7 @@ curl http://127.0.0.1:8787/v1/decide \
       "build_failed": true,
       "user_is_active": false
     },
+    "provider": "laya",
     "questions": {
       "notify_user": {
         "type": "noul",
@@ -271,6 +346,7 @@ Laya 0.3.5 returns this shape:
 
 ```json
 {
+  "provider": "laya",
   "model": "laya-rl-agent",
   "answers": {
     "notify_user": {
@@ -291,6 +367,8 @@ Laya 0.3.5 returns this shape:
 
 The numeric values above are from one real smoke test and are examples, not fixed expected values.
 
+Jev also accepts optional `true` / `false` criteria for `noul`. The unified request schema allows them; they are forwarded to Jev and ignored for Laya because Laya 0.3.5 does not expose that field.
+
 ### `choice`
 
 For `choice`, `criteria` is an object whose keys are the option labels and whose values describe those options.
@@ -299,6 +377,7 @@ For `choice`, `criteria` is an object whose keys are the option labels and whose
 curl http://127.0.0.1:8787/v1/decide \
   -H 'content-type: application/json' \
   -d '{
+    "provider": "laya",
     "state": {
       "git_dirty": true,
       "last_task": "fix project analysis"
@@ -322,6 +401,7 @@ The response preserves the selected label, every option probability, confidence,
 
 ```json
 {
+  "provider": "laya",
   "model": "laya-rl-agent",
   "answers": {
     "next_action": {
@@ -354,6 +434,7 @@ Laya's current score schema uses an ordered list for `criteria`. The zero-based 
 curl http://127.0.0.1:8787/v1/decide \
   -H 'content-type: application/json' \
   -d '{
+    "provider": "laya",
     "state": {
       "event": "build failed",
       "blocks_release": true
@@ -372,6 +453,7 @@ The result contains the expected ordinal score and the full distribution:
 
 ```json
 {
+  "provider": "laya",
   "model": "laya-rl-agent",
   "answers": {
     "urgency": {
@@ -411,6 +493,7 @@ const response = await fetch("http://127.0.0.1:8787/v1/decide", {
     "content-type": "application/json",
   },
   body: JSON.stringify({
+    provider: "laya", // change to "jev" when JEV_API_KEY is configured
     state: {
       git_dirty: true,
       source_changed: true,
@@ -441,6 +524,7 @@ import json
 import urllib.request
 
 payload = {
+    "provider": "laya",  # change to "jev" when JEV_API_KEY is configured
     "state": {
         "git_dirty": True,
         "source_changed": True,
@@ -490,14 +574,22 @@ python scripts/smoke.py
 If the daemon is on a non-default port:
 
 ```bash
-LAYA_API_URL=http://127.0.0.1:8790 python scripts/smoke.py
+DECISION_API_URL=http://127.0.0.1:8790 python scripts/smoke.py
 ```
+
+`LAYA_API_URL` remains accepted by the scripts as a backward-compatible alias.
 
 The script calls `/health`, `/ready`, and real `noul`, `choice`, and `score` requests against the running daemon.
 
+To use the same script through Jev:
+
+```bash
+DECISION_PROVIDER=jev python scripts/smoke.py
+```
+
 ## Errors
 
-Missing state, missing or empty questions, unknown question types, malformed `choice`/`score` criteria, and malformed JSON return JSON 4xx responses. Inference failures return a generic JSON 500 response while the Python traceback stays in server logs.
+Missing state, missing or empty questions, unknown providers/question types, malformed `choice`/`score` criteria, and malformed JSON return JSON 4xx responses. Laya inference failures return a generic JSON 500 response while the Python traceback stays in server logs. Missing Jev configuration returns 503; sanitized TypeSafe authentication/upstream failures return 502.
 
 If model loading fails, `/health` remains 200 and `/ready` returns 503 with `status: "failed"`.
 
@@ -520,9 +612,22 @@ The default checkpoint is loaded as:
 laya.load("convaiinnovations/laya", subfolder="typed-decisions")
 ```
 
+## Current Jev API used here
+
+Jev uses TypeSafe's hosted System One API:
+
+```text
+POST https://api.typesafe.ai/v1/systemone
+Authorization: Bearer <JEV_API_KEY>
+```
+
+The gateway adds the configured `JEV_MODEL` (default `jev-latest`) to the forwarded request and returns TypeSafe's structured response without changing its decision values.
+
 ## Known limitations
 
-- This is intentionally a single-model daemon. It does not route between multiple Laya checkpoints.
+- Laya is loaded at daemon startup even if a process only intends to use Jev. A future lazy-loading mode could remove that local memory cost for Jev-only use.
 - Inference is serialized through one in-process lock so concurrent callers reuse the same Agent safely.
+- Jev is hosted: selecting `provider: "jev"` sends the supplied state/questions to TypeSafe over the network. Use Laya when the decision input must remain entirely local.
+- The Jev adapter currently performs one upstream HTTP request per gateway request and does not add retries or connection pooling.
 - Laya 0.3.5 emits a runtime warning for the `choice:11+` calibration bucket in the typed-decisions checkpoint because the shipped temperature is outside Laya's accepted range and is clamped. Treat confidence for that affected bucket as uncalibrated unless upstream calibration changes.
 - The first Hub download can be large. On the Apple Silicon smoke-test machine used for this implementation, Hugging Face reported about 847 MB downloaded for the typed-decisions checkpoint. Subsequent startup reported 0.00B additional download from the warm cache.

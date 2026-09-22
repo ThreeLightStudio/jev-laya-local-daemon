@@ -5,6 +5,14 @@ from typing import Annotated, Any, Literal
 from pydantic import BaseModel, ConfigDict, Field
 
 NonEmptyStr = Annotated[str, Field(min_length=1)]
+Provider = Literal["laya", "jev"]
+
+
+class NoulCriteria(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    true: str | None = None
+    false: str | None = None
 
 
 class NoulQuestion(BaseModel):
@@ -12,6 +20,7 @@ class NoulQuestion(BaseModel):
 
     type: Literal["noul"]
     instructions: NonEmptyStr
+    criteria: NoulCriteria | None = None
 
 
 class ChoiceQuestion(BaseModel):
@@ -39,11 +48,18 @@ Question = Annotated[
 class DecideRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
+    provider: Provider = "laya"
     state: str | dict[str, Any] | list[Any]
     questions: dict[NonEmptyStr, Question] = Field(min_length=1)
 
-    def native_questions(self) -> dict[str, dict[str, Any]]:
-        return {
+    def native_questions(self, provider: Provider | None = None) -> dict[str, dict[str, Any]]:
+        target = provider or self.provider
+        native = {
             question_id: question.model_dump(exclude_none=True)
             for question_id, question in self.questions.items()
         }
+        if target == "laya":
+            for question in native.values():
+                if question["type"] == "noul":
+                    question.pop("criteria", None)
+        return native
