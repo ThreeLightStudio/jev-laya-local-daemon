@@ -674,6 +674,80 @@ h3 {
   gap: 14px;
 }
 
+.agent-prompt-card {
+  margin-bottom: 28px;
+  overflow: hidden;
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  box-shadow: 0 0 0 1px rgba(156, 255, 87, 0.03) inset;
+}
+
+.agent-prompt-header {
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid var(--line);
+  background: var(--accent-soft);
+}
+
+.agent-prompt-header > div {
+  display: grid;
+  gap: 2px;
+}
+
+.agent-prompt-kicker {
+  color: var(--accent);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.agent-prompt-header strong {
+  font-size: 0.96rem;
+}
+
+.copy-button {
+  min-width: 112px;
+  padding: 10px 14px;
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+  background: var(--accent);
+  color: #0a0b0d;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+
+.copy-button:hover {
+  transform: translateY(-1px);
+}
+
+.copy-button.is-copied {
+  opacity: 0.78;
+}
+
+.agent-prompt {
+  max-height: 360px;
+  padding: 22px;
+  white-space: pre-wrap;
+  color: var(--code);
+  background: #0a0c0f;
+  font-size: 0.8rem;
+  line-height: 1.72;
+}
+
+.manual-label {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
 .run-step {
   padding: 26px;
   border: 1px solid var(--line);
@@ -714,6 +788,13 @@ h3 {
 
 .port-note strong {
   color: var(--text);
+}
+
+.port-note a {
+  color: var(--muted-strong);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 3px;
 }
 
 .port-note code {
@@ -771,6 +852,10 @@ h3 {
 
   .run-grid {
     grid-template-columns: 1fr;
+  }
+
+  .agent-prompt-header {
+    align-items: flex-start;
   }
 }
 
@@ -840,6 +925,14 @@ h3 {
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .agent-prompt-header {
+    flex-direction: column;
+  }
+
+  .copy-button {
+    width: 100%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -847,7 +940,8 @@ h3 {
     scroll-behavior: auto;
   }
 
-  .button {
+  .button,
+  .copy-button {
     transition: none;
   }
 }

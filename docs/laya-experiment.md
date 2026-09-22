@@ -122,7 +122,7 @@ The first checkpoint download reported approximately 847 MB from Hugging Face. A
 
 Observed process RSS after loading was roughly 1.0–1.2 GiB.
 
-The default daemon port is `8787`. During development, that port was already occupied by a Headroom proxy on `127.0.0.1:8787`, so the smoke tests and decision experiments used port `8790` instead.
+The `laya-local-api` project uses `8787` as its default daemon port. This is a project-level choice, not an upstream Laya recommendation or protocol requirement; upstream Laya is a Python package and does not assign an HTTP port for this daemon. During development, `8787` was already occupied by a Headroom proxy on `127.0.0.1:8787`, so the smoke tests and decision experiments used port `8790` instead.
 
 That real collision is why the README now documents how to inspect a port with `lsof`, stop a known process, or launch `laya-local-api` on another loopback port.
 

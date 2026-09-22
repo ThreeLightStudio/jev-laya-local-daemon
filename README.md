@@ -138,6 +138,8 @@ LAYA_PORT=8790 LAYA_DEVICE=mps laya-local-api
 
 `LAYA_HOST` is intentionally restricted to loopback addresses (`127.0.0.1`, `localhost`, or `::1`). `0.0.0.0` is rejected.
 
+`8787` is the default chosen by `laya-local-api`; it is not a port assigned or recommended by upstream Laya. The upstream Python package exposes model-loading and prediction APIs rather than this project's HTTP daemon, so the port has no Laya protocol significance and can be changed with `LAYA_PORT`. See the [upstream Laya project](https://github.com/NandhaKishorM/laya) and [model card](https://huggingface.co/convaiinnovations/laya) for the native package interface.
+
 ## Port already in use
 
 The default port is `8787`. If another local service is already using it, startup fails with an error similar to:
