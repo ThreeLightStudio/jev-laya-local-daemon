@@ -21,7 +21,7 @@
         </a>
         <nav class="site-nav" aria-label="Primary navigation">
           <a href="#evidence">What we learned</a>
-          <a href="#comparison">Laya vs Jev</a>
+          <a href="#comparison">Initial test</a>
           <a href="#statecarry">StateCarry test</a>
           <a href="#pattern">How to use it</a>
           <a href="#run">Run locally</a>
@@ -52,7 +52,7 @@
               </div>
               <div>
                 <dt>Hosted</dt>
-                <dd>Jev · TypeSafe</dd>
+                <dd>Jev 1.13.0 · TypeSafe</dd>
               </div>
               <div>
                 <dt>Contract</dt>
@@ -60,7 +60,7 @@
               </div>
               <div>
                 <dt>Tested</dt>
-                <dd>Laya 0.3.5 · Jev hosted API</dd>
+                <dd>Sep 23, 2026</dd>
               </div>
             </dl>
 
@@ -71,34 +71,34 @@
             </div>
           </div>
 
-          <div class="hero-console" aria-label="Example jev-laya-local-daemon response">
+          <div class="hero-console api-demo" aria-label="Interactive jev-laya-local-daemon API examples">
+            <div class="demo-controls">
+              <div class="demo-tab-row" role="tablist" aria-label="API endpoint">
+                <span class="demo-tab-label">Endpoint</span>
+                <button class="demo-tab is-active" type="button" role="tab" aria-selected="true" data-endpoint="decide">/v1/decide</button>
+                <button class="demo-tab" type="button" role="tab" aria-selected="false" data-endpoint="providers">/v1/providers</button>
+                <button class="demo-tab" type="button" role="tab" aria-selected="false" data-endpoint="ready">/ready</button>
+                <button class="demo-tab" type="button" role="tab" aria-selected="false" data-endpoint="health">/health</button>
+              </div>
+              <div class="demo-tab-row" role="tablist" aria-label="Decision provider">
+                <span class="demo-tab-label">Provider</span>
+                <button class="demo-tab is-active" type="button" role="tab" aria-selected="true" data-provider="laya">Laya</button>
+                <button class="demo-tab" type="button" role="tab" aria-selected="false" data-provider="jev">Jev</button>
+                <span class="demo-tab-note" id="provider-tab-note">Switch provider without changing the endpoint.</span>
+              </div>
+            </div>
             <div class="console-bar">
               <span class="console-dot"></span>
-              <span class="console-label">POST /v1/decide</span>
+              <span class="console-label" id="demo-endpoint-label">POST /v1/decide</span>
               <span class="status-pill">200</span>
             </div>
-            <pre><code>{
-  "provider": "laya",
-  "state": {
-    "tests": "47 tests are failing",
-    "analysis": "fresh"
-  },
-  "questions": {
-    "next_action": {
-      "type": "choice",
-      "criteria": {
-        "resume": "Continue work",
-        "inspect": "Inspect changes",
-        "reanalyze": "Refresh analysis",
-        "test": "Fix failing tests"
-      }
-    }
-  }
-}</code></pre>
-            <div class="console-result">
-              <span>→</span>
-              <strong>test</strong>
-              <span class="muted">0.35 top probability</span>
+            <div class="demo-payload">
+              <span class="demo-code-label" id="demo-request-label">Request</span>
+              <pre><code id="demo-request-code"></code></pre>
+            </div>
+            <div class="console-result demo-response">
+              <span class="demo-code-label">Response</span>
+              <pre><code id="demo-response-code"></code></pre>
             </div>
           </div>
         </section>
@@ -261,8 +261,8 @@ critical  0.3672</code></pre>
 
         <section id="comparison" class="section model-comparison" aria-labelledby="comparison-title">
           <div class="section-heading">
-            <p class="eyebrow">Laya vs Jev</p>
-            <h2 id="comparison-title">Four rounds. 64 typed decisions.</h2>
+            <p class="eyebrow">Initial comparison</p>
+            <h2 id="comparison-title">Same primitives. Different operating envelopes.</h2>
             <p>
               I compared the models on next-action routing, binary escalation, ordinal urgency, paraphrase/order
               robustness, and deliberately ambiguous cases. The same fixture definitions are checked into this repository.
@@ -291,7 +291,7 @@ critical  0.3672</code></pre>
               </dl>
             </article>
 
-            <article class="model-card model-card-accent">
+            <article class="model-card">
               <div class="model-card-head">
                 <span class="comparison-label">Initial routing round · hosted</span>
                 <h3>Jev</h3>
@@ -359,23 +359,18 @@ critical  0.3672</code></pre>
             </p>
           </div>
 
-          <p class="evidence-note">
-            Speed numbers are not an apples-to-apples benchmark: Laya ran locally on Apple Silicon while Jev ran on
-            TypeSafe infrastructure, and the request shapes differ. The accuracy and robustness results are more useful
-            observations here than raw latency.
-          </p>
-          <p class="evidence-note">
-            Jev's probabilities separated the clear Noul cases extremely well, but the ambiguity round also exposed a
-            caution: it still returned 0.97–0.99 confidence on three of four deliberately debatable cases. Laya was much
-            less certain there, although its top choices also failed to match the preferred action. Probability sharpness
-            and calibration should therefore be evaluated separately from top-1 accuracy.
-          </p>
-          <p class="evidence-note">
-            Upstream Laya reports a different ordering on its own typed-decisions benchmark: Laya typed-decisions 0.766
-            accuracy vs Jev 1.13.0 at 0.727. That benchmark and this small developer-tool test measure different domains,
-            which is exactly why I treat the result here as a product experiment rather than a universal ranking.
-            <a class="inline-link" href="https://github.com/NandhaKishorM/laya">See the upstream benchmark.</a>
-          </p>
+          <details class="method-notes">
+            <summary>Method notes and caveats</summary>
+            <div>
+              <p>Speed is not apples-to-apples: Laya ran locally on Apple Silicon while Jev ran on TypeSafe infrastructure, and the request shapes differ.</p>
+              <p>High probability is not the same as calibration. Jev stayed very confident on several deliberately ambiguous cases.</p>
+              <p>
+                Upstream Laya reports a different ordering on its own typed-decisions benchmark. Different benchmarks measure
+                different domains, so this page treats the results as product experiments rather than a universal ranking.
+                <a class="inline-link" href="https://github.com/NandhaKishorM/laya">See the upstream benchmark.</a>
+              </p>
+            </div>
+          </details>
           <div class="hero-actions comparison-actions">
             <a class="button button-secondary" href="https://github.com/ThreeLightStudio/jev-laya-local-daemon/tree/main/benchmarks/jev-playground">Open the comparison fixtures</a>
           </div>
@@ -397,81 +392,93 @@ critical  0.3672</code></pre>
             <span>20 synthetic StateCarry scenarios</span>
             <span>377 cases / provider</span>
             <span>754 provider runs · 0 request errors</span>
+            <span>Jev 1.13.0 via <code>jev-latest</code></span>
             <span>Tested September 23, 2026</span>
           </div>
 
-          <div class="model-compare-grid">
-            <article class="model-card">
-              <div class="model-card-head">
-                <span class="comparison-label">StateCarry Choice · local</span>
-                <h3>Laya</h3>
+          <div class="benchmark-chart-grid">
+            <figure class="benchmark-chart">
+              <figcaption>
+                <span class="comparison-label">Choice accuracy</span>
+                <strong>More options expose Laya's narrow operating range.</strong>
+              </figcaption>
+              <div class="chart-legend" aria-hidden="true">
+                <span><i class="legend-laya"></i>Laya</span>
+                <span><i class="legend-jev"></i>Jev</span>
               </div>
-              <strong class="model-score">40.0%</strong>
-              <span class="model-score-caption">expected next action</span>
-              <dl class="model-metrics">
-                <div><dt>2 choices</dt><dd>75%</dd></div>
-                <div><dt>8 choices</dt><dd>40%</dd></div>
-                <div><dt>15 choices</dt><dd>10%</dd></div>
-                <div><dt>State variants</dt><dd>10% fully consistent</dd></div>
-              </dl>
-            </article>
+              <div class="bar-chart" role="img" aria-label="Choice accuracy by number of options. Laya: 75, 50, 40, 10 percent. Jev: 95, 100, 95, 90 percent.">
+                <div class="chart-row">
+                  <span class="chart-label">2 choices</span>
+                  <div class="chart-bars">
+                    <span class="chart-bar chart-bar-laya" style="--value:75%"><b>75%</b></span>
+                    <span class="chart-bar chart-bar-jev" style="--value:95%"><b>95%</b></span>
+                  </div>
+                </div>
+                <div class="chart-row">
+                  <span class="chart-label">4 choices</span>
+                  <div class="chart-bars">
+                    <span class="chart-bar chart-bar-laya" style="--value:50%"><b>50%</b></span>
+                    <span class="chart-bar chart-bar-jev" style="--value:100%"><b>100%</b></span>
+                  </div>
+                </div>
+                <div class="chart-row">
+                  <span class="chart-label">8 choices</span>
+                  <div class="chart-bars">
+                    <span class="chart-bar chart-bar-laya" style="--value:40%"><b>40%</b></span>
+                    <span class="chart-bar chart-bar-jev" style="--value:95%"><b>95%</b></span>
+                  </div>
+                </div>
+                <div class="chart-row">
+                  <span class="chart-label">15 choices</span>
+                  <div class="chart-bars">
+                    <span class="chart-bar chart-bar-laya" style="--value:10%"><b>10%</b></span>
+                    <span class="chart-bar chart-bar-jev" style="--value:90%"><b>90%</b></span>
+                  </div>
+                </div>
+              </div>
+            </figure>
 
-            <article class="model-card model-card-accent">
-              <div class="model-card-head">
-                <span class="comparison-label">StateCarry Choice · hosted</span>
-                <h3>Jev</h3>
+            <figure class="benchmark-chart">
+              <figcaption>
+                <span class="comparison-label">Batching related questions</span>
+                <strong>Same decisions. Very different efficiency story.</strong>
+              </figcaption>
+              <div class="batch-metric-grid">
+                <div class="batch-metric">
+                  <span>Laya</span>
+                  <strong>1.00× quality</strong>
+                  <small>single = batch decisions</small>
+                  <b>0.92× speed</b>
+                  <small>no measured batch speedup</small>
+                </div>
+                <div class="batch-metric batch-metric-accent">
+                  <span>Jev</span>
+                  <strong>1.00× quality</strong>
+                  <small>single = batch decisions</small>
+                  <b>6.96× speed</b>
+                  <small>67% fewer input tokens</small>
+                </div>
               </div>
-              <strong class="model-score">96.4%</strong>
-              <span class="model-score-caption">expected next action</span>
-              <dl class="model-metrics">
-                <div><dt>2 choices</dt><dd>95%</dd></div>
-                <div><dt>8 choices</dt><dd>95%</dd></div>
-                <div><dt>15 choices</dt><dd>90%</dd></div>
-                <div><dt>State variants</dt><dd>95% fully consistent</dd></div>
-              </dl>
-            </article>
+              <p class="chart-note">Eight StateCarry states · seven related questions per state · identical questions in single and batch modes.</p>
+            </figure>
           </div>
 
-          <div class="result-table-wrap">
-            <table class="result-table">
-              <thead>
-                <tr>
-                  <th>StateCarry test</th>
-                  <th>Laya 0.3.5</th>
-                  <th>Jev hosted API</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Choice routing</strong><span>220 scored Choice + challenge cases</span></td>
-                  <td>40.0% overall</td>
-                  <td>96.4% overall</td>
-                </tr>
-                <tr>
-                  <td><strong>Meaning-preserving state changes</strong><span>text, nested, reordered, noise, Korean</span></td>
-                  <td>10% fully consistent</td>
-                  <td>95% fully consistent</td>
-                </tr>
-                <tr>
-                  <td><strong>Targeted challenge cases</strong><span>negation, time, stale state, overlapping actions</span></td>
-                  <td>3 / 10</td>
-                  <td>10 / 10</td>
-                </tr>
-                <tr>
-                  <td><strong>7 related questions about one state</strong><span>single requests vs one batch request</span></td>
-                  <td>same decisions · no measured speedup</td>
-                  <td>same decisions · ~6.96× lower sequential latency</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="callout">
-            <p class="callout-quote">
-              For Laya, the safest pattern is one small English semantic state with a narrow decision. For Jev, related
-              questions about one shared state can be batched efficiently without an observed top-level quality loss in
-              this test.
-            </p>
+          <div class="provider-guide" aria-label="When to use each provider">
+            <article>
+              <span class="provider-guide-kicker">Choose Laya when</span>
+              <strong>Locality is the requirement.</strong>
+              <p>Keep the state small, English, and semantic. Prefer narrow choices or calibrated signals.</p>
+            </article>
+            <article>
+              <span class="provider-guide-kicker">Choose Jev when</span>
+              <strong>Decision breadth matters more.</strong>
+              <p>Use larger choice sets, stronger robustness, and batch related questions when network access is acceptable.</p>
+            </article>
+            <article class="provider-guide-shared">
+              <span class="provider-guide-kicker">Why this gateway exists</span>
+              <strong>Your caller does not have to choose forever.</strong>
+              <p>Keep one <code>state + questions</code> contract and select the provider per decision.</p>
+            </article>
           </div>
 
           <div class="hero-actions comparison-actions">
@@ -526,66 +533,66 @@ critical  0.3672</code></pre>
 
         <section class="section limits" aria-labelledby="limits-title">
           <div class="section-heading compact">
-            <p class="eyebrow">Good case / bad case</p>
-            <h2 id="limits-title">The shape of the state matters more than I expected.</h2>
+            <p class="eyebrow">Good request / poor request</p>
+            <h2 id="limits-title">For Laya, keep one decision context small and obvious.</h2>
           </div>
 
           <div class="split-list case-split">
-            <div>
-              <span class="case-badge case-good">Good case</span>
-              <h3>One small state with one clear job.</h3>
-              <pre><code>{
-  "tests": "47 tests are failing",
-  "analysis": "fresh"
-}
-
-→ choose next action</code></pre>
+            <div class="case-card case-card-good">
+              <span class="case-badge case-good">Good fit for Laya</span>
+              <h3>One state → one narrow decision context.</h3>
+              <div class="case-diagram" aria-label="One small semantic state flows into a few related questions">
+                <span class="case-node">small English<br />semantic state</span>
+                <span class="case-arrow">→</span>
+                <span class="case-node case-node-accent">2–4 choices<br />or related signals</span>
+              </div>
               <ul class="check-list">
-                <li>Short semantic state with the meaning already made explicit</li>
-                <li>A small fixed choice set such as retry / inspect / test</li>
-                <li>Multiple questions that genuinely refer to the same state</li>
-                <li>Deterministic facts computed in normal code first</li>
+                <li>Code computes deterministic facts first</li>
+                <li>The model sees the meaning, not raw telemetry</li>
+                <li>Related questions may share the same state</li>
               </ul>
             </div>
-            <div>
-              <span class="case-badge case-bad">Bad case</span>
-              <h3>Many unrelated states hidden inside one large object.</h3>
-              <pre><code>{
-  "case_01": { ... },
-  "case_02": { ... },
-  "...": "...",
-  "case_16": { ... }
-}
-
-→ "consider only state.case_07"</code></pre>
+            <div class="case-card case-card-bad">
+              <span class="case-badge case-bad">Poor fit for Laya</span>
+              <h3>Many unrelated states → “find your own case.”</h3>
+              <div class="case-diagram case-diagram-bad" aria-label="Many unrelated states are packed together and the model must isolate one">
+                <span class="case-stack">A<br />B<br />C<br />D</span>
+                <span class="case-arrow">→</span>
+                <span class="case-node">“only inspect<br />case C”</span>
+              </div>
               <ul class="dash-list">
-                <li>Asking Laya to isolate an independent nested sub-state by instruction</li>
-                <li>Large mixed contexts containing unrelated decisions</li>
-                <li>Raw flags and numbers whose application meaning is implicit</li>
-                <li>Long reasoning chains or open-ended generation</li>
+                <li>Unrelated cases packed into one shared object</li>
+                <li>Large choice sets with overlapping actions</li>
+                <li>Raw flags whose product meaning is left implicit</li>
               </ul>
             </div>
           </div>
+          <p class="evidence-note">Jev handled the tested multiplexed batches much better. Keeping cases separate is still the clearer contract when Laya is a possible provider.</p>
         </section>
 
         <section class="section maker-take" aria-labelledby="maker-take-title">
           <div class="section-heading compact">
-            <p class="eyebrow">Maker's take · subjective</p>
-            <h2 id="maker-take-title">Jev looks stronger out of the box. Laya is interesting for a different reason.</h2>
+            <p class="eyebrow">The point of the comparison</p>
+            <h2 id="maker-take-title">Choose by constraint, not by a winner.</h2>
           </div>
-          <div class="callout maker-callout">
-            <p class="callout-quote">
-              Across these product-shaped tests, Jev is currently the stronger default for hosted typed decisions: it was
-              more accurate on Choice, much cleaner on Noul, substantially better on Score, and more robust to paraphrasing
-              and option order. Laya is still interesting when decisions must stay local, avoid a network dependency, and
-              run repeatedly over small controlled states — but I would preprocess the state aggressively, tune thresholds,
-              and keep each decision narrow.
-            </p>
-            <p class="maker-note">
-              That is my conclusion from this small experiment, not a general benchmark claim. The result may change with
-              different domains, prompts, hardware, or future model versions.
-            </p>
+          <div class="take-grid">
+            <article>
+              <span>Local first</span>
+              <strong>Laya</strong>
+              <p>No network dependency. Best with small, controlled decisions.</p>
+            </article>
+            <article>
+              <span>Broader routing</span>
+              <strong>Jev</strong>
+              <p>Stronger on these product-shaped tests and efficient when related questions are batched.</p>
+            </article>
+            <article>
+              <span>Caller contract</span>
+              <strong>Same API</strong>
+              <p>Switch per request without rebuilding the application around either provider.</p>
+            </article>
           </div>
+          <p class="maker-note">These are observations from this benchmark, not a universal model ranking. Different domains, prompts, hardware, or future versions may change the result.</p>
         </section>
 
         <section class="section specs" aria-label="Observed runtime facts">
@@ -693,10 +700,10 @@ pip install -e .</code></pre>
 
         <section class="section final-cta">
           <p class="eyebrow">Current conclusion</p>
-          <h2>Use one local API. Choose local Laya or hosted Jev per decision.</h2>
+          <h2>One caller contract. Two different operating envelopes.</h2>
           <p>
-            The gateway keeps provider wiring out of your application while preserving the same typed-decision contract.
-            Use Laya when inputs must stay local; use Jev when its stronger hosted decision quality is worth the network hop.
+            Keep Laya available for small local decisions. Use Jev when broader routing or hosted batching is worth the
+            network hop. The application keeps the same localhost API either way.
           </p>
           <div class="hero-actions">
             <a class="button button-primary" href="https://github.com/ThreeLightStudio/jev-laya-local-daemon/blob/main/docs/statecarry-benchmark.md">Read the applied benchmark</a>
@@ -712,6 +719,150 @@ pip install -e .</code></pre>
       </footer>
     </div>
     <script>
+      const endpointTabs = [...document.querySelectorAll("[data-endpoint]")];
+      const providerTabs = [...document.querySelectorAll("[data-provider]")];
+      const demoEndpointLabel = document.getElementById("demo-endpoint-label");
+      const demoRequestLabel = document.getElementById("demo-request-label");
+      const demoRequestCode = document.getElementById("demo-request-code");
+      const demoResponseCode = document.getElementById("demo-response-code");
+      const providerTabNote = document.getElementById("provider-tab-note");
+      let selectedEndpoint = "decide";
+      let selectedProvider = "laya";
+
+      const decisionState = {
+        tests: "47 tests are failing",
+        analysis: "fresh",
+      };
+
+      const decisionQuestion = {
+        next_action: {
+          type: "choice",
+          criteria: {
+            resume: "Continue work",
+            inspect: "Inspect changes",
+            reanalyze: "Refresh analysis",
+            test: "Fix failing tests",
+          },
+        },
+      };
+
+      const demoExamples = {
+        decide: {
+          label: "POST /v1/decide",
+          providerAware: true,
+          requestLabel: "JSON body",
+          request: (provider) =>
+            JSON.stringify(
+              {
+                provider,
+                state: decisionState,
+                questions: decisionQuestion,
+              },
+              null,
+              2,
+            ),
+          response: (provider) =>
+            JSON.stringify(
+              {
+                provider,
+                model: provider === "laya" ? "laya-rl-agent" : "jev-1.13.0",
+                answers: {
+                  next_action: {
+                    type: "choice",
+                    choice: "test",
+                  },
+                },
+              },
+              null,
+              2,
+            ),
+        },
+        providers: {
+          label: "GET /v1/providers",
+          providerAware: false,
+          requestLabel: "Request",
+          request: () => "curl http://127.0.0.1:8787/v1/providers",
+          response: () =>
+            JSON.stringify(
+              {
+                laya: {
+                  ready: true,
+                  status: "ready",
+                  model: "convaiinnovations/laya/typed-decisions",
+                },
+                jev: {
+                  configured: true,
+                  model: "jev-latest",
+                  api_url: "https://api.typesafe.ai",
+                },
+              },
+              null,
+              2,
+            ),
+        },
+        ready: {
+          label: "GET /ready",
+          providerAware: false,
+          requestLabel: "Request",
+          request: () => "curl http://127.0.0.1:8787/ready",
+          response: () =>
+            JSON.stringify(
+              {
+                ready: true,
+                model: "convaiinnovations/laya/typed-decisions",
+                status: "ready",
+              },
+              null,
+              2,
+            ),
+        },
+        health: {
+          label: "GET /health",
+          providerAware: false,
+          requestLabel: "Request",
+          request: () => "curl http://127.0.0.1:8787/health",
+          response: () => JSON.stringify({ status: "ok" }, null, 2),
+        },
+      };
+
+      const renderApiDemo = () => {
+        const example = demoExamples[selectedEndpoint];
+        endpointTabs.forEach((tab) => {
+          const active = tab.dataset.endpoint === selectedEndpoint;
+          tab.classList.toggle("is-active", active);
+          tab.setAttribute("aria-selected", String(active));
+        });
+        providerTabs.forEach((tab) => {
+          const active = example.providerAware && tab.dataset.provider === selectedProvider;
+          tab.classList.toggle("is-active", active);
+          tab.setAttribute("aria-selected", String(active));
+          tab.disabled = !example.providerAware;
+        });
+        providerTabNote.textContent = example.providerAware
+          ? "Switch provider without changing the endpoint."
+          : "Provider selection applies to POST /v1/decide.";
+        demoEndpointLabel.textContent = example.label;
+        demoRequestLabel.textContent = example.requestLabel;
+        demoRequestCode.textContent = example.request(selectedProvider);
+        demoResponseCode.textContent = example.response(selectedProvider);
+      };
+
+      endpointTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          selectedEndpoint = tab.dataset.endpoint;
+          renderApiDemo();
+        });
+      });
+
+      providerTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          selectedProvider = tab.dataset.provider;
+          renderApiDemo();
+        });
+      });
+
+      renderApiDemo();
+
       const copyButton = document.querySelector("[data-copy-target]");
 
       const showCopiedState = () => {
