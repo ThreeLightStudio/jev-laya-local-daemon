@@ -8,7 +8,7 @@ from pathlib import Path
 from statistics import mean
 
 
-BASE_URL = os.getenv("DECISION_API_URL", "http://127.0.0.1:8787")
+BASE_URL = os.getenv("DECISION_API_URL") or f"http://127.0.0.1:{os.getenv('DAEMON_PORT', '8787')}"
 PROVIDER = os.getenv("DECISION_PROVIDER", "laya")
 
 

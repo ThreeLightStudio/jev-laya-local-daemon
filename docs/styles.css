@@ -140,6 +140,52 @@ pre {
   align-items: center;
 }
 
+.project-status {
+  margin-top: 26px;
+  padding: 16px 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  align-items: baseline;
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-md);
+  background: var(--accent-soft);
+}
+
+.project-status-tag {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border: 1px solid var(--accent-border);
+  border-radius: 999px;
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-status p {
+  margin: 0;
+  color: var(--muted-strong);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.project-status a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.project-status code {
+  padding: 2px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #0a0c0f;
+  color: var(--code);
+  font-size: 0.85em;
+}
+
 .hero {
   min-height: 720px;
   padding-top: 96px;

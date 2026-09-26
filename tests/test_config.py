@@ -40,6 +40,21 @@ def test_daemon_env_configuration(monkeypatch) -> None:
     assert settings.port == 8790
 
 
+def test_daemon_port_strict_env(monkeypatch) -> None:
+    monkeypatch.delenv("DAEMON_PORT_STRICT", raising=False)
+    assert Settings.from_env().port_strict is False
+    for value in ("1", "true", "YES"):
+        monkeypatch.setenv("DAEMON_PORT_STRICT", value)
+        assert Settings.from_env().port_strict is True
+    monkeypatch.setenv("DAEMON_PORT_STRICT", "0")
+    assert Settings.from_env().port_strict is False
+
+
+def test_port_zero_is_allowed(monkeypatch) -> None:
+    monkeypatch.setenv("DAEMON_PORT", "0")
+    assert Settings.from_env().port == 0
+
+
 def test_repo_root_dotenv_is_loaded(monkeypatch, tmp_path) -> None:
     monkeypatch.delenv("JEV_API_KEY", raising=False)
     monkeypatch.delenv("DAEMON_PORT", raising=False)

@@ -2,6 +2,8 @@
 
 [Project page →](https://threelightstudio.github.io/jev-laya-local-daemon/)
 
+> **Status (September 2026):** [`typesafe/jev-router` is now available for free on OpenRouter](https://openrouter.ai/typesafe/jev-router). If you only need Jev-style model routing, calling OpenRouter directly is the simpler path and this daemon is no longer required. This project remains useful when you want typed decisions from the **local** Laya checkpoint, fully offline on your own machine.
+
 `jev-laya-local-daemon` exposes one localhost API for typed decisions from either local Laya or hosted Jev.
 
 ```text
@@ -170,6 +172,7 @@ LAYA_MODEL=convaiinnovations/laya
 LAYA_SUBFOLDER=typed-decisions
 DAEMON_HOST=127.0.0.1
 DAEMON_PORT=8787
+DAEMON_PORT_STRICT=0
 LAYA_DEVICE=
 JEV_API_KEY=
 JEV_MODEL=jev-latest
@@ -181,6 +184,7 @@ Example override:
 
 ```bash
 DAEMON_PORT=8790 LAYA_DEVICE=mps jev-laya-local-daemon
+# equivalent: jev-laya-local-daemon --port 8790
 ```
 
 `DAEMON_HOST` is intentionally restricted to loopback addresses (`127.0.0.1`, `localhost`, or `::1`). `0.0.0.0` is rejected.
@@ -191,11 +195,47 @@ DAEMON_PORT=8790 LAYA_DEVICE=mps jev-laya-local-daemon
 
 ## Port already in use
 
-The default port is `8787`. If another local service is already using it, startup fails with an error similar to:
+The default port is `8787`. If another local service already listens on it — for example the Headroom proxy — the daemon falls back automatically instead of failing: it probes the configured port, then the next ports upward (up to 100 candidates), binds the first free one, and prints the resolved address together with a ready-to-paste `DECISION_API_URL` for callers:
 
 ```text
-[Errno 48] error while attempting to bind on address ('127.0.0.1', 8787): address already in use
+Port 8787 is in use by Python (pid 21844); falling back to 8788
+Callers: DECISION_API_URL=http://127.0.0.1:8788
+Listening: http://127.0.0.1:8788
 ```
+
+Point every caller at the URL printed in the banner:
+
+```bash
+curl http://127.0.0.1:8788/health
+curl http://127.0.0.1:8788/ready
+DECISION_API_URL=http://127.0.0.1:8788 python3 scripts/smoke.py
+```
+
+The helper scripts in `scripts/` also honor `DAEMON_PORT`, so `DAEMON_PORT=8788 python3 scripts/smoke.py` works without `DECISION_API_URL`. For TypeScript or Python applications, change the endpoint from `http://127.0.0.1:8787` to the resolved URL as well.
+
+A fallback port can change between runs. For a stable address, pin the port. `8790` is a convenient choice when `8787` is permanently occupied:
+
+```bash
+DAEMON_PORT=8790 jev-laya-local-daemon
+# equivalent: jev-laya-local-daemon --port 8790
+```
+
+`--port` and `--host` flags override `DAEMON_PORT` and `DAEMON_HOST`, and `DAEMON_PORT=0` asks the OS for any free port.
+
+To require the configured port and exit instead of falling back, set `DAEMON_PORT_STRICT=1`:
+
+```bash
+DAEMON_PORT_STRICT=1 jev-laya-local-daemon
+```
+
+```text
+error: port 8787 on 127.0.0.1 is already in use by Python (pid 21844)
+  lsof -nP -iTCP:8787 -sTCP:LISTEN   # who owns it
+  DAEMON_PORT=8790 jev-laya-local-daemon   # or pick another port
+  auto-fallback is disabled (DAEMON_PORT_STRICT=1)
+```
+
+### Identifying the process on the busy port
 
 Check which process owns the port:
 
@@ -216,42 +256,9 @@ If that process is yours and you no longer need it, stop it normally. If necessa
 kill PID
 ```
 
-Replace `PID` with the actual number from the `lsof` output. Do not stop a process you do not recognize; choosing another port is usually simpler.
+Replace `PID` with the actual number from the `lsof` output. Do not stop a process you do not recognize; running the daemon on another port is usually simpler (see above).
 
-Check again before starting Laya:
-
-```bash
-lsof -nP -iTCP:8787 -sTCP:LISTEN
-```
-
-If you want to keep the other service running, use another local port instead. `8790` is a convenient example:
-
-```bash
-DAEMON_PORT=8790 jev-laya-local-daemon
-```
-
-Then use the same port in every caller:
-
-```bash
-curl http://127.0.0.1:8790/health
-curl http://127.0.0.1:8790/ready
-```
-
-And for the smoke test:
-
-```bash
-DECISION_API_URL=http://127.0.0.1:8790 python3 scripts/smoke.py
-```
-
-For TypeScript or Python applications, change the endpoint from `http://127.0.0.1:8787` to `http://127.0.0.1:8790` as well.
-
-You can inspect a different candidate port the same way:
-
-```bash
-lsof -nP -iTCP:8790 -sTCP:LISTEN
-```
-
-No output means there is currently no listening process on that port.
+No output from `lsof` means there is currently no listening process on that port, and the next daemon start binds it directly.
 
 ## Health check
 
@@ -596,6 +603,8 @@ If the daemon is on a non-default port:
 ```bash
 DECISION_API_URL=http://127.0.0.1:8790 python3 scripts/smoke.py
 ```
+
+The scripts also honor `DAEMON_PORT`, so `DAEMON_PORT=8790 python3 scripts/smoke.py` is equivalent.
 
 
 

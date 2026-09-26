@@ -30,6 +30,16 @@
       </header>
 
       <main id="top">
+        <aside class="project-status" role="note" aria-label="Project status, September 2026">
+          <span class="project-status-tag">Update · Sep 2026</span>
+          <p>
+            <code>typesafe/jev-router</code> is now available for free on
+            <a href="https://openrouter.ai/typesafe/jev-router">OpenRouter</a>. For hosted Jev routing, call OpenRouter
+            directly — this daemon is no longer required. It remains useful when you want typed decisions fully offline
+            from the local Laya checkpoint.
+          </p>
+        </aside>
+
         <section class="hero section-grid">
           <div class="hero-copy">
             <p class="eyebrow">One localhost API · Laya + Jev</p>
@@ -636,11 +646,11 @@ critical  0.3672</code></pre>
 
 If the repository is not already checked out, clone it into an appropriate local development directory. Use `python3` with Python 3.11–3.13, create a .venv, and install the project with `pip install -e .`.
 
-Start `jev-laya-local-daemon` bound to a loopback address only. Use port 8787 unless it is already occupied. If 8787 is in use, do not stop an unrelated process; choose another available local port with `DAEMON_PORT` and use that port consistently.
+Start `jev-laya-local-daemon` bound to a loopback address only. It defaults to port 8787; when that port is already occupied (for example by a Headroom proxy), the daemon automatically falls back to the next free port and prints the resolved URL. Use the printed URL for callers, or pin a stable port with `DAEMON_PORT` (`jev-laya-local-daemon --port 8790` also works; set `DAEMON_PORT_STRICT=1` to disable the fallback).
 
 If Jev should be enabled, copy `.env.example` to `.env` and put `JEV_API_KEY` there without printing or committing the key. The daemon loads the repo-root `.env` automatically. Jev is optional; do not block setup when the key is absent.
 
-Wait until `GET /ready` returns HTTP 200 with `"ready": true`, then run the included smoke test with `python3 scripts/smoke.py` against the selected endpoint. If you changed the port, set `DECISION_API_URL` for the smoke test. Keep the daemon running after verification if your environment supports a persistent process; otherwise give me the exact command to start it again.
+Wait until `GET /ready` returns HTTP 200 with `"ready": true`, then run the included smoke test with `python3 scripts/smoke.py` against the selected endpoint. If the daemon is on a non-default port, set `DECISION_API_URL` (or `DAEMON_PORT`) for the smoke test. Keep the daemon running after verification if your environment supports a persistent process; otherwise give me the exact command to start it again.
 
 When finished, report the final local API URL, the selected port, provider availability from `GET /v1/providers`, the smoke-test result, and how to stop the daemon. Do not bind to 0.0.0.0 or expose the service to the public network.</textarea>
 
@@ -686,14 +696,14 @@ pip install -e .</code></pre>
 
           <div class="port-note">
             <strong>About port 8787</strong>
-            <span>It is this project's configurable default, not an upstream Laya requirement.</span>
+            <span>It is this project's configurable default, not an upstream Laya requirement. When it is occupied, the daemon falls back to the next free port and prints the resolved address.</span>
             <a href="https://github.com/NandhaKishorM/laya">Upstream Laya</a>
           </div>
 
           <div class="port-note">
             <strong>Port already in use?</strong>
+            <span>Startup falls back to the next free port automatically. To identify the owner or pin a stable port:</span>
             <code>lsof -nP -iTCP:8787 -sTCP:LISTEN</code>
-            <span>or launch with</span>
             <code>DAEMON_PORT=8790 jev-laya-local-daemon</code>
           </div>
         </section>

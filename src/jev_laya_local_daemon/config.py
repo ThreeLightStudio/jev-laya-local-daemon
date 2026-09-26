@@ -11,7 +11,8 @@ class Settings(BaseModel):
     model: str = "convaiinnovations/laya"
     subfolder: str | None = "typed-decisions"
     host: str = "127.0.0.1"
-    port: int = Field(default=8787, ge=1, le=65535)
+    port: int = Field(default=8787, ge=0, le=65535)
+    port_strict: bool = False
     device: str | None = None
     jev_api_key: str | None = None
     jev_model: str = "jev-latest"
@@ -36,6 +37,7 @@ class Settings(BaseModel):
             subfolder=subfolder or None,
             host=os.getenv("DAEMON_HOST", "127.0.0.1"),
             port=int(os.getenv("DAEMON_PORT", "8787")),
+            port_strict=os.getenv("DAEMON_PORT_STRICT", "").strip().lower() in {"1", "true", "yes"},
             device=device.strip() if device and device.strip() else None,
             jev_api_key=jev_api_key.strip() if jev_api_key and jev_api_key.strip() else None,
             jev_model=os.getenv("JEV_MODEL", "jev-latest").strip() or "jev-latest",

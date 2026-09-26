@@ -1,5 +1,7 @@
 # Jev + Laya experiment: one localhost contract for typed decisions
 
+> **Update (September 2026):** [`typesafe/jev-router` is now available for free on OpenRouter](https://openrouter.ai/typesafe/jev-router), which covers the hosted-Jev half of this experiment without running a local daemon. The daemon remains relevant mainly for the fully local Laya path described below. This document is kept as the experiment record.
+
 This document records the full path from discovering Laya to building `jev-laya-local-daemon`, evaluating how Laya behaves on real decision tasks, and deciding how it should be used in practice.
 
 ## 1. How I discovered Laya

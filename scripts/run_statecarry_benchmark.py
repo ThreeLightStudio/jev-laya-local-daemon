@@ -17,7 +17,7 @@ from typing import Any, Iterable
 ROOT = Path(__file__).resolve().parents[1]
 SCENARIOS_PATH = ROOT / "benchmarks" / "statecarry" / "scenarios.json"
 RESULTS_DIR = ROOT / "benchmarks" / "statecarry" / "results"
-DEFAULT_BASE_URL = os.getenv("DECISION_API_URL", "http://127.0.0.1:8787").rstrip("/")
+DEFAULT_BASE_URL = (os.getenv("DECISION_API_URL") or f"http://127.0.0.1:{os.getenv('DAEMON_PORT', '8787')}").rstrip("/")
 
 ACTIONS: dict[str, str] = {
     "continue": "Continue the known unfinished work from its current next step.",
